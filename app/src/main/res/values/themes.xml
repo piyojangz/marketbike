@@ -1,0 +1,29 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+        <item name="android:background">@color/actionbar_bg</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="MyActionBarTitleText">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- ActionBar tabs text styles -->
+    <style name="MyActionBarTabText">
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+</resources>
