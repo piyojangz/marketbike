@@ -46,6 +46,8 @@ public class Tab1 extends Activity {
                 newActivity.putExtra(ListItem.KEY_MENU_ID, ID);
                 newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
                 startActivity(newActivity);
+
+              //  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
 

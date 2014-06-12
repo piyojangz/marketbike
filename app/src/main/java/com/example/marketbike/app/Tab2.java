@@ -2,14 +2,27 @@ package com.example.marketbike.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Tab2 extends Activity {
 
-    /** Called when the activity is first created. */
+    private ArrayList<HashMap<String, String>> DataList;
+    HashMap map;
+    private menuAdapter menuAdpt;
+    private ListView lv;
+    private ArrayAdapter<String> listAdapter;
+    protected ArrayList<HashMap<String, String>> sList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab2);
+
     }
+
 }
