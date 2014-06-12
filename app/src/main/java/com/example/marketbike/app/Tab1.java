@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class Tab1 extends Activity {
 
     private ArrayList<HashMap<String, String>> DataList;
     HashMap map;
-    private menuAdapter menuAdpt;
+    private MenuAdapter menuAdpt;
     private ListView lv;
     private ArrayAdapter<String> listAdapter;
     protected ArrayList<HashMap<String, String>> sList;
@@ -29,7 +30,7 @@ public class Tab1 extends Activity {
 
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.createMenu();
-        this.menuAdpt = new menuAdapter(this, this.sList);
+        this.menuAdpt = new MenuAdapter(this, this.sList);
         Log.i("mylog", "menuAdpt: " + menuAdpt.getCount());
         lv.setAdapter(this.menuAdpt);
 
@@ -42,12 +43,12 @@ public class Tab1 extends Activity {
 
                 String ID = sList.get(position).get(ListItem.KEY_MENU_ID).toString();
                 String TITLE = sList.get(position).get(ListItem.KEY_MENU_TITLE).toString();
-                Intent newActivity = new Intent(getBaseContext(),Community.class);
+                Intent newActivity = new Intent(getBaseContext(), Community.class);
                 newActivity.putExtra(ListItem.KEY_MENU_ID, ID);
                 newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
                 startActivity(newActivity);
 
-              //  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                //  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
 
@@ -74,7 +75,6 @@ public class Tab1 extends Activity {
         this.map.put(ListItem.KEY_MENU_TITLE, "Ducati");
         this.map.put(ListItem.KEY_MENU_LOGO, "http://live.ducati.com/assets/logo-e98559d0817fe8b9418d0a859458efbd.png");
         this.sList.add(map);
-
 
 
         this.map = new HashMap<String, String>();

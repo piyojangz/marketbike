@@ -2,7 +2,6 @@ package com.example.marketbike.app;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -13,7 +12,7 @@ public class Tab2 extends Activity {
 
     private ArrayList<HashMap<String, String>> DataList;
     HashMap map;
-    private menuAdapter menuAdpt;
+    private MenuAdapter menuAdpt;
     private ListView lv;
     private ArrayAdapter<String> listAdapter;
     protected ArrayList<HashMap<String, String>> sList;
