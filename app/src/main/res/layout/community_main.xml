@@ -13,8 +13,10 @@
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
             android:id="@+id/menu_listView"
+            android:layout_margin="10dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
             android:focusable="false"
             android:choiceMode="singleChoice" />
 
