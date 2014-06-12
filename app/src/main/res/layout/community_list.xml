@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-
     android:background="@drawable/bg_card"
     android:orientation="vertical">
+
 
     <FrameLayout
         android:id="@+id/myfeed_list"
@@ -63,4 +63,5 @@
         android:paddingBottom="5dp"
         android:paddingRight="10dp"
         android:paddingTop="2dp" />
+
 </LinearLayout>
