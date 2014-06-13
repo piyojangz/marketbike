@@ -2,20 +2,20 @@
 <pre-dex-items>
 
     <item
-        dex="D:\project\marketbike\app\build\intermediates\pre-dexed\debug\picasso-2.1.0-75b4272e4ded57ef0f3e6d0fb6e38e0b77f6a755.jar"
-        jar="D:\project\marketbike\app\libs\picasso-2.1.0.jar"
+        dex="D:\Android_Proj\marketbike\app\build\intermediates\pre-dexed\debug\picasso-2.1.0-0879e53ffe1d9f500b7016bb40f9209ead31e9a0.jar"
+        jar="D:\Android_Proj\marketbike\app\libs\picasso-2.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="ca274930dbe6b32e0ea3192336c5b93883192a0b"/>
     <item
-        dex="D:\project\marketbike\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-cae7f321fd69e6c56397850f4b446912440a23a0.jar"
-        jar="D:\adt-bundle-windows-x86_64-20130911\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        dex="D:\Android_Proj\marketbike\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-23bc69b2fa800e8e6ae4e0619601014241688dcf.jar"
+        jar="D:\Android_Proj\adt-bundle-windows-x86-20140321\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="D:\project\marketbike\app\build\intermediates\pre-dexed\debug\classes-9e497b723eb8f829c3e646a336125c64d42e3d38.jar"
-        jar="D:\project\marketbike\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        dex="D:\Android_Proj\marketbike\app\build\intermediates\pre-dexed\debug\classes-f3906ee9e21b441c7204d11a577bef119bb34b69.jar"
+        jar="D:\Android_Proj\marketbike\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
