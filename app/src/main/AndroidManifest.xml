@@ -25,6 +25,7 @@
         <activity android:name=".Tab2"></activity>
         <activity android:name=".Tab3"></activity>
         <activity android:name=".News"></activity>
+        <activity android:name=".News_detail"></activity>
 
     </application>
 
