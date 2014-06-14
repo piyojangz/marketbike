@@ -30,15 +30,11 @@
         android:layout_height="wrap_content"
         android:text="xxxxxxxxxx"
         android:textColor="#000"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:textStyle="normal"
-        android:typeface="sans"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/thumbnail"
         android:layout_marginLeft="30dp" />
-
-
-
 
 
 </RelativeLayout>

@@ -10,6 +10,9 @@ public class ListItem {
     public static String KEY_DESC = "KEY_DESC";
     public static String KEY_TYPE = "KEY_TYPE";
     public static String KEY_URL = "KEY_URL";
+    public static String KEY_IMAGE_HEADER = "KEY_IMAGE_HEADER";
+    public static String KEY_IMAGE_LOGO = "KEY_IMAGE_LOGO";
+
 
     //------------------------------------------------------------------------
     public static String KEY_MENU_ID = "KEY_MENU_ID";

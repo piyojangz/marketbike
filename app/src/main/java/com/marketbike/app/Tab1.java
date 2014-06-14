@@ -2,12 +2,16 @@ package com.marketbike.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.marketbike.app.custom.setAppFont;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,24 +19,29 @@ import java.util.HashMap;
 public class Tab1 extends Activity {
 
     private ArrayList<HashMap<String, String>> DataList;
-    HashMap map;
+    private HashMap map;
     private MenuAdapter menuAdpt;
     private ListView lv;
-    private ArrayAdapter<String> listAdapter;
     protected ArrayList<HashMap<String, String>> sList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab1);
-        lv = (ListView) findViewById(R.id.menu_listView);
+
+        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+        final ViewGroup mContainer = (ViewGroup) findViewById(
+                android.R.id.content).getRootView();
+        setAppFont.setAppFont(mContainer, typeFace);
+
+        this.lv = (ListView) findViewById(R.id.menu_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.createMenu();
         this.menuAdpt = new MenuAdapter(this, this.sList);
-        Log.i("mylog", "menuAdpt: " + menuAdpt.getCount());
-        lv.setAdapter(this.menuAdpt);
+
+        this.lv.setAdapter(this.menuAdpt);
 
 
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -4,6 +4,7 @@ package com.marketbike.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,11 +13,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.marketbike.app.XListView.XListView;
 import com.marketbike.app.XListView.XListView.IXListViewListener;
+import com.marketbike.app.custom.setAppFont;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +47,12 @@ public class News extends Activity implements IXListViewListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news);
+
+        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+        final ViewGroup mContainer = (ViewGroup) findViewById(
+                android.R.id.content).getRootView();
+        setAppFont.setAppFont(mContainer, typeFace);
+
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
         this.lv = (XListView) findViewById(R.id.menu_listView);
 
@@ -90,15 +99,14 @@ public class News extends Activity implements IXListViewListener {
         this.task.execute((Void[]) null);
 
 
-
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                 // a.finish();
 
-                String URL = sList.get(position -1).get(ListItem.KEY_URL).toString();
-                String TITLE = sList.get(position -1).get(ListItem.KEY_TITLE).toString();
+                String URL = sList.get(position - 1).get(ListItem.KEY_URL).toString();
+                String TITLE = sList.get(position - 1).get(ListItem.KEY_TITLE).toString();
                 Intent newActivity = new Intent(getBaseContext(), News_detail.class);
                 newActivity.putExtra(ListItem.KEY_URL, URL);
                 newActivity.putExtra(ListItem.KEY_TITLE, TITLE);
@@ -129,7 +137,7 @@ public class News extends Activity implements IXListViewListener {
             this.map.put(ListItem.KEY_MENU_ID, "1");
             this.map.put(ListItem.KEY_TYPE, "HILIGHT");
             this.map.put(ListItem.KEY_TITLE, "Ducati Desmosedici GP13");
-            this.map.put(ListItem.KEY_DESC, "ข้อมูลจากสมาชิกเว็บไซท์ Diavel-Forum.com รายหนึ่งระบุว่า ตัวแทนจำหน่ายของ Ducati ได้บอกกับบรรดาลูกค้าว่าให้เตรียมพร้อมกับ Ducati Diavelี้");
+            this.map.put(ListItem.KEY_DESC, "ข้อมูลจากสมาชิกเว็บไซท์ Diavel-Forum.com รายหนึ่งระบุว่า ตัวแทนจำหน่ายของ Ducati ได้บอกกับบรรดาลูกค้าว่าให้เตรียมพร้อมกับ Ducati Diavel");
             this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
             this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
 
@@ -179,7 +187,6 @@ public class News extends Activity implements IXListViewListener {
         this.sList.add(map);
 
     }
-
 
 
     @Override

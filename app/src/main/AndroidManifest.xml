@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.marketbike.app">
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.De" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/appicon"
@@ -24,7 +26,9 @@
         <activity android:name=".Tab1"></activity>
         <activity android:name=".Tab2"></activity>
         <activity android:name=".Tab3"></activity>
+        <activity android:name=".Tab4"></activity>
         <activity android:name=".News"></activity>
+        <activity android:name=".Trip"></activity>
         <activity android:name=".News_detail"></activity>
 
     </application>

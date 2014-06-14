@@ -1,14 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_page"
+    android:background="@color/floor_gray"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <!--  Screen Design for Food tab -->
-    <TextView android:text="FOOD TAB DATA2"
-        android:padding="15dip"
-        android:textSize="18dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#dcdcdc">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:id="@+id/tab2_listView"
+            android:focusable="false"
+            android:choiceMode="singleChoice" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.DrawerLayout>

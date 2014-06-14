@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/profileLayout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <ImageView
+            android:id="@+id/imageBgProfile"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="#ddd" />
+
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:clipToPadding="true"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_marginTop="-60dp"
+        android:background="@drawable/circle_paading2">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nike Stefan Shop"
+        android:textColor="#000"
+        android:id="@+id/txtTitle"
+        android:textSize="18sp"
+        android:singleLine="true"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/btn_add_trip_request"
+        android:text="  สมัครเข้ารว่มทริปนี้"
+        android:id="@+id/btn_addtrip"
+        android:background="@drawable/btn_defult"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="18 Members"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textView"
+        android:textSize="12sp"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="กำหนดการออกเดินทาง 22 มิถุนายน 2556"
+        android:id="@+id/textView2"
+        android:textSize="12sp"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>
+

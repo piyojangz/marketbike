@@ -1,16 +1,20 @@
 package com.marketbike.app;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.app.TabActivity;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
+
+import com.marketbike.app.custom.setAppFont;
 
 public class MainActivity extends TabActivity implements OnTabChangeListener {
     /**
@@ -18,10 +22,17 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
      */
     TabHost tabHost;
     private DrawerLayout mDrawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+        final ViewGroup mContainer = (ViewGroup) findViewById(
+                android.R.id.content).getRootView();
+        setAppFont.setAppFont(mContainer, typeFace);
 
         // Get TabHost Refference
         tabHost = getTabHost();
@@ -49,13 +60,21 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
 
         /************* TAB3 ************/
         intent = new Intent().setClass(this, Tab3.class);
-        spec = tabHost.newTabSpec("Third").setIndicator("Market")
+        spec = tabHost.newTabSpec("Third").setIndicator("Trip")
                 .setContent(intent);
         tabHost.addTab(spec);
+
+        /************* TAB4 ************/
+        intent = new Intent().setClass(this, Tab4.class);
+        spec = tabHost.newTabSpec("Fourth").setIndicator("Market")
+                .setContent(intent);
+        tabHost.addTab(spec);
+
 
         // Set drawable images to tab
         tabHost.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_bg_selector);
         tabHost.getTabWidget().getChildAt(2).setBackgroundResource(R.drawable.tab_bg_selector);
+        tabHost.getTabWidget().getChildAt(3).setBackgroundResource(R.drawable.tab_bg_selector);
 
         // Set Tab1 as Default tab and change image
         tabHost.getTabWidget().setCurrentTab(0);
@@ -79,6 +98,9 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
             } else if (i == 2) {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
                 // TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+            } else if (i == 3) {
+                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
+                // TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
             }
         }
 
@@ -92,6 +114,8 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
         else if (tabHost.getCurrentTab() == 1)
             tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
         else if (tabHost.getCurrentTab() == 2)
+            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
+        else if (tabHost.getCurrentTab() == 3)
             tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
     }
 

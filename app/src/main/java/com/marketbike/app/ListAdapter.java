@@ -38,7 +38,6 @@ public class ListAdapter extends BaseAdapter implements Transformation {
         this.activity = a;
         this.data = d;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
 
@@ -73,7 +72,6 @@ public class ListAdapter extends BaseAdapter implements Transformation {
         ImageView imglogo = (ImageView) convertView.findViewById(R.id.img_thumnail);
         TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
         TextView txt_desc = (TextView) convertView.findViewById(R.id.txt_desc);
-
 
 
         txt_title.setText(title);
