@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/myfeed_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_thumnail"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:adjustViewBounds="true"
+                android:background="@color/slidemenu_bg"
+                android:scaleType="centerCrop"
+                android:layout_gravity="top" />
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/c20pertransparent"
+                android:layout_gravity="center_horizontal|bottom"
+                android:padding="10dp"
+                android:id="@+id/frameLayout2">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="Sell iPad mini 16 gb"
+                    android:textColor="#c0392b"
+                    android:singleLine="true"
+                    android:id="@+id/txt_title"
+                    android:layout_gravity="center_horizontal|top" />
+
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/lorem2"
+                    android:textSize="14dp"
+                    android:textColor="#fff"
+                    android:id="@+id/txt_desc"
+                    android:layout_below="@+id/txt_title"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_horizontal|bottom" />
+
+            </FrameLayout>
+
+
+        </FrameLayout>
+    </FrameLayout>
+
+
+</LinearLayout>
