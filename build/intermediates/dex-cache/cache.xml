@@ -2,20 +2,20 @@
 <pre-dex-items>
 
     <item
-        dex="D:\Android_Proj\marketbike\app\build\intermediates\pre-dexed\debug\picasso-2.1.0-0879e53ffe1d9f500b7016bb40f9209ead31e9a0.jar"
-        jar="D:\Android_Proj\marketbike\app\libs\picasso-2.1.0.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="ca274930dbe6b32e0ea3192336c5b93883192a0b"/>
-    <item
-        dex="D:\Android_Proj\marketbike\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-23bc69b2fa800e8e6ae4e0619601014241688dcf.jar"
-        jar="D:\Android_Proj\adt-bundle-windows-x86-20140321\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        dex="/Users/apple/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="D:\Android_Proj\marketbike\app\build\intermediates\pre-dexed\debug\classes-f3906ee9e21b441c7204d11a577bef119bb34b69.jar"
-        jar="D:\Android_Proj\marketbike\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        dex="/Users/apple/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/picasso-2.1.0-8eee1243b7a5ed023d9ba194624cabf75acaab18.jar"
+        jar="/Users/apple/Documents/android projects/marketbike/app/libs/picasso-2.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="ca274930dbe6b32e0ea3192336c5b93883192a0b"/>
+    <item
+        dex="/Users/apple/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/classes-4e1dd4b406354373fecbb52749c8a63654a422b9.jar"
+        jar="/Users/apple/Documents/android projects/marketbike/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
