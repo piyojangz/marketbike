@@ -63,7 +63,7 @@ public class Tab3 extends Activity {
     private void createTrips() {
         this.map = new HashMap<String, String>();
         this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "สมาคมชาว ER6-Club แห่งประเทศไทย");
+        this.map.put(ListItem.KEY_MENU_TITLE, "ER6-Club Thailand");
         this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/t1.0-1/c33.33.418.418/s160x160/561413_356182494488330_715098968_n.jpg");
         this.sList.add(map);
 

@@ -127,15 +127,32 @@ public class Trip extends Activity implements IXListViewListener {
             this.sList.add(map);
         }
 
-      /*  this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
+        this.map = new HashMap<String, String>();
+        this.map.put(ListItem.KEY_MENU_ID, "2");
         this.map.put(ListItem.KEY_TYPE, "CONTENT");
-        this.map.put(ListItem.KEY_TITLE, "Ducati Multistrada 1200 S Granturismo");
-        this.map.put(ListItem.KEY_DESC, "ข้อมูลจากสมาชิกเว็บไซท์ Diavel-Forum.com รายหนึ่งระบุว่า ตัวแทนจำหน่ายของ Ducati ได้บอกกับบรรดาลูกค้าว่าให้เตรียมพร้อมกับ Ducati Diavel ");
-        this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/03/Ducati-Multistrada-1200-S-Granturismo2.jpg");
-        this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
+        this.map.put(ListItem.KEY_TITLE, "CHUMPON SAMA");
+        this.map.put(ListItem.KEY_DESC, "DUCATI PANIGALE 1990");
+        this.map.put(ListItem.KEY_IMAGE, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10255282_746118662075641_5186835560918721027_n.jpg");
+        this.sList.add(map);
 
-        this.sList.add(map);*/
+        this.map = new HashMap<String, String>();
+        this.map.put(ListItem.KEY_MENU_ID, "3");
+        this.map.put(ListItem.KEY_TYPE, "CONTENT");
+        this.map.put(ListItem.KEY_TITLE, "BREESHY SAMA");
+        this.map.put(ListItem.KEY_DESC, "DUCATI MONSTER 795");
+        this.map.put(ListItem.KEY_IMAGE, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/t1.0-1/p320x320/10306388_10202092533301118_8683534609256773072_n.jpg");
+
+        this.sList.add(map);
+
+        this.map = new HashMap<String, String>();
+        this.map.put(ListItem.KEY_MENU_ID, "4");
+        this.map.put(ListItem.KEY_TYPE, "CONTENT");
+        this.map.put(ListItem.KEY_TITLE, "Soophuksorn Somphanit");
+        this.map.put(ListItem.KEY_DESC, "HONDA CBR 1000R");
+        this.map.put(ListItem.KEY_IMAGE, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p320x320/10325795_10201375990835562_8132249767906859215_n.jpg?oh=ccdb0f93df03377129139bc23e27d266&oe=543A6559&__gda__=1412884424_bd3b92bd11af0c2780d30659626af582");
+
+
+        this.sList.add(map);
 
     }
 

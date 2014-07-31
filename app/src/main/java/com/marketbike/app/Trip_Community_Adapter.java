@@ -84,11 +84,11 @@ public class Trip_Community_Adapter extends BaseAdapter implements Transformatio
                 @Override
                 public void onClick(View v) {
                     if (!isjoind) {
-                        btn_addtrip.setText("  ทริปของคุณ");
+                        btn_addtrip.setText("  Your trip");
                         btn_addtrip.setCompoundDrawablesWithIntrinsicBounds(R.drawable.btn_add_trip_success, 0, 0, 0);
                         isjoind = true;
                     } else {
-                        btn_addtrip.setText("  สมัครเข้ารว่มทริปนี้");
+                        btn_addtrip.setText("  Request trip");
                         btn_addtrip.setCompoundDrawablesWithIntrinsicBounds(R.drawable.btn_add_trip_request, 0, 0, 0);
                         isjoind = false;
                     }
@@ -103,6 +103,12 @@ public class Trip_Community_Adapter extends BaseAdapter implements Transformatio
             ImageView imglogo = (ImageView) convertView.findViewById(R.id.img_thumnail);
             TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
             TextView txt_desc = (TextView) convertView.findViewById(R.id.txt_desc);
+
+
+            txt_title.setText(title);
+            txt_desc.setText(desc);
+            Picasso.with(context).load(url).into(imglogo);
+
         }
         return convertView;
     }

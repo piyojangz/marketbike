@@ -14,7 +14,6 @@
             android:id="@+id/trip_listView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:divider="@null"
             android:dividerHeight="0dp"
             android:cacheColorHint="#00000000"></com.marketbike.app.XListView.XListView>
 

@@ -53,10 +53,10 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
         tabHost.addTab(spec);
 
         /************* TAB2 ************/
-        intent = new Intent().setClass(this, Tab2.class);
+       /* intent = new Intent().setClass(this, Tab2.class);
         spec = tabHost.newTabSpec("Second").setIndicator("Live")
                 .setContent(intent);
-        tabHost.addTab(spec);
+        tabHost.addTab(spec);*/
 
         /************* TAB3 ************/
         intent = new Intent().setClass(this, Tab3.class);
@@ -72,9 +72,9 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
 
 
         // Set drawable images to tab
+        //tabHost.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_bg_selector);
         tabHost.getTabWidget().getChildAt(1).setBackgroundResource(R.drawable.tab_bg_selector);
         tabHost.getTabWidget().getChildAt(2).setBackgroundResource(R.drawable.tab_bg_selector);
-        tabHost.getTabWidget().getChildAt(3).setBackgroundResource(R.drawable.tab_bg_selector);
 
         // Set Tab1 as Default tab and change image
         tabHost.getTabWidget().setCurrentTab(0);
@@ -92,13 +92,13 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
             if (i == 0) {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
                 // TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+            //} else if (i == 1) {
+                //tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
+                //  TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
             } else if (i == 1) {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
-                //  TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
-            } else if (i == 2) {
-                tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
                 // TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
-            } else if (i == 3) {
+            } else if (i == 2) {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.tab_bg_selector);
                 // TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
             }
@@ -111,11 +111,11 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
 
         if (tabHost.getCurrentTab() == 0)
             tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
+        //else if (tabHost.getCurrentTab() == 1)
+            //tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
         else if (tabHost.getCurrentTab() == 1)
             tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
         else if (tabHost.getCurrentTab() == 2)
-            tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
-        else if (tabHost.getCurrentTab() == 3)
             tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundResource(R.drawable.tab_bg_selector);
     }
 
