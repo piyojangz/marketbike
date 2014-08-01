@@ -1,8 +1,10 @@
 package com.marketbike.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,11 +12,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import  com.marketbike.app.helper.JsonHelper;
 import com.marketbike.app.custom.setAppFont;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Tab1 extends Activity {
 
@@ -23,7 +30,9 @@ public class Tab1 extends Activity {
     private MenuAdapter menuAdpt;
     private ListView lv;
     protected ArrayList<HashMap<String, String>> sList;
-
+    AsyncTask<Void, Void, Void> task;
+    private ProgressDialog progress;
+    private JSONArray data;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +45,10 @@ public class Tab1 extends Activity {
 
         this.lv = (ListView) findViewById(R.id.menu_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
-
+        this.progress = new ProgressDialog(this);
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.createMenu();
-        this.menuAdpt = new MenuAdapter(this, this.sList);
 
-        this.lv.setAdapter(this.menuAdpt);
 
 
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,58 +72,62 @@ public class Tab1 extends Activity {
     }
 
 
+
     private void createMenu() {
-         String url = "https://marketbike.zoaish.com/api/get_category";
+
+        this.task = new AsyncTask<Void, Void, Void>() {
 
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Kawasaki");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://www.proride.net/images/logo-kawasaki.gif");
-        this.sList.add(map);
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progress.setMessage("Downloading... :) ");
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
+                progress.show();
+            }
 
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    String url = "http://marketbike.zoaish.com/api/get_category";
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Honda");
-        this.map.put(ListItem.KEY_MENU_LOGO, "http://www.a1grafix.com/image/cache/data/category/honda-logo_large-50x50.png");
-        this.sList.add(map);
+                     data =  JsonHelper.getJson(url).getJSONArray("result");
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Ducati");
-        this.map.put(ListItem.KEY_MENU_LOGO, "http://live.ducati.com/assets/logo-e98559d0817fe8b9418d0a859458efbd.png");
-        this.sList.add(map);
+                    for(int i = 0; i < data.length(); i++){
 
+                        String id = data.getJSONObject(i).getString("ID");
+                        String title = data.getJSONObject(i).getString("Headline");
+                        String thumbnail = data.getJSONObject(i).getString("Thumbnail_Image");
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Suzuki");
-        this.map.put(ListItem.KEY_MENU_LOGO, "http://www.mytyres.co.uk/simg/Logos/Suzuki.png");
-        this.sList.add(map);
+                        map = new HashMap<String, String>();
+                        map.put(ListItem.KEY_MENU_ID, id);
+                        map.put(ListItem.KEY_MENU_TITLE,title);
+                        map.put(ListItem.KEY_MENU_LOGO, thumbnail);
+                        sList.add(map);
+                    }
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "BMW");
-        this.map.put(ListItem.KEY_MENU_LOGO, "http://freetexturesblueprints.com/albums/userpics/10001/thumb_bmw-logo.jpg");
-        this.sList.add(map);
+                } catch (Throwable e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return null;
+            }
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Yamaha");
-        this.map.put(ListItem.KEY_MENU_LOGO, "http://fsa.zedge.net/content/7/7/7/0/1-289821-7770-t.jpg");
-        this.sList.add(map);
+            @Override
+            protected void onPostExecute(Void result) {
+                progress.dismiss();
+               // Log.i("mylog", "obj: " + data);
+                bindList();
+            }
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Harley Davidson");
-        this.map.put(ListItem.KEY_MENU_LOGO, "http://vectorlogo.biz/wp-content/uploads/2012/11/HARLEY-DAVIDSON-CYCLES-VECTORLOGO-DOT-BIZ-128x128.png");
-        this.sList.add(map);
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Triumph");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/t1.0-1/p48x48/1454785_760379783978094_98624236_n.jpg");
-        this.sList.add(map);
+        };
+        this.task.execute((Void[]) null);
 
+    }
+
+    private void bindList() {
+        this.menuAdpt = new MenuAdapter(this, this.sList);
+        this.lv.setAdapter(this.menuAdpt);
     }
 }

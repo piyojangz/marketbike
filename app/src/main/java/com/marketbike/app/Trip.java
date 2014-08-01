@@ -107,7 +107,6 @@ public class Trip extends Activity implements IXListViewListener {
     private void bindList() {
         this.listAdpt = new Trip_Community_Adapter(this, this.sList);
         this.lv.setAdapter(this.listAdpt);
-
     }
 
     @Override

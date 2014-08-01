@@ -20,6 +20,9 @@ import android.widget.ArrayAdapter;
 import com.marketbike.app.XListView.XListView;
 import com.marketbike.app.XListView.XListView.IXListViewListener;
 import com.marketbike.app.custom.setAppFont;
+import com.marketbike.app.helper.JsonHelper;
+
+import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +45,9 @@ public class News extends Activity implements IXListViewListener {
     AsyncTask<Void, Void, Void> task;
     private int start = 0;
     private static int refreshCnt = 0;
-
+    private JSONArray data;
+    private  String cateid;
+    private  boolean isfirst = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,40 +68,13 @@ public class News extends Activity implements IXListViewListener {
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.progress = new ProgressDialog(this);
         this.lv.setXListViewListener(this);
-        this.mHandler = new Handler();
-        this.task = new AsyncTask<Void, Void, Void>() {
+
+       this.cateid =  this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
 
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progress.setMessage("Downloading... :) ");
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
-                progress.show();
-            }
+        this.loadItemList(0);
 
-            @Override
-            protected Void doInBackground(Void... arg0) {
-                try {
-                    //Do something...
-                    loadItemList(0);
-                    //SystemClock.sleep(2000);
-                } catch (Throwable e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Void result) {
-                progress.dismiss();
-                bindList();
-            }
-
-        };
-        this.task.execute((Void[]) null);
 
 
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,60 +109,83 @@ public class News extends Activity implements IXListViewListener {
     }
 
     private void loadItemList(float size) {
-        start += size;
-        if (size == 0) {
-            this.map = new HashMap<String, String>();
-            this.map.put(ListItem.KEY_MENU_ID, "1");
-            this.map.put(ListItem.KEY_TYPE, "HILIGHT");
-            this.map.put(ListItem.KEY_TITLE, "Ducati Desmosedici GP13");
-            this.map.put(ListItem.KEY_DESC, "ข้อมูลจากสมาชิกเว็บไซท์ Diavel-Forum.com รายหนึ่งระบุว่า ตัวแทนจำหน่ายของ Ducati ได้บอกกับบรรดาลูกค้าว่าให้เตรียมพร้อมกับ Ducati Diavel");
-            this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
-            this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
+
+        this.task = new AsyncTask<Void, Void, Void>() {
 
 
-            this.sList.add(map);
-        }
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progress.setMessage("Downloading... :) ");
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
+                progress.show();
+            }
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_TYPE, "CONTENT");
-        this.map.put(ListItem.KEY_TITLE, "Ducati Multistrada 1200 S Granturismo");
-        this.map.put(ListItem.KEY_DESC, "ข้อมูลจากสมาชิกเว็บไซท์ Diavel-Forum.com รายหนึ่งระบุว่า ตัวแทนจำหน่ายของ Ducati ได้บอกกับบรรดาลูกค้าว่าให้เตรียมพร้อมกับ Ducati Diavel ");
-        this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/03/Ducati-Multistrada-1200-S-Granturismo2.jpg");
-        this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid;
 
-        this.sList.add(map);
+                    data =  JsonHelper.getJson(url).getJSONArray("result");
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_ID, "1");
-        this.map.put(ListItem.KEY_TYPE, "CONTENT");
-        this.map.put(ListItem.KEY_TITLE, "Motus กำลังทำสอบค่าการปล่อยไอเสีย");
-        this.map.put(ListItem.KEY_DESC, "ในเวอร์ชั่นของปี 2014 นั้นมาพร้อมกับขุมกำลังเครื่องยนต์ขนาด 1,000 ซีซี แบบ 90 degree V4 4 จังหวะ 4 วาล์วต่อสูบ เป็นแบบ desmodromic DOHC");
-        this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Motus-MST.jpg");
-        this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
+                    for(int i = 0; i < data.length(); i++){
 
-        this.sList.add(map);
+                        String id = data.getJSONObject(i).getString("ID");
+                        String title = data.getJSONObject(i).getString("Headline");
+                        String shortdesc = data.getJSONObject(i).getString("Short_Description");
+                        String thumbnail = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Image");
 
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_ID, "1");
-        this.map.put(ListItem.KEY_TYPE, "CONTENT");
-        this.map.put(ListItem.KEY_TITLE, "Ducati Desmosedici GP13");
-        this.map.put(ListItem.KEY_DESC, "Ducati Desmosedici GP13 ในเวอร์ชั่นของปี 2014 นั้นมาพร้อมกับขุมกำลังเครื่องยนต์ขนาด 1,000 ซีซี แบบ 90 degree V4 4 จังหวะ 4 วาล์วต่อสูบ เป็นแบบ desmodromic DOHC  ");
-        this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/04/Ducati-Desmosedici-GP133.png");
-        this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
+                        if (isfirst) {
+                            map = new HashMap<String, String>();
+                            map.put(ListItem.KEY_MENU_ID,id);
+                            map.put(ListItem.KEY_TYPE, "HILIGHT");
+                            map.put(ListItem.KEY_TITLE, title);
+                            map.put(ListItem.KEY_DESC, shortdesc);
+                            map.put(ListItem.KEY_IMAGE, thumbnail);
+                            map.put(ListItem.KEY_URL,thumbnail);
 
-        this.sList.add(map);
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_ID, "1");
-        this.map.put(ListItem.KEY_TYPE, "CONTENT");
-        this.map.put(ListItem.KEY_TITLE, "Ducati Desmosedici GP13");
-        this.map.put(ListItem.KEY_DESC, "ในเวอร์ชั่นของปี 2014 นั้นมาพร้อมกับขุมกำลังเครื่องยนต์ขนาด 1,000 ซีซี แบบ 90 degree V4 4 จังหวะ 4 วาล์วต่อสูบ เป็นแบบ desmodromic DOHC ระบายความร้อนด้วยของเหลว");
-        this.map.put(ListItem.KEY_IMAGE, "http://www.bigbikesthailand.com/wp-content/uploads/2014/03/2013-ducati-diavel-dark.jpg");
-        this.map.put(ListItem.KEY_URL, "http://www.bigbikesthailand.com/wp-content/uploads/2014/05/Ducati-Multistrada-1200-S-Touring-D-Air.jpg");
+                            sList.add(map);
+                        }
+                        else {
 
-        this.sList.add(map);
+                            map = new HashMap<String, String>();
+                            map.put(ListItem.KEY_MENU_ID, "1");
+                            map.put(ListItem.KEY_TYPE, "CONTENT");
+                            map.put(ListItem.KEY_TITLE, title);
+                            map.put(ListItem.KEY_DESC, shortdesc);
+                            map.put(ListItem.KEY_IMAGE, thumbnail);
+                            map.put(ListItem.KEY_URL,thumbnail);
+
+                            sList.add(map);
+                        }
+
+                        isfirst = false;
+                    }
+
+
+
+
+                } catch (Throwable e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                progress.dismiss();
+                // Log.i("mylog", "obj: " + data);
+                bindList();
+            }
+
+        };
+        this.task.execute((Void[]) null);
+
+
 
     }
 
