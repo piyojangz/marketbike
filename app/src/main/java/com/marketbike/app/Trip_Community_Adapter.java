@@ -96,7 +96,7 @@ public class Trip_Community_Adapter extends BaseAdapter implements Transformatio
             });
 
         } else {
-            convertView = inflater.inflate(R.layout.news_list, parent, false);
+            convertView = inflater.inflate(R.layout.trip_user_list, parent, false);
             String title = smart.get(ListItem.KEY_TITLE).toString();
             String desc = smart.get(ListItem.KEY_DESC).toString();
             String url = smart.get(ListItem.KEY_IMAGE).toString();

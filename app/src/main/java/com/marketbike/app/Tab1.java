@@ -66,6 +66,9 @@ public class Tab1 extends Activity {
 
 
     private void createMenu() {
+         String url = "https://marketbike.zoaish.com/api/get_category";
+
+
         this.map = new HashMap<String, String>();
         this.map.put(ListItem.KEY_MENU_ID, "1");
         this.map.put(ListItem.KEY_MENU_TITLE, "Kawasaki");

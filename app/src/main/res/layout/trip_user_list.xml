@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/myfeed_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_thumnail"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                android:background="@color/slidemenu_bg"
+                android:scaleType="centerCrop"
+                android:layout_gravity="top" />
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="60dp"
+                android:id="@+id/frameLayout2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="16dp"
+                    android:text="Sell iPad mini 16 gb"
+                    android:textColor="#c0392b"
+                    android:singleLine="true"
+                    android:id="@+id/txt_title" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/lorem2"
+                android:textSize="14dp"
+                android:textColor="#ff585858"
+                android:id="@+id/txt_desc"
+                android:paddingBottom="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:layout_below="@+id/frameLayout2"
+                android:layout_alignLeft="@+id/frameLayout2"
+                android:layout_alignStart="@+id/frameLayout2" />
+        </RelativeLayout>
+    </FrameLayout>
+
+
+
+</LinearLayout>
