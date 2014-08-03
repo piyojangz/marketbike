@@ -2,6 +2,7 @@ package com.marketbike.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 public class News_detail extends Activity {
 
     private ArrayList<HashMap<String, String>> DataList;
-    HashMap map;
+    private HashMap map;
     private MenuAdapter menuAdpt;
     private ListView lv;
     private ArrayAdapter<String> listAdapter;
@@ -33,7 +34,8 @@ public class News_detail extends Activity {
         WebView webview = (WebView) findViewById(R.id.news_detail);
        // String summary = "<html><body>You scored <b>192</b> points.</body></html>";
         //webview.loadData(summary, "text/html", null);
-        webview.loadUrl("http://m.trueyou.net/privilege/3038082/3103990");
+        webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
+        Log.i("mylog", "http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
     }
 
 

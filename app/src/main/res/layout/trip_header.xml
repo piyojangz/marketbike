@@ -55,7 +55,7 @@
         android:textSize="12sp"
         android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/btn_add_trip_request"
-        android:text="  Join Trip"
+        android:text="  Request Trip"
         android:id="@+id/btn_addtrip"
         android:background="@drawable/btn_defult"
         android:layout_gravity="center_horizontal" />
@@ -78,11 +78,6 @@
         android:textSize="12sp"
         android:layout_gravity="center_horizontal" />
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>

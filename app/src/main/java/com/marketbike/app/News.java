@@ -34,7 +34,7 @@ import java.util.HashMap;
  */
 public class News extends Activity implements IXListViewListener {
     private ArrayList<HashMap<String, String>> DataList;
-    HashMap map;
+    private HashMap map;
     private ListAdapter listAdpt;
     private XListView lv;
     private CharSequence mTitle;
@@ -42,12 +42,14 @@ public class News extends Activity implements IXListViewListener {
     protected ArrayList<HashMap<String, String>> sList;
     private ProgressDialog progress;
     private Handler mHandler;
-    AsyncTask<Void, Void, Void> task;
+    private AsyncTask<Void, Void, Void> task;
     private int start = 0;
     private static int refreshCnt = 0;
     private JSONArray data;
     private  String cateid;
     private  boolean isfirst = true;
+    private static final int LIMIT = 10;
+    private int OFFSET = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,45 @@ public class News extends Activity implements IXListViewListener {
        this.cateid =  this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
 
 
-        this.loadItemList(0);
+        this.mHandler = new Handler();
+        this.task = new AsyncTask<Void, Void, Void>() {
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progress.setMessage("Downloading... :) ");
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
+                progress.show();
+            }
+
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    //Do something...
+                    OFFSET = 0;
+                    loadItemList(0);
+                    //SystemClock.sleep(2000);
+                } catch (Throwable e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                progress.dismiss();
+                bindList();
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MMMM/yyyy HH:mm:ss");
+                String strDate = sdf.format(c.getTime());
+                lv.setRefreshTime(strDate);
+            }
+
+        };
+        this.task.execute((Void[]) null);
 
 
 
@@ -85,9 +125,11 @@ public class News extends Activity implements IXListViewListener {
 
                 String URL = sList.get(position - 1).get(ListItem.KEY_URL).toString();
                 String TITLE = sList.get(position - 1).get(ListItem.KEY_TITLE).toString();
+                String ID = sList.get(position - 1).get(ListItem.KEY_MENU_ID).toString();
                 Intent newActivity = new Intent(getBaseContext(), News_detail.class);
                 newActivity.putExtra(ListItem.KEY_URL, URL);
                 newActivity.putExtra(ListItem.KEY_TITLE, TITLE);
+                newActivity.putExtra(ListItem.KEY_ID, ID);
                 startActivity(newActivity);
 
                 //  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
@@ -125,7 +167,7 @@ public class News extends Activity implements IXListViewListener {
             @Override
             protected Void doInBackground(Void... arg0) {
                 try {
-                    String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid;
+                    String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/"+OFFSET+"/"+ LIMIT;
 
                     data =  JsonHelper.getJson(url).getJSONArray("result");
 
@@ -152,7 +194,7 @@ public class News extends Activity implements IXListViewListener {
                         else {
 
                             map = new HashMap<String, String>();
-                            map.put(ListItem.KEY_MENU_ID, "1");
+                            map.put(ListItem.KEY_MENU_ID,id);
                             map.put(ListItem.KEY_TYPE, "CONTENT");
                             map.put(ListItem.KEY_TITLE, title);
                             map.put(ListItem.KEY_DESC, shortdesc);
@@ -163,6 +205,7 @@ public class News extends Activity implements IXListViewListener {
                         }
 
                         isfirst = false;
+                        OFFSET++;
                     }
 
 
@@ -178,7 +221,7 @@ public class News extends Activity implements IXListViewListener {
             @Override
             protected void onPostExecute(Void result) {
                 progress.dismiss();
-                // Log.i("mylog", "obj: " + data);
+               // Log.i("mylog", "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/"+OFFSET+"/"+ LIMIT);
                 bindList();
             }
 
@@ -227,20 +270,26 @@ public class News extends Activity implements IXListViewListener {
     @Override
     public void onRefresh() {
         Log.i("mylog", "onRefresh: ");
-        mHandler.postDelayed(new Runnable() {
+       /* mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 sList.clear();
+                OFFSET = 0;
                 loadItemList(0);
                 onLoad();
             }
-        }, 2000);
+        }, 2000);*/
+        sList.clear();
+        OFFSET = 0;
+        isfirst = true;
+        loadItemList(0);
+        onLoad();
     }
 
     @Override
     public void onLoadMore() {
         Log.i("mylog", "onLoadMore: " + start);
-        mHandler.postDelayed(new Runnable() {
+       /* mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
@@ -248,7 +297,10 @@ public class News extends Activity implements IXListViewListener {
                 listAdpt.notifyDataSetChanged();
                 onLoad();
             }
-        }, 2000);
+        }, 2000);*/
+        loadItemList(sList.size());
+        listAdpt.notifyDataSetChanged();
+        onLoad();
     }
 }
 

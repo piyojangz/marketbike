@@ -98,7 +98,7 @@ public class Tab1 extends Activity {
 
                         String id = data.getJSONObject(i).getString("ID");
                         String title = data.getJSONObject(i).getString("Headline");
-                        String thumbnail = data.getJSONObject(i).getString("Thumbnail_Image");
+                        String thumbnail = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Image");
 
                         map = new HashMap<String, String>();
                         map.put(ListItem.KEY_MENU_ID, id);
