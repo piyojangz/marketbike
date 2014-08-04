@@ -38,10 +38,10 @@ public class Tab1 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab1);
 
-        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+       // Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);
+        //setAppFont.setAppFont(mContainer, typeFace);
 
         this.lv = (ListView) findViewById(R.id.menu_listView);
         this.sList = new ArrayList<HashMap<String, String>>();

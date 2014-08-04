@@ -29,10 +29,10 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
         setContentView(R.layout.activity_main);
 
 
-        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+        //Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);
+        //setAppFont.setAppFont(mContainer, typeFace);
 
         // Get TabHost Refference
         tabHost = getTabHost();

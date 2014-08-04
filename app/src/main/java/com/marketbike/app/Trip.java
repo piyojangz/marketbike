@@ -52,10 +52,10 @@ public class Trip extends Activity implements IXListViewListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip);
 
-        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+       // Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);
+       // setAppFont.setAppFont(mContainer, typeFace);
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
         this.lv = (XListView) findViewById(R.id.trip_listView);

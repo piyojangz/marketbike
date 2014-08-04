@@ -45,7 +45,7 @@ public class News extends Activity implements IXListViewListener {
     private AsyncTask<Void, Void, Void> task;
     private int start = 0;
     private static int refreshCnt = 0;
-    private JSONArray data;
+
     private  String cateid;
     private  boolean isfirst = true;
     private static final int LIMIT = 10;
@@ -55,10 +55,10 @@ public class News extends Activity implements IXListViewListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news);
 
-        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+        //Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);
+        //setAppFont.setAppFont(mContainer, typeFace);
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
         this.lv = (XListView) findViewById(R.id.menu_listView);
@@ -152,82 +152,54 @@ public class News extends Activity implements IXListViewListener {
 
     private void loadItemList(float size) {
 
-        this.task = new AsyncTask<Void, Void, Void>() {
+        try {
+            String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/"+OFFSET+"/"+ LIMIT;
+            Log.i("mylog", "url: " + url);
+            JSONArray data =  JsonHelper.getJson(url).getJSONArray("result");
+            for(int i = 0; i < data.length(); i++){
+
+                String id = data.getJSONObject(i).getString("ID");
+                String title = data.getJSONObject(i).getString("Headline");
+                String shortdesc = data.getJSONObject(i).getString("Short_Description");
+                String thumbnail = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Image");
 
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progress.setMessage("Downloading... :) ");
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
-                progress.show();
-            }
-
-            @Override
-            protected Void doInBackground(Void... arg0) {
-                try {
-                    String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/"+OFFSET+"/"+ LIMIT;
-
-                    data =  JsonHelper.getJson(url).getJSONArray("result");
-
-                    for(int i = 0; i < data.length(); i++){
-
-                        String id = data.getJSONObject(i).getString("ID");
-                        String title = data.getJSONObject(i).getString("Headline");
-                        String shortdesc = data.getJSONObject(i).getString("Short_Description");
-                        String thumbnail = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Image");
+                if (isfirst) {
+                    map = new HashMap<String, String>();
+                    map.put(ListItem.KEY_MENU_ID,id);
+                    map.put(ListItem.KEY_TYPE, "HILIGHT");
+                    map.put(ListItem.KEY_TITLE, title);
+                    map.put(ListItem.KEY_DESC, shortdesc);
+                    map.put(ListItem.KEY_IMAGE, thumbnail);
+                    map.put(ListItem.KEY_URL,thumbnail);
 
 
-                        if (isfirst) {
-                            map = new HashMap<String, String>();
-                            map.put(ListItem.KEY_MENU_ID,id);
-                            map.put(ListItem.KEY_TYPE, "HILIGHT");
-                            map.put(ListItem.KEY_TITLE, title);
-                            map.put(ListItem.KEY_DESC, shortdesc);
-                            map.put(ListItem.KEY_IMAGE, thumbnail);
-                            map.put(ListItem.KEY_URL,thumbnail);
-
-
-                            sList.add(map);
-                        }
-                        else {
-
-                            map = new HashMap<String, String>();
-                            map.put(ListItem.KEY_MENU_ID,id);
-                            map.put(ListItem.KEY_TYPE, "CONTENT");
-                            map.put(ListItem.KEY_TITLE, title);
-                            map.put(ListItem.KEY_DESC, shortdesc);
-                            map.put(ListItem.KEY_IMAGE, thumbnail);
-                            map.put(ListItem.KEY_URL,thumbnail);
-
-                            sList.add(map);
-                        }
-
-                        isfirst = false;
-                        OFFSET++;
-                    }
-
-
-
-
-                } catch (Throwable e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    sList.add(map);
                 }
-                return null;
+                else {
+
+                    map = new HashMap<String, String>();
+                    map.put(ListItem.KEY_MENU_ID,id);
+                    map.put(ListItem.KEY_TYPE, "CONTENT");
+                    map.put(ListItem.KEY_TITLE, title);
+                    map.put(ListItem.KEY_DESC, shortdesc);
+                    map.put(ListItem.KEY_IMAGE, thumbnail);
+                    map.put(ListItem.KEY_URL,thumbnail);
+
+                    sList.add(map);
+                }
+
+                isfirst = false;
+                OFFSET++;
             }
 
-            @Override
-            protected void onPostExecute(Void result) {
-                progress.dismiss();
-               // Log.i("mylog", "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/"+OFFSET+"/"+ LIMIT);
-                bindList();
-            }
 
-        };
-        this.task.execute((Void[]) null);
 
+
+        } catch (Throwable e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
 
     }
@@ -269,38 +241,62 @@ public class News extends Activity implements IXListViewListener {
 
     @Override
     public void onRefresh() {
-        Log.i("mylog", "onRefresh: ");
-       /* mHandler.postDelayed(new Runnable() {
+
+        this.mHandler = new Handler();
+        this.task = new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
-                sList.clear();
+            protected void onPreExecute() {
                 OFFSET = 0;
-                loadItemList(0);
+                isfirst = true;
+                sList.clear();
+            }
+
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    loadItemList(0);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
                 onLoad();
             }
-        }, 2000);*/
-        sList.clear();
-        OFFSET = 0;
-        isfirst = true;
-        loadItemList(0);
-        onLoad();
+
+        };
+        this.task.execute((Void[]) null);
+
     }
 
     @Override
     public void onLoadMore() {
-        Log.i("mylog", "onLoadMore: " + start);
-       /* mHandler.postDelayed(new Runnable() {
+        this.mHandler = new Handler();
+        this.task = new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
+            protected void onPreExecute() {
+            }
 
-                loadItemList(sList.size());
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    loadItemList(0);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
                 listAdpt.notifyDataSetChanged();
                 onLoad();
             }
-        }, 2000);*/
-        loadItemList(sList.size());
-        listAdpt.notifyDataSetChanged();
-        onLoad();
+
+        };
+        this.task.execute((Void[]) null);
     }
 }
 

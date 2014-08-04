@@ -35,6 +35,13 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/thumbnail"
         android:layout_marginLeft="30dp" />
-
+    <ImageView
+        android:layout_width="7dp"
+        android:layout_height="13dp"
+        android:id="@+id/imageButton"
+        android:background="@drawable/arrow_next"
+        android:layout_below="@+id/title"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

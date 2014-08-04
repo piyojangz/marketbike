@@ -35,7 +35,7 @@ public class News_detail extends Activity {
        // String summary = "<html><body>You scored <b>192</b> points.</body></html>";
         //webview.loadData(summary, "text/html", null);
         webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
-        Log.i("mylog", "http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
+       // Log.i("mylog", "http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
     }
 
 
