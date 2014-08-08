@@ -1,27 +1,21 @@
 package com.marketbike.app;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+public class Tab2 extends Fragment {
 
-public class Tab2 extends Activity {
-
-    private ArrayList<HashMap<String, String>> DataList;
-    HashMap map;
-    private MenuAdapter menuAdpt;
-    private ListView lv;
-    private ArrayAdapter<String> listAdapter;
-    protected ArrayList<HashMap<String, String>> sList;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        View rootView = inflater.inflate(R.layout.tab2, container, false);
+
+        return rootView;
     }
 
 }

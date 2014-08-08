@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="actionbar_text">#2C3E50</color>
-    <color name="actionbar_bg">#ECF0F1</color>
+    <color name="actionbar_text">#ffffff</color>
+    <color name="actionbar_bg">#000000</color>
     <color name="flat_concret">#95a5a6</color>
     <color name="slidemenu_bg">#343333</color>
     <color name="c10pertransparent">#1A000000</color>
@@ -21,6 +21,7 @@
     <color name="drop_start">#66000000</color>
     <color name="drop_end">#00000000</color>
     <color name="floor_gray">#dcdcdc</color>
+    <color name="white">#ffffff</color>
 
 
 </resources>

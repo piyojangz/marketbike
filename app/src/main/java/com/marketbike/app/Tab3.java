@@ -1,22 +1,19 @@
 package com.marketbike.app;
 
-import android.app.Activity;
+
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.marketbike.app.custom.setAppFont;
-
+import android.support.v4.app.Fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Tab3 extends Activity {
+public class Tab3 extends Fragment {
 
     /**
      * Called when the activity is first created.
@@ -28,21 +25,16 @@ public class Tab3 extends Activity {
     protected ArrayList<HashMap<String, String>> sList;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab3);
+        View rootView = inflater.inflate(R.layout.tab3, container, false);
 
-        //Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
-        final ViewGroup mContainer = (ViewGroup) findViewById(
-                android.R.id.content).getRootView();
-       // setAppFont.setAppFont(mContainer, typeFace);
-
-        this.lv = (ListView) findViewById(R.id.tab3_listView);
+        this.lv = (ListView) rootView.findViewById(R.id.tab3_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.createTrips();
-        this.tripAdpt = new TripAdapter(this, this.sList);
+        this.tripAdpt = new TripAdapter(this.getActivity(), this.sList);
         this.lv.setAdapter(this.tripAdpt);
 
 
@@ -52,12 +44,14 @@ public class Tab3 extends Activity {
                 Log.i("mylog", "onItemClick:");
                 String ID = sList.get(position).get(ListItem.KEY_MENU_ID).toString();
                 String TITLE = sList.get(position).get(ListItem.KEY_MENU_TITLE).toString();
-                Intent newActivity = new Intent(getBaseContext(), Trip.class);
+                Intent newActivity = new Intent(container.getContext(), Trip.class);
                 newActivity.putExtra(ListItem.KEY_MENU_ID, ID);
                 newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
                 startActivity(newActivity);
             }
         });
+
+        return rootView;
     }
 
     private void createTrips() {
@@ -100,5 +94,11 @@ public class Tab3 extends Activity {
         this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/t1.0-1/c22.22.272.272/s160x160/250599_221837081179111_3748108_n.jpg");
         this.sList.add(map);
 
+
+        this.map = new HashMap<String, String>();
+        this.map.put(ListItem.KEY_MENU_ID, "1");
+        this.map.put(ListItem.KEY_MENU_TITLE, "Honda CBR 150R");
+        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/t1.0-1/c22.22.272.272/s160x160/250599_221837081179111_3748108_n.jpg");
+        this.sList.add(map);
     }
 }

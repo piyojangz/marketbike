@@ -1,29 +1,23 @@
 package com.marketbike.app;
 
-import android.app.Activity;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import  com.marketbike.app.helper.JsonHelper;
-import com.marketbike.app.custom.setAppFont;
-
+import android.support.v4.app.Fragment;
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
-public class Tab1 extends Activity {
+
+public class Tab1 extends Fragment {
 
     private ArrayList<HashMap<String, String>> DataList;
     private HashMap map;
@@ -33,19 +27,16 @@ public class Tab1 extends Activity {
     AsyncTask<Void, Void, Void> task;
     private ProgressDialog progress;
     private JSONArray data;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab1);
+        View rootView = inflater.inflate(R.layout.tab1, container, false);
 
-       // Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
-        final ViewGroup mContainer = (ViewGroup) findViewById(
-                android.R.id.content).getRootView();
-        //setAppFont.setAppFont(mContainer, typeFace);
 
-        this.lv = (ListView) findViewById(R.id.menu_listView);
+        this.lv = (ListView) rootView.findViewById(R.id.menu_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
-        this.progress = new ProgressDialog(this);
+        this.progress = new ProgressDialog(this.getActivity());
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.createMenu();
 
@@ -54,21 +45,16 @@ public class Tab1 extends Activity {
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                // a.finish();
-
                 String ID = sList.get(position).get(ListItem.KEY_MENU_ID).toString();
                 String TITLE = sList.get(position).get(ListItem.KEY_MENU_TITLE).toString();
-                Intent newActivity = new Intent(getBaseContext(), News.class);
+                Intent newActivity = new Intent(container.getContext(),News.class);
                 newActivity.putExtra(ListItem.KEY_MENU_ID, ID);
                 newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
                 startActivity(newActivity);
-
-                //  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
             }
         });
 
-
+        return rootView;
     }
 
 
@@ -81,10 +67,10 @@ public class Tab1 extends Activity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progress.setMessage("Downloading... :) ");
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
-                progress.show();
+                //progress.setMessage("Downloading... :) ");
+                //progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                //progress.setIndeterminate(true);
+                //progress.show();
             }
 
             @Override
@@ -116,7 +102,7 @@ public class Tab1 extends Activity {
 
             @Override
             protected void onPostExecute(Void result) {
-                progress.dismiss();
+               // progress.dismiss();
                // Log.i("mylog", "obj: " + data);
                 bindList();
             }
@@ -127,7 +113,7 @@ public class Tab1 extends Activity {
     }
 
     private void bindList() {
-        this.menuAdpt = new MenuAdapter(this, this.sList);
+        this.menuAdpt = new MenuAdapter(this.getActivity(), this.sList);
         this.lv.setAdapter(this.menuAdpt);
     }
 }
