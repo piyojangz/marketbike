@@ -54,7 +54,6 @@
                 android:paddingBottom="5dp"
                 android:paddingRight="10dp"
                 android:paddingTop="2dp"
-                android:maxLines="2"
                 android:layout_below="@+id/frameLayout2"
                 android:layout_alignLeft="@+id/frameLayout2"
                 android:layout_alignStart="@+id/frameLayout2" />

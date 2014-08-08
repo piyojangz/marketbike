@@ -48,7 +48,7 @@ public class News extends Activity implements IXListViewListener {
 
     private  String cateid;
     private  boolean isfirst = true;
-    private static final int LIMIT = 10;
+    private static final int LIMIT = 20;
     private int OFFSET = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,6 +263,7 @@ public class News extends Activity implements IXListViewListener {
 
             @Override
             protected void onPostExecute(Void result) {
+                listAdpt.notifyDataSetChanged();
                 onLoad();
             }
 
