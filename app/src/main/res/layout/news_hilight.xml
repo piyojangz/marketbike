@@ -36,7 +36,7 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16dp"
+                    android:textSize="18dp"
                     android:text="Sell iPad mini 16 gb"
                     android:textColor="#c0392b"
                     android:singleLine="true"
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/lorem2"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:textColor="#fff"
                     android:id="@+id/txt_desc"
                     android:layout_below="@+id/txt_title"

@@ -54,17 +54,15 @@ public class News extends Activity implements IXListViewListener {
     private boolean isfirst = true;
     private static final int LIMIT = 20;
     private int OFFSET = 0;
-    private AdView adView;
-    private static final String AD_UNIT_ID = "ca-app-pub-6496432517273490/5248925178";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news);
 
-        //Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+       /* Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/ThaiSansNeue-Light.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        //setAppFont.setAppFont(mContainer, typeFace);
+        setAppFont.setAppFont(mContainer, typeFace);*/
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
         this.lv = (XListView) findViewById(R.id.menu_listView);
@@ -244,27 +242,7 @@ AdRequest request = new AdRequest.Builder()
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
-    }
 
-    @Override
-    public void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        adView.destroy();
-        super.onDestroy();
-    }
 
     private void onLoad() {
         Log.i("mylog", "onLoad: ");

@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/lorem2"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textColor="#ff585858"
                 android:id="@+id/txt_desc"
                 android:paddingBottom="5dp"

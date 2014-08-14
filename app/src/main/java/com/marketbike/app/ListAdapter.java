@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.marketbike.app.custom.setAppFont;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -56,6 +57,7 @@ public class ListAdapter extends BaseAdapter implements Transformation {
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
+
         HashMap<String, String> smart = new HashMap<String, String>();
         Context context = this.activity;
         smart = this.data.get(position);
@@ -69,6 +71,10 @@ public class ListAdapter extends BaseAdapter implements Transformation {
         } else {
             convertView = inflater.inflate(R.layout.news_list, parent, false);
         }
+
+        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/ThaiSansNeue-Regular.ttf");
+        final ViewGroup mContainer = (ViewGroup) convertView.getRootView();
+        setAppFont.setAppFont(mContainer, typeFace);
         ImageView imglogo = (ImageView) convertView.findViewById(R.id.img_thumnail);
         TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
         TextView txt_desc = (TextView) convertView.findViewById(R.id.txt_desc);

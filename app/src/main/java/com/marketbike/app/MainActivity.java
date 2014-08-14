@@ -2,6 +2,7 @@ package com.marketbike.app;
 
 
 import android.app.ActionBar;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 
+import com.marketbike.app.custom.setAppFont;
+
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
     CollectionPagerAdapter mCollectionPagerAdapter;
@@ -26,7 +29,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/ThaiSansNeue-Light.ttf");
+        final ViewGroup mContainer = (ViewGroup) findViewById(
+                android.R.id.content).getRootView();
+        setAppFont.setAppFont(mContainer, typeFace);*/
         mCollectionPagerAdapter = new CollectionPagerAdapter(
                 getSupportFragmentManager());
         final ActionBar actionBar = getActionBar();
@@ -97,7 +103,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 0:
                     return new Tab1();
                 case 1:
-                    return new Tab3();
+                    return new Tab4();
                 case 2:
                     return new Tab2();
             }
