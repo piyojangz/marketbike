@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tab2"
+    android:id="@+id/tab4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center">
 
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            android:id="@+id/tab4_listView"
-            android:focusable="false"
-            android:choiceMode="singleChoice" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Comming soon"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

@@ -10,6 +10,8 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.marketbike.app.MenuAdapter;
 import com.marketbike.app.R;
 
@@ -36,6 +38,10 @@ public class News_detail extends Activity {
         //webview.loadData(summary, "text/html", null);
         webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
        // Log.i("mylog", "http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
+
+        AdView adView = (AdView) this.findViewById(R.id.adView_detail);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
 

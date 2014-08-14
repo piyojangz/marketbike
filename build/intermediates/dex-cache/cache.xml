@@ -2,6 +2,12 @@
 <pre-dex-items>
 
     <item
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/classes-11121a37eed638ac5798d47e8514f712b7da5f3b.jar"
+        jar="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/5.0.89/classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa"/>
+    <item
         dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/classes-454caa5ef11a81d52ad80997f8cf9514c723a2b2.jar"
         jar="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
         jumboMode="false"

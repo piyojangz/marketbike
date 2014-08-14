@@ -5,11 +5,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import  com.marketbike.app.helper.JsonHelper;
 import android.support.v4.app.Fragment;
 import org.json.JSONArray;
@@ -27,7 +33,6 @@ public class Tab1 extends Fragment {
     AsyncTask<Void, Void, Void> task;
     private ProgressDialog progress;
     private JSONArray data;
-
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,7 @@ public class Tab1 extends Fragment {
                 startActivity(newActivity);
             }
         });
+
 
         return rootView;
     }

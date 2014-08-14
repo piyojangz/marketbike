@@ -20,6 +20,7 @@ public class ListItem {
     public static String KEY_MENU_LOGO = "KEY_MENU_LOGO";
 
     // --------------------------------------------------------------------------
+    public static String AD_UNIT_ID = "ca-app-pub-6496432517273490/5248925178";
     public ListItem() {
 
 

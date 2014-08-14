@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.*;
 import com.marketbike.app.XListView.XListView;
 import com.marketbike.app.XListView.XListView.IXListViewListener;
 import com.marketbike.app.custom.setAppFont;
@@ -46,10 +50,12 @@ public class News extends Activity implements IXListViewListener {
     private int start = 0;
     private static int refreshCnt = 0;
 
-    private  String cateid;
-    private  boolean isfirst = true;
+    private String cateid;
+    private boolean isfirst = true;
     private static final int LIMIT = 20;
     private int OFFSET = 0;
+    private AdView adView;
+    private static final String AD_UNIT_ID = "ca-app-pub-6496432517273490/5248925178";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +77,7 @@ public class News extends Activity implements IXListViewListener {
         this.progress = new ProgressDialog(this);
         this.lv.setXListViewListener(this);
 
-       this.cateid =  this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
+        this.cateid = this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
 
 
         this.mHandler = new Handler();
@@ -115,8 +121,6 @@ public class News extends Activity implements IXListViewListener {
         this.task.execute((Void[]) null);
 
 
-
-
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -137,6 +141,20 @@ public class News extends Activity implements IXListViewListener {
         });
 
 
+/*
+AdRequest request = new AdRequest.Builder()
+    .setGender(AdRequest.GENDER_FEMALE)
+    .setBirthday(new GregorianCalendar(1985, 1, 1).getTime())
+    .setLocation(location)
+    .build();
+ */
+
+        AdView adView = (AdView) this.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+
+
     }
 
     private void bindList() {
@@ -153,10 +171,10 @@ public class News extends Activity implements IXListViewListener {
     private void loadItemList(float size) {
 
         try {
-            String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/"+OFFSET+"/"+ LIMIT;
+            String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/" + OFFSET + "/" + LIMIT;
             Log.i("mylog", "url: " + url);
-            JSONArray data =  JsonHelper.getJson(url).getJSONArray("result");
-            for(int i = 0; i < data.length(); i++){
+            JSONArray data = JsonHelper.getJson(url).getJSONArray("result");
+            for (int i = 0; i < data.length(); i++) {
 
                 String id = data.getJSONObject(i).getString("ID");
                 String title = data.getJSONObject(i).getString("Headline");
@@ -166,25 +184,24 @@ public class News extends Activity implements IXListViewListener {
 
                 if (isfirst) {
                     map = new HashMap<String, String>();
-                    map.put(ListItem.KEY_MENU_ID,id);
+                    map.put(ListItem.KEY_MENU_ID, id);
                     map.put(ListItem.KEY_TYPE, "HILIGHT");
                     map.put(ListItem.KEY_TITLE, title);
                     map.put(ListItem.KEY_DESC, shortdesc);
                     map.put(ListItem.KEY_IMAGE, thumbnail);
-                    map.put(ListItem.KEY_URL,thumbnail);
+                    map.put(ListItem.KEY_URL, thumbnail);
 
 
                     sList.add(map);
-                }
-                else {
+                } else {
 
                     map = new HashMap<String, String>();
-                    map.put(ListItem.KEY_MENU_ID,id);
+                    map.put(ListItem.KEY_MENU_ID, id);
                     map.put(ListItem.KEY_TYPE, "CONTENT");
                     map.put(ListItem.KEY_TITLE, title);
                     map.put(ListItem.KEY_DESC, shortdesc);
                     map.put(ListItem.KEY_IMAGE, thumbnail);
-                    map.put(ListItem.KEY_URL,thumbnail);
+                    map.put(ListItem.KEY_URL, thumbnail);
 
                     sList.add(map);
                 }
@@ -192,8 +209,6 @@ public class News extends Activity implements IXListViewListener {
                 isfirst = false;
                 OFFSET++;
             }
-
-
 
 
         } catch (Throwable e) {
@@ -227,6 +242,28 @@ public class News extends Activity implements IXListViewListener {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
     }
 
     private void onLoad() {

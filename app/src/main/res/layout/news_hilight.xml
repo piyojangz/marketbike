@@ -17,7 +17,7 @@
 
             <ImageView
                 android:id="@+id/img_thumnail"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:adjustViewBounds="true"
                 android:background="@color/slidemenu_bg"
