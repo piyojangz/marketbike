@@ -18,7 +18,7 @@
             <ImageView
                 android:id="@+id/img_thumnail"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="180dp"
                 android:adjustViewBounds="true"
                 android:background="@color/slidemenu_bg"
                 android:scaleType="centerCrop"
@@ -27,10 +27,13 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/c20pertransparent"
+                android:layout_height="70dp"
+                android:background="@color/c90pertransparent"
                 android:layout_gravity="center_horizontal|bottom"
-                android:padding="10dp"
+               android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
                 android:id="@+id/frameLayout2">
 
                 <TextView
@@ -44,24 +47,37 @@
                     android:layout_gravity="center_horizontal|top" />
 
                 <TextView
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="22dp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/lorem2"
-                    android:textSize="16dp"
+                    android:textSize="12dp"
                     android:textColor="#fff"
                     android:id="@+id/txt_desc"
                     android:layout_below="@+id/txt_title"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_gravity="center_horizontal|bottom" />
+                    android:layout_alignLeft="@+id/txt_title"
+                    android:layout_alignStart="@+id/txt_title"
+                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:text="Small Text"
+                    android:textColor="#fff"
+                    android:id="@+id/txt_createdate"
+                    android:layout_below="@+id/txt_desc"
+                    android:layout_alignLeft="@+id/txt_desc"
+                    android:layout_alignStart="@+id/txt_desc"
+                    android:layout_gravity="left|bottom"/>
 
             </FrameLayout>
 
 
         </FrameLayout>
     </FrameLayout>
+
 
 
 </LinearLayout>

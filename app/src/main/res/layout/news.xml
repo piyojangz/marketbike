@@ -9,7 +9,7 @@
         android:id="@+id/Myfeed_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff">
+        android:background="#ddd">
 
         <com.google.android.gms.ads.AdView android:id="@+id/adView"
             android:layout_width="wrap_content"
@@ -20,8 +20,15 @@
         <com.marketbike.app.XListView.XListView
             android:id="@+id/menu_listView"
             android:layout_marginTop="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="0dp"
+            android:paddingTop="10dip"
+            android:paddingBottom="10dip"
+            android:clipToPadding="false"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" android:cacheColorHint="#00000000">
+            android:scrollbarStyle="outsideInset"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000">
         </com.marketbike.app.XListView.XListView>
 
     </RelativeLayout>

@@ -63,6 +63,7 @@ public class ListAdapter extends BaseAdapter implements Transformation {
         smart = this.data.get(position);
         String type = smart.get(ListItem.KEY_TYPE).toString();
         String title = smart.get(ListItem.KEY_TITLE).toString();
+        String createdate  = smart.get(ListItem.KEY_CREATEDATE).toString();
         String desc = smart.get(ListItem.KEY_DESC).toString();
         String url = smart.get(ListItem.KEY_IMAGE).toString();
 
@@ -72,16 +73,17 @@ public class ListAdapter extends BaseAdapter implements Transformation {
             convertView = inflater.inflate(R.layout.news_list, parent, false);
         }
 
-        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/ThaiSansNeue-Regular.ttf");
+        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Roboto-Regular.ttf");
         final ViewGroup mContainer = (ViewGroup) convertView.getRootView();
         setAppFont.setAppFont(mContainer, typeFace);
         ImageView imglogo = (ImageView) convertView.findViewById(R.id.img_thumnail);
         TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
         TextView txt_desc = (TextView) convertView.findViewById(R.id.txt_desc);
-
+        TextView txt_createdate = (TextView) convertView.findViewById(R.id.txt_createdate);
 
         txt_title.setText(title);
         txt_desc.setText(desc);
+        txt_createdate.setText(createdate);
         Picasso.with(context).load(url).into(imglogo);
         return convertView;
     }

@@ -35,10 +35,6 @@ public class News_detail extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_detail);
-        /*Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/ThaiSansNeue-Light.ttf");
-        final ViewGroup mContainer = (ViewGroup) findViewById(
-                android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);*/
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_TITLE));
         WebView webview = (WebView) findViewById(R.id.news_detail);
         webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));

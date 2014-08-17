@@ -2,7 +2,7 @@
 <resources>
 
     <color name="actionbar_text">#ffffff</color>
-    <color name="actionbar_bg">#E6000000</color>
+    <color name="actionbar_bg">#CC000000</color>
     <color name="flat_concret">#95a5a6</color>
     <color name="slidemenu_bg">#343333</color>
     <color name="c10pertransparent">#1A000000</color>

@@ -62,7 +62,7 @@ public class MenuAdapter extends BaseAdapter implements Transformation {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         convertView = inflater.inflate(R.layout.menu_list, parent, false);
-        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/ThaiSansNeue-Regular.ttf");
+        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Roboto-Regular.ttf");
         final ViewGroup mContainer = (ViewGroup) convertView.getRootView();
         setAppFont.setAppFont(mContainer, typeFace);
         TextView txt_title = (TextView) convertView.findViewById(R.id.title);

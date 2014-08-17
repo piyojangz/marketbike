@@ -28,7 +28,8 @@
     </style>
 
     <style name="tabtextcolor" parent="@android:style/Widget.Holo.Light.ActionBar.TabText">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/my_color_selector</item>
     </style>
 
     <style name="Divider" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar">

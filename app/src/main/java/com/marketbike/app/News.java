@@ -59,10 +59,10 @@ public class News extends Activity implements IXListViewListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news);
 
-       /* Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/ThaiSansNeue-Light.ttf");
+       Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/Roboto-Regular.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);*/
+        setAppFont.setAppFont(mContainer, typeFace);
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
         this.lv = (XListView) findViewById(R.id.menu_listView);
@@ -177,6 +177,7 @@ AdRequest request = new AdRequest.Builder()
                 String id = data.getJSONObject(i).getString("ID");
                 String title = data.getJSONObject(i).getString("Headline");
                 String shortdesc = data.getJSONObject(i).getString("Short_Description");
+                String createDate = data.getJSONObject(i).getString("Create_Date");
                 String thumbnail = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Image");
 
 
@@ -186,6 +187,7 @@ AdRequest request = new AdRequest.Builder()
                     map.put(ListItem.KEY_TYPE, "HILIGHT");
                     map.put(ListItem.KEY_TITLE, title);
                     map.put(ListItem.KEY_DESC, shortdesc);
+                    map.put(ListItem.KEY_CREATEDATE, createDate);
                     map.put(ListItem.KEY_IMAGE, thumbnail);
                     map.put(ListItem.KEY_URL, thumbnail);
 
@@ -198,6 +200,7 @@ AdRequest request = new AdRequest.Builder()
                     map.put(ListItem.KEY_TYPE, "CONTENT");
                     map.put(ListItem.KEY_TITLE, title);
                     map.put(ListItem.KEY_DESC, shortdesc);
+                    map.put(ListItem.KEY_CREATEDATE, createDate);
                     map.put(ListItem.KEY_IMAGE, thumbnail);
                     map.put(ListItem.KEY_URL, thumbnail);
 
