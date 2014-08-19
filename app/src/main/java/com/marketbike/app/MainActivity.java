@@ -2,37 +2,45 @@ package com.marketbike.app;
 
 
 import android.app.ActionBar;
-import android.graphics.Typeface;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TabHost;
+import android.widget.EditText;
 
-import com.marketbike.app.custom.setAppFont;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.marketbike.app.helper.JsonHelper;
+
+import org.json.JSONArray;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
+    GoogleCloudMessaging gcm;
+    String regid;
+    String PROJECT_NUMBER = "416625437190";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/ThaiSansNeue-Light.ttf");
-        final ViewGroup mContainer = (ViewGroup) findViewById(
-                android.R.id.content).getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);*/
         mCollectionPagerAdapter = new CollectionPagerAdapter(
                 getSupportFragmentManager());
         final ActionBar actionBar = getActionBar();
@@ -42,12 +50,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         mViewPager.setAdapter(mCollectionPagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
-                    @Override
-                    public void onPageSelected(int position) {
-                        actionBar.setSelectedNavigationItem(position);
-                    }
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
 
-                });
+        });
 
         for (int i = 0; i < mCollectionPagerAdapter.getCount(); i++) {
             actionBar.addTab(actionBar.newTab()
@@ -56,7 +64,56 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         }
 
+        getRegId();
 
+
+    }
+
+    public void getRegId(){
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                    }
+                    regid = gcm.register(PROJECT_NUMBER);
+                    msg = "Device registered, registration ID=" + regid;
+                    Log.i("GCM", msg);
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                Log.i("GCM","GCM = " + regid);
+                register_device();
+            }
+        }.execute(null, null, null);
+    }
+
+    private void register_device(){
+        AsyncTask<Void, Void, Void> task  = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    String url = "http://marketbike.zoaish.com/api/gcm_register/"+regid;
+                    JsonHelper.getJson(url);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void result) {
+            }
+        };
+        task.execute((Void[]) null);
     }
 
     @Override
@@ -88,6 +145,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
 
+
     public class CollectionPagerAdapter extends FragmentPagerAdapter {
 
         final int NUM_ITEMS = 3; // number of tabs
@@ -116,6 +174,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         public int getCount() {
             return NUM_ITEMS;
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
             String tabLabel = null;
@@ -124,10 +183,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     tabLabel = "NEWS";
                     break;
                 case 1:
-                   tabLabel = "TRIP";
+                    tabLabel = "TRIP";
                     break;
                 case 2:
-                   tabLabel = "MARKET";
+                    tabLabel = "MARKET";
                     break;
 
             }
@@ -136,7 +195,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         }
 
+
+
     }
 
 
 }
+
+

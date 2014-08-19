@@ -1,6 +1,7 @@
 package com.marketbike.app;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,16 +36,16 @@ public class News_detail extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_detail);
+        CharSequence id = this.getIntent().getCharSequenceExtra(ListItem.KEY_ID);
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_TITLE));
         WebView webview = (WebView) findViewById(R.id.news_detail);
-        webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + this.getIntent().getCharSequenceExtra(ListItem.KEY_ID));
-
-
-
-
+        webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + id);
         AdView adView = (AdView) this.findViewById(R.id.adView_detail);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+        NotificationManager mNotificationManager =  (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(Integer.parseInt(id.toString()));
     }
 
 
