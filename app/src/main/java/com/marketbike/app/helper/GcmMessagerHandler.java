@@ -9,6 +9,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -62,10 +64,13 @@ public class GcmMessagerHandler  extends IntentService {
 
     }
     private static void notice(String msgfrom, String msg,int id, Context Context) {
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(Context)
                         .setSmallIcon(R.drawable.appicon)
                         .setContentTitle(msgfrom)
+                        .setSound(alarmSound)
                         .setContentText(msg);
 
 
