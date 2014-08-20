@@ -1,8 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/action_share"
-        android:icon="@drawable/ic_action_share"
-        android:title="Close"
+
+    <item android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="refresh"
+        android:alphabeticShortcut="r"
+        android:orderInCategory="0"
         android:showAsAction="ifRoom" />
 
     <item
@@ -10,5 +12,7 @@
         android:icon="@drawable/ic_action_remove"
         android:title="Close"
         android:showAsAction="ifRoom" />
+
+
 
 </menu>

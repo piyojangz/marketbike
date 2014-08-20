@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -22,8 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.*;
-import com.marketbike.app.XListView.XListView;
-import com.marketbike.app.XListView.XListView.IXListViewListener;
 import com.marketbike.app.custom.setAppFont;
 import com.marketbike.app.helper.JsonHelper;
 
@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
 import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
 import com.marketbike.app.RefreshableListView.onListRefreshListener;
 
@@ -40,30 +41,26 @@ import com.marketbike.app.RefreshableListView.onListRefreshListener;
 /**
  * Created by Breeshy on 08/06/2014.
  */
-public class News extends Activity  implements onListRefreshListener, onListLoadMoreListener {
+public class News extends Activity implements onListRefreshListener, onListLoadMoreListener {
     private ArrayList<HashMap<String, String>> DataList;
     private HashMap map;
     private ListAdapter listAdpt;
     private RefreshableListView lv;
-    private CharSequence mTitle;
-    private ArrayAdapter<String> listAdapter;
     protected ArrayList<HashMap<String, String>> sList;
-    private ProgressDialog progress;
-    private Handler mHandler;
     private AsyncTask<Void, Void, Void> task;
-    private int start = 0;
-    private static int refreshCnt = 0;
-
+    private Menu optionsMenu;
     private String cateid;
     private boolean isfirst = true;
     private static final int LIMIT = 10;
     private int OFFSET = 0;
+    private boolean FLAG_END;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news);
 
-       Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/Roboto-Regular.ttf");
+        Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/Roboto-Regular.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
         setAppFont.setAppFont(mContainer, typeFace);
@@ -76,35 +73,34 @@ public class News extends Activity  implements onListRefreshListener, onListLoad
         this.lv.setOnListLoadMoreListener(this);
         this.lv.setDistanceFromBottom(2);
         //RefreshableList Lines end
-
-
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
-        this.progress = new ProgressDialog(this);
-
         this.cateid = this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
+    }
 
+    private void bindList() {
+        this.listAdpt = new ListAdapter(this, this.sList);
+        Animation animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_in);
+        this.lv.startAnimation(animation);
+        this.lv.setAdapter(this.listAdpt);
 
-        this.mHandler = new Handler();
+    }
+
+    private void firstload() {
         this.task = new AsyncTask<Void, Void, Void>() {
 
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progress.setMessage("Downloading... :) ");
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
-                progress.show();
+                setRefreshActionButtonState(true);
             }
 
             @Override
             protected Void doInBackground(Void... arg0) {
                 try {
-                    //Do something...
                     OFFSET = 0;
                     loadItemList(0);
-                    //SystemClock.sleep(2000);
                 } catch (Throwable e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -114,14 +110,12 @@ public class News extends Activity  implements onListRefreshListener, onListLoad
 
             @Override
             protected void onPostExecute(Void result) {
-                progress.dismiss();
                 bindList();
+                setRefreshActionButtonState(false);
             }
 
         };
         this.task.execute((Void[]) null);
-
-
 
         this.lv.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -156,13 +150,6 @@ AdRequest request = new AdRequest.Builder()
         adView.loadAd(adRequest);
 */
 
-
-    }
-
-    private void bindList() {
-        this.listAdpt = new ListAdapter(this, this.sList);
-        this.lv.setAdapter(this.listAdpt);
-
     }
 
     @Override
@@ -176,6 +163,11 @@ AdRequest request = new AdRequest.Builder()
             String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/" + OFFSET + "/" + LIMIT;
             Log.i("mylog", "url: " + url);
             JSONArray data = JsonHelper.getJson(url).getJSONArray("result");
+            if (data.length() == 0) {
+                FLAG_END = true;
+            } else {
+                FLAG_END = false;
+            }
             for (int i = 0; i < data.length(); i++) {
 
                 String id = data.getJSONObject(i).getString("ID");
@@ -226,11 +218,12 @@ AdRequest request = new AdRequest.Builder()
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.optionsMenu = menu;
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.conversation, menu);
+        inflater.inflate(R.menu.news, menu);
+        this.firstload();
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -246,66 +239,89 @@ AdRequest request = new AdRequest.Builder()
             case R.id.action_close:
                 finish();
                 return true;
+            case R.id.action_refresh:
+                this.Refresh(this.lv);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
+    }
 
     private void onLoad() {
-        Log.i("mylog", "onLoad: ");
-        lv.finishRefresh();//-------------------------------------------------------------------------Important
-        lv.finishLoadingMore();//---------------------------------------------------------------------Important
+        //Log.i("mylog", "onLoad: ");
+        this.lv.finishRefresh();//-------------------------------------------------------------------------Important
+        this.lv.finishLoadingMore();//---------------------------------------------------------------------Important
+        this.setRefreshActionButtonState(false);
 
     }
 
 
     @Override
     public void LoadMore(RefreshableListView list) {
+        if (FLAG_END != true) {
+            this.setRefreshActionButtonState(true);
+            ////This just asyncly waits 3 seconds then does the finishRefresh()
+            new AsyncTask<RefreshableListView, Object, RefreshableListView>() {
+                protected RefreshableListView doInBackground(RefreshableListView... params) {
+                    try {
+                        loadItemList(0);
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                    }
+                    return params[0];
 
-        ////This just asyncly waits 3 seconds then does the finishRefresh()
-        new AsyncTask<RefreshableListView, Object, RefreshableListView>(){
-            protected RefreshableListView doInBackground(RefreshableListView... params) {
-                try {
-                    loadItemList(0);
-                    Thread.sleep(3000);
                 }
-                catch (InterruptedException e) {}
-                return params[0];
 
-            }
-            @Override
-            protected void onPostExecute(RefreshableListView list) {
-                //I just finish both here to not have to write two example mocks
-                onLoad();
-                listAdpt.notifyDataSetChanged();
-                super.onPostExecute(list);
-            }
-        }.execute(list);
+                @Override
+                protected void onPostExecute(RefreshableListView list) {
+                    //I just finish both here to not have to write two example mocks
+                    onLoad();
+                    listAdpt.notifyDataSetChanged();
+                    super.onPostExecute(list);
+                }
+            }.execute(list);
+        }
     }
-
 
 
     @Override
     public void Refresh(RefreshableListView list) {
-
+        this.setRefreshActionButtonState(true);
         OFFSET = 0;
         isfirst = true;
+        FLAG_END = false;
         sList.clear();
         ////This just asyncly waits 3 seconds then does the finishRefresh()
-        new AsyncTask<RefreshableListView, Object, RefreshableListView>(){
+        new AsyncTask<RefreshableListView, Object, RefreshableListView>() {
             protected RefreshableListView doInBackground(RefreshableListView... params) {
                 try {
                     loadItemList(0);
-                    Thread.sleep(3000);
+                } catch (Exception e) {
                 }
-                catch (InterruptedException e) {}
                 return params[0];
 
             }
+
             @Override
             protected void onPostExecute(RefreshableListView list) {
+
+
+                Animation animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_in);
+                lv.startAnimation(animation);
+
                 //I just finish both here to not have to write two example mocks
                 onLoad();
                 listAdpt.notifyDataSetChanged();

@@ -21,23 +21,24 @@ import com.marketbike.app.ListAdapter;
 import com.marketbike.app.ListItem;
 import com.marketbike.app.News_detail;
 import com.marketbike.app.R;
-import com.marketbike.app.XListView.XListView;
-import com.marketbike.app.XListView.XListView.IXListViewListener;
 import com.marketbike.app.custom.setAppFont;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
+import com.marketbike.app.RefreshableListView.onListRefreshListener;
+
 
 /**
  * Created by Breeshy on 08/06/2014.
  */
-public class Trip extends Activity implements IXListViewListener {
+public class Trip extends Activity  implements onListRefreshListener, onListLoadMoreListener {
     private ArrayList<HashMap<String, String>> DataList;
     HashMap map;
     private Trip_Community_Adapter listAdpt;
-    private XListView lv;
+    private RefreshableListView lv;
     private CharSequence mTitle;
     private ArrayAdapter<String> listAdapter;
     protected ArrayList<HashMap<String, String>> sList;
@@ -58,15 +59,15 @@ public class Trip extends Activity implements IXListViewListener {
        // setAppFont.setAppFont(mContainer, typeFace);
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
-        this.lv = (XListView) findViewById(R.id.trip_listView);
+        this.lv = (RefreshableListView) findViewById(R.id.trip_listView);
 
-        this.lv.setPullRefreshEnable(true);
-        this.lv.setPullLoadEnable(true);
+        this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
+        this.lv.setOnListLoadMoreListener(this);
+        this.lv.setDistanceFromBottom(2);
 
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.progress = new ProgressDialog(this);
-        this.lv.setXListViewListener(this);
         this.mHandler = new Handler();
         this.task = new AsyncTask<Void, Void, Void>() {
 
@@ -182,29 +183,13 @@ public class Trip extends Activity implements IXListViewListener {
 
     private void onLoad() {
         Log.i("mylog", "onLoad: ");
-        lv.stopRefresh();
-        lv.stopLoadMore();
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMMM/yyyy HH:mm:ss");
-        String strDate = sdf.format(c.getTime());
-        lv.setRefreshTime(strDate);
+        lv.finishRefresh();//-------------------------------------------------------------------------Important
+        lv.finishLoadingMore();//---------------------------------------------------------------------Important
     }
 
-    @Override
-    public void onRefresh() {
-        Log.i("mylog", "onRefresh: ");
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sList.clear();
-                loadItemList(0);
-                onLoad();
-            }
-        }, 2000);
-    }
 
     @Override
-    public void onLoadMore() {
+    public void LoadMore(RefreshableListView list) {
         Log.i("mylog", "onLoadMore: " + start);
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -212,6 +197,19 @@ public class Trip extends Activity implements IXListViewListener {
 
                 loadItemList(sList.size());
                 listAdpt.notifyDataSetChanged();
+                onLoad();
+            }
+        }, 2000);
+    }
+
+    @Override
+    public void Refresh(RefreshableListView list) {
+        Log.i("mylog", "onRefresh: ");
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sList.clear();
+                loadItemList(0);
                 onLoad();
             }
         }, 2000);

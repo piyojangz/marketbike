@@ -2,31 +2,31 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/release/classes-11121a37eed638ac5798d47e8514f712b7da5f3b.jar"
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/classes-11121a37eed638ac5798d47e8514f712b7da5f3b.jar"
         jar="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/5.0.89/classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa"/>
     <item
-        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/release/classes-454caa5ef11a81d52ad80997f8cf9514c723a2b2.jar"
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/classes-454caa5ef11a81d52ad80997f8cf9514c723a2b2.jar"
         jar="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
     <item
-        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/release/libGoogleAnalyticsServices-f791ed011b8116f54a639bb980498fb8e258afaf.jar"
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/libGoogleAnalyticsServices-f791ed011b8116f54a639bb980498fb8e258afaf.jar"
         jar="/Users/Breeshy/Documents/android projects/marketbike/app/libs/libGoogleAnalyticsServices.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="db1e65d9e3ee616f871cb23120fbea8f18ad3e4c"/>
     <item
-        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/release/picasso-2.1.0-c649674c9ae834b3f6f050e1283f846070fd648c.jar"
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/picasso-2.1.0-c649674c9ae834b3f6f050e1283f846070fd648c.jar"
         jar="/Users/Breeshy/Documents/android projects/marketbike/app/libs/picasso-2.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="ca274930dbe6b32e0ea3192336c5b93883192a0b"/>
     <item
-        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/release/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
         jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
