@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:background="#fff"
     android:orientation="vertical">
-
 
     <FrameLayout
         android:id="@+id/myfeed_list"
         android:layout_width="match_parent"
+        android:background="#22313F"
+        android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
 
@@ -19,69 +18,74 @@
 
             <ImageView
                 android:id="@+id/img_thumnail"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
                 android:adjustViewBounds="true"
                 android:background="@color/slidemenu_bg"
                 android:scaleType="centerCrop"
                 android:layout_gravity="top" />
 
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_marginLeft="80dp"
-                android:id="@+id/frameLayout2">
+            <LinearLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="120dp"
+                android:id="@+id/myfeed_profile_bg"
+                android:background="#e35f52"
+                android:padding="0dp"
+                android:layout_marginLeft="5dp"
+                android:clipToPadding="true"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="14dp"
-                    android:text="Sell iPad mini 16 gb"
-                    android:textColor="#363636"
-                    android:singleLine="true"
-                    android:layout_marginRight="25dp"
-                    android:id="@+id/txt_title" />
-            </FrameLayout>
+                <ImageView
+                    android:id="@+id/img_brand"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:clipChildren="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop" />
+
+            </LinearLayout>
+
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/lorem2"
-                android:textSize="12dp"
-                android:textColor="#b7b7b7"
-                android:id="@+id/txt_desc"
-                android:paddingBottom="5dp"
+                android:textSize="16dp"
+                android:text="@string/lorem"
+                android:textColor="#fff"
+                android:id="@+id/txt_title"
+                android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="7dp"
-                android:singleLine="true"
-                android:maxLength="70"
-                android:layout_below="@+id/frameLayout2"
-                android:layout_alignLeft="@+id/frameLayout2"
-                android:layout_alignStart="@+id/frameLayout2" />
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/myfeed_profile_bg"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButton"
-                android:background="@drawable/ic_more_list"
-                android:layout_below="@+id/title"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="-10dp"/>
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/imageView2"
+                android:background="@drawable/ic_timer"
+                android:layout_below="@+id/txt_title" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:text="1 weeks ago - 200 views"
+                android:textSize="14dp"
+                android:text="Small Text"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:textColor="#ddd"
                 android:id="@+id/txt_createdate"
-                android:textColor="#b7b7b7"
-                android:layout_below="@+id/txt_desc"
-                android:layout_alignLeft="@+id/txt_desc"
-                android:layout_alignStart="@+id/txt_desc" />
+                android:layout_alignTop="@+id/imageView2"
+                android:layout_toRightOf="@+id/imageView2"
+                android:layout_toEndOf="@+id/imageView2" />
+
 
         </RelativeLayout>
     </FrameLayout>

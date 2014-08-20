@@ -76,7 +76,7 @@ public class GcmMessagerHandler  extends IntentService {
 
         Intent resultIntent = new Intent(Context, News_detail.class);
         resultIntent.putExtra(ListItem.KEY_URL, "");
-        resultIntent.putExtra(ListItem.KEY_TITLE, msgfrom);
+        resultIntent.putExtra(ListItem.KEY_TITLE, msg);
         resultIntent.putExtra(ListItem.KEY_ID, String.valueOf(id));
 
 
@@ -85,7 +85,7 @@ public class GcmMessagerHandler  extends IntentService {
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
-                        0,
+                        id,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);

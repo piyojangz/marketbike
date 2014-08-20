@@ -161,7 +161,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 0:
                     return new Tab1();
                 case 1:
-                    return new Tab3();
+                    return new Tab2();
                 case 2:
                     return new Tab2();
             }

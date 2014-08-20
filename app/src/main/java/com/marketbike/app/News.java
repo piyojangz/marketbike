@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.*;
 import com.marketbike.app.XListView.XListView;
@@ -32,15 +33,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
+import com.marketbike.app.RefreshableListView.onListRefreshListener;
+
 
 /**
  * Created by Breeshy on 08/06/2014.
  */
-public class News extends Activity implements IXListViewListener {
+public class News extends Activity  implements onListRefreshListener, onListLoadMoreListener {
     private ArrayList<HashMap<String, String>> DataList;
     private HashMap map;
     private ListAdapter listAdpt;
-    private XListView lv;
+    private RefreshableListView lv;
     private CharSequence mTitle;
     private ArrayAdapter<String> listAdapter;
     protected ArrayList<HashMap<String, String>> sList;
@@ -52,7 +56,7 @@ public class News extends Activity implements IXListViewListener {
 
     private String cateid;
     private boolean isfirst = true;
-    private static final int LIMIT = 20;
+    private static final int LIMIT = 10;
     private int OFFSET = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +69,18 @@ public class News extends Activity implements IXListViewListener {
         setAppFont.setAppFont(mContainer, typeFace);
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
-        this.lv = (XListView) findViewById(R.id.menu_listView);
 
-        this.lv.setPullRefreshEnable(true);
-        this.lv.setPullLoadEnable(true);
+        //RefreshableList lines start
+        this.lv = (RefreshableListView) findViewById(R.id.menu_listView);
+        this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
+        this.lv.setOnListLoadMoreListener(this);
+        this.lv.setDistanceFromBottom(2);
+        //RefreshableList Lines end
+
 
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.progress = new ProgressDialog(this);
-        this.lv.setXListViewListener(this);
 
         this.cateid = this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
 
@@ -109,25 +116,22 @@ public class News extends Activity implements IXListViewListener {
             protected void onPostExecute(Void result) {
                 progress.dismiss();
                 bindList();
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MMMM/yyyy HH:mm:ss");
-                String strDate = sdf.format(c.getTime());
-                lv.setRefreshTime(strDate);
             }
 
         };
         this.task.execute((Void[]) null);
 
 
-        this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        this.lv.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                 // a.finish();
 
-                String URL = sList.get(position - 1).get(ListItem.KEY_URL).toString();
-                String TITLE = sList.get(position - 1).get(ListItem.KEY_TITLE).toString();
-                String ID = sList.get(position - 1).get(ListItem.KEY_MENU_ID).toString();
+                String URL = sList.get(position).get(ListItem.KEY_URL).toString();
+                String TITLE = sList.get(position).get(ListItem.KEY_TITLE).toString();
+                String ID = sList.get(position).get(ListItem.KEY_MENU_ID).toString();
                 Intent newActivity = new Intent(getBaseContext(), News_detail.class);
                 newActivity.putExtra(ListItem.KEY_URL, URL);
                 newActivity.putExtra(ListItem.KEY_TITLE, TITLE);
@@ -147,10 +151,10 @@ AdRequest request = new AdRequest.Builder()
     .build();
  */
 
-        AdView adView = (AdView) this.findViewById(R.id.adView);
+      /*  AdView adView = (AdView) this.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-
+*/
 
 
     }
@@ -179,7 +183,7 @@ AdRequest request = new AdRequest.Builder()
                 String shortdesc = data.getJSONObject(i).getString("Short_Description");
                 String createDate = data.getJSONObject(i).getString("Create_Date");
                 String thumbnail = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Image");
-
+                String thumbnail_logo = "http://marketbike.zoaish.com/public/uploads/" + data.getJSONObject(i).getString("Thumbnail_Logo");
 
                 if (isfirst) {
                     map = new HashMap<String, String>();
@@ -190,6 +194,7 @@ AdRequest request = new AdRequest.Builder()
                     map.put(ListItem.KEY_CREATEDATE, createDate);
                     map.put(ListItem.KEY_IMAGE, thumbnail);
                     map.put(ListItem.KEY_URL, thumbnail);
+                    map.put(ListItem.KEY_IMAGE_LOGO, thumbnail_logo);
 
 
                     sList.add(map);
@@ -203,6 +208,7 @@ AdRequest request = new AdRequest.Builder()
                     map.put(ListItem.KEY_CREATEDATE, createDate);
                     map.put(ListItem.KEY_IMAGE, thumbnail);
                     map.put(ListItem.KEY_URL, thumbnail);
+                    map.put(ListItem.KEY_IMAGE_LOGO, thumbnail_logo);
 
                     sList.add(map);
                 }
@@ -249,73 +255,66 @@ AdRequest request = new AdRequest.Builder()
 
     private void onLoad() {
         Log.i("mylog", "onLoad: ");
-        lv.stopRefresh();
-        lv.stopLoadMore();
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMMM/yyyy HH:mm:ss");
-        String strDate = sdf.format(c.getTime());
-        lv.setRefreshTime(strDate);
+        lv.finishRefresh();//-------------------------------------------------------------------------Important
+        lv.finishLoadingMore();//---------------------------------------------------------------------Important
+
     }
+
 
     @Override
-    public void onRefresh() {
+    public void LoadMore(RefreshableListView list) {
 
-        this.mHandler = new Handler();
-        this.task = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onPreExecute() {
-                OFFSET = 0;
-                isfirst = true;
-                sList.clear();
-            }
-
-            @Override
-            protected Void doInBackground(Void... arg0) {
+        ////This just asyncly waits 3 seconds then does the finishRefresh()
+        new AsyncTask<RefreshableListView, Object, RefreshableListView>(){
+            protected RefreshableListView doInBackground(RefreshableListView... params) {
                 try {
                     loadItemList(0);
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                    Thread.sleep(3000);
                 }
-                return null;
-            }
+                catch (InterruptedException e) {}
+                return params[0];
 
+            }
             @Override
-            protected void onPostExecute(Void result) {
-                listAdpt.notifyDataSetChanged();
+            protected void onPostExecute(RefreshableListView list) {
+                //I just finish both here to not have to write two example mocks
                 onLoad();
+                listAdpt.notifyDataSetChanged();
+                super.onPostExecute(list);
             }
-
-        };
-        this.task.execute((Void[]) null);
-
+        }.execute(list);
     }
+
+
 
     @Override
-    public void onLoadMore() {
-        this.mHandler = new Handler();
-        this.task = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onPreExecute() {
-            }
+    public void Refresh(RefreshableListView list) {
 
-            @Override
-            protected Void doInBackground(Void... arg0) {
+        OFFSET = 0;
+        isfirst = true;
+        sList.clear();
+        ////This just asyncly waits 3 seconds then does the finishRefresh()
+        new AsyncTask<RefreshableListView, Object, RefreshableListView>(){
+            protected RefreshableListView doInBackground(RefreshableListView... params) {
                 try {
                     loadItemList(0);
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                    Thread.sleep(3000);
                 }
-                return null;
-            }
+                catch (InterruptedException e) {}
+                return params[0];
 
+            }
             @Override
-            protected void onPostExecute(Void result) {
-                listAdpt.notifyDataSetChanged();
+            protected void onPostExecute(RefreshableListView list) {
+                //I just finish both here to not have to write two example mocks
                 onLoad();
+                listAdpt.notifyDataSetChanged();
+                super.onPostExecute(list);
             }
+        }.execute(list);
 
-        };
-        this.task.execute((Void[]) null);
+
     }
+
 }
 

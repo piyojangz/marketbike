@@ -17,10 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.marketbike.app.custom.setAppFont;
+import com.marketbike.app.helper.TimeAgo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -66,9 +70,11 @@ public class ListAdapter extends BaseAdapter implements Transformation {
         String createdate  = smart.get(ListItem.KEY_CREATEDATE).toString();
         String desc = smart.get(ListItem.KEY_DESC).toString();
         String url = smart.get(ListItem.KEY_IMAGE).toString();
+        String url_brand = smart.get(ListItem.KEY_IMAGE_LOGO).toString();
 
         if (type == "HILIGHT") {
-            convertView = inflater.inflate(R.layout.news_hilight, parent, false);
+            //convertView = inflater.inflate(R.layout.news_hilight, parent, false);
+            convertView = inflater.inflate(R.layout.news_list, parent, false);
         } else {
             convertView = inflater.inflate(R.layout.news_list, parent, false);
         }
@@ -77,14 +83,30 @@ public class ListAdapter extends BaseAdapter implements Transformation {
         final ViewGroup mContainer = (ViewGroup) convertView.getRootView();
         setAppFont.setAppFont(mContainer, typeFace);
         ImageView imglogo = (ImageView) convertView.findViewById(R.id.img_thumnail);
+        ImageView img_brand = (ImageView) convertView.findViewById(R.id.img_brand);
         TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
-        TextView txt_desc = (TextView) convertView.findViewById(R.id.txt_desc);
+        //TextView txt_desc = (TextView) convertView.findViewById(R.id.txt_desc);
         TextView txt_createdate = (TextView) convertView.findViewById(R.id.txt_createdate);
 
         txt_title.setText(title);
-        txt_desc.setText(desc);
-        txt_createdate.setText(createdate);
+        //txt_desc.setText(desc);
+        long dtMili = System.currentTimeMillis();
+        TimeAgo tm = new TimeAgo(context);
+        Date date1;
+        try
+        {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         date1 = dateFormat.parse(createdate);
+            txt_createdate.setText(tm.timeAgo(date1));
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+
         Picasso.with(context).load(url).into(imglogo);
+        Picasso.with(context).load(url_brand).into(img_brand);
         return convertView;
     }
 
