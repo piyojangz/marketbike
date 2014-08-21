@@ -2,32 +2,25 @@ package com.marketbike.app;
 
 
 import android.app.ActionBar;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.EditText;
+import android.view.MenuItem;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.marketbike.app.helper.JsonHelper;
-
-import org.json.JSONArray;
-
 import java.io.IOException;
-import java.util.HashMap;
+
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -36,11 +29,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     GoogleCloudMessaging gcm;
     String regid;
     String PROJECT_NUMBER = "416625437190";
-
+    Session session;
+    private  Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.checkLogin();
         mCollectionPagerAdapter = new CollectionPagerAdapter(
                 getSupportFragmentManager());
         final ActionBar actionBar = getActionBar();
@@ -65,8 +60,37 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
 
         getRegId();
+// Add code to print out the key hash
+       /* try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.marketbike.app",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.i("KeyHash:","error");
 
+        } catch (NoSuchAlgorithmException e) {
+            Log.i("KeyHash:","error");
+        }*/
 
+    }
+
+    private  void checkLogin(){
+        if (session == null) {
+            if(session==null){
+                session = Session.openActiveSessionFromCache(this);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 
     public void getRegId(){
@@ -117,16 +141,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        this.menu = menu;
+        session = Session.getActiveSession();
+        if (session != null && (session.isOpened() || session.isClosed())) {
+            if (session.isOpened()) {
+                this.menu.getItem(0).getSubMenu().getItem(0).setTitle("ออกจากระบบ");
+                this.menu.getItem(0).getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+                    public boolean onMenuItemClick(MenuItem item){
+                        session.close();
+                        session.closeAndClearTokenInformation();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                        return true;
+                    }});
+            }
+
+        }
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-
     }
 
     @Override
@@ -144,6 +179,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     }
 
+    public void onLoginClick(MenuItem item) {
+        Intent newActivity = new Intent(this,LoginActivity.class);
+        startActivity(newActivity);
+    }
 
 
     public class CollectionPagerAdapter extends FragmentPagerAdapter {
@@ -163,7 +202,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 1:
                     return new Tab2();
                 case 2:
-                    return new Tab2();
+                    return new Tab4();
             }
 
             return null;
@@ -183,10 +222,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     tabLabel = "NEWS";
                     break;
                 case 1:
-                    tabLabel = "TRIP";
+                    tabLabel = "MARKET";
                     break;
                 case 2:
-                    tabLabel = "MARKET";
+                    tabLabel = "SETTING";
                     break;
 
             }

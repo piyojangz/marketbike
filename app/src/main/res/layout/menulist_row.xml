@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_rowMain"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_card"
+    android:orientation="horizontal"
+    android:padding="20dp"
+    >
+
+    <!-- ListRow Left sied Thumbnail image -->
+
+
+    <ImageView
+        android:id="@+id/list_image"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:contentDescription=""
+        android:layout_marginLeft="10dp"
+        android:visibility="visible"
+        android:layout_marginRight="15dp" />
+
+
+    <!-- Title Of Song -->
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#363636"
+        android:textSize="16sp"
+        android:typeface="sans"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/list_image" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/input_notification"
+        android:layout_alignBottom="@+id/list_image"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>
