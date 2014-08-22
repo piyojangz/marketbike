@@ -3,6 +3,10 @@ package com.marketbike.app;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,16 +14,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.facebook.Session;
-import com.facebook.SessionState;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.marketbike.app.helper.JsonHelper;
+
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -30,7 +37,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     String regid;
     String PROJECT_NUMBER = "416625437190";
     Session session;
-    private  Menu menu;
+    private Menu menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +61,34 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         });
 
         for (int i = 0; i < mCollectionPagerAdapter.getCount(); i++) {
-            actionBar.addTab(actionBar.newTab()
-                    .setText(mCollectionPagerAdapter.getPageTitle(i))
-                    .setTabListener(this));
+
+            switch (i) {
+                case 0:
+                    actionBar.addTab(actionBar.newTab()
+                            .setIcon(R.drawable.ic_news_feed)
+                            .setTabListener(this));
+                    break;
+                case 1:
+                    actionBar.addTab(actionBar.newTab()
+                            .setIcon(R.drawable.ic_cart)
+                            .setTabListener(this));
+                    break;
+                case 2:
+                    actionBar.addTab(actionBar.newTab()
+                            .setIcon(R.drawable.ic_setting_red)
+                            .setTabListener(this));
+                    break;
+                default:
+                    actionBar.addTab(actionBar.newTab()
+                            .setIcon(R.drawable.ic_setting_red)
+                            .setTabListener(this));
+            }
 
         }
 
         getRegId();
 // Add code to print out the key hash
-       /* try {
+        try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.marketbike.app",
                     PackageManager.GET_SIGNATURES);
@@ -71,17 +98,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Log.i("KeyHash:","error");
+            Log.i("KeyHash:", "error");
 
         } catch (NoSuchAlgorithmException e) {
-            Log.i("KeyHash:","error");
-        }*/
+            Log.i("KeyHash:", "error");
+        }
 
     }
 
-    private  void checkLogin(){
+    private void checkLogin() {
         if (session == null) {
-            if(session==null){
+            if (session == null) {
                 session = Session.openActiveSessionFromCache(this);
             }
         }
@@ -93,7 +120,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 
-    public void getRegId(){
+    public void getRegId() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -115,24 +142,25 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             @Override
             protected void onPostExecute(String msg) {
-                Log.i("GCM","GCM = " + regid);
+                Log.i("GCM", "GCM = " + regid);
                 register_device();
             }
         }.execute(null, null, null);
     }
 
-    private void register_device(){
-        AsyncTask<Void, Void, Void> task  = new AsyncTask<Void, Void, Void>() {
+    private void register_device() {
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... arg0) {
                 try {
-                    String url = "http://marketbike.zoaish.com/api/gcm_register/"+regid;
+                    String url = "http://marketbike.zoaish.com/api/gcm_register/" + regid;
                     JsonHelper.getJson(url);
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void result) {
             }
@@ -149,15 +177,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         if (session != null && (session.isOpened() || session.isClosed())) {
             if (session.isOpened()) {
                 this.menu.getItem(0).getSubMenu().getItem(0).setTitle("ออกจากระบบ");
-                this.menu.getItem(0).getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
-                    public boolean onMenuItemClick(MenuItem item){
+                this.menu.getItem(0).getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
                         session.close();
                         session.closeAndClearTokenInformation();
                         Intent intent = getIntent();
                         finish();
                         startActivity(intent);
                         return true;
-                    }});
+                    }
+                });
             }
 
         }
@@ -166,12 +195,39 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        tab.setIcon(R.drawable.appicon);
+        switch (tab.getPosition()) {
+            case 0:
+                tab.setIcon(R.drawable.ic_news_feed_hover);
+                break;
+            case 1:
+                tab.setIcon(R.drawable.ic_cart_hover);
+                break;
+            case 2:
+                tab.setIcon(R.drawable.ic_setting_red_hover);
+                break;
+            default:
+                tab.setIcon(R.drawable.ic_setting_red_hover);
+        }
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-
+        tab.setIcon(R.drawable.appicon);
+        switch (tab.getPosition()) {
+            case 0:
+                tab.setIcon(R.drawable.ic_news_feed);
+                break;
+            case 1:
+                tab.setIcon(R.drawable.ic_cart);
+                break;
+            case 2:
+                tab.setIcon(R.drawable.ic_setting_red);
+                break;
+            default:
+                tab.setIcon(R.drawable.ic_setting_red);
+        }
     }
 
     @Override
@@ -180,7 +236,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     public void onLoginClick(MenuItem item) {
-        Intent newActivity = new Intent(this,LoginActivity.class);
+        Intent newActivity = new Intent(this, LoginActivity.class);
         startActivity(newActivity);
     }
 
@@ -233,7 +289,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             return tabLabel;
 
         }
-
 
 
     }

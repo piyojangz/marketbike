@@ -88,7 +88,13 @@ public class Tab4 extends Fragment implements Transformation {
         settings = getActivity().getPreferences(getActivity().MODE_WORLD_WRITEABLE);
         editor = settings.edit();
 
-
+        session = Session.getActiveSession();
+        if (session != null && (session.isOpened() || session.isClosed())) {
+            onSessionStateChange(session, session.getState(), null);
+        } else if (session == null || session.isClosed()) {
+            profileConsole.setVisibility(View.GONE);
+            tab4.setPadding(0, 20, 0, 0);
+        }
 
 
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
@@ -99,8 +105,6 @@ public class Tab4 extends Fragment implements Transformation {
 
             @Override
             protected Void doInBackground(Void... arg0) {
-
-
                 try {
                     loadSetting();
                 } catch (Throwable e) {
@@ -113,8 +117,10 @@ public class Tab4 extends Fragment implements Transformation {
             @Override
             protected void onPostExecute(Void result) {
                 list_menu = (ListView)rootView.findViewById(R.id.list_menu);
-                SettingAdapter = new SettingAdapter(getActivity(), sList);
-                list_menu.setAdapter(SettingAdapter);
+                if(sList != null) {
+                    SettingAdapter = new SettingAdapter(getActivity(), sList);
+                    list_menu.setAdapter(SettingAdapter);
+                }
             }
 
         };
@@ -123,17 +129,6 @@ public class Tab4 extends Fragment implements Transformation {
 
 
 
-
-
-
-       this.session = Session.getActiveSession();
-        if (session != null && (session.isOpened() || session.isClosed())) {
-            onSessionStateChange(session, session.getState(), null);
-        }
-        else if(session == null || session.isClosed()){
-            profileConsole.setVisibility(View.GONE);
-            tab4.setPadding(0,20,0,0);
-        }
         return rootView;
     }
 
@@ -153,7 +148,6 @@ public class Tab4 extends Fragment implements Transformation {
             String[] img = {"ic_action_alarms"};
             String[] psetting = {is_notification};
 
-
             sList = new ArrayList<HashMap<String, String>>();
             for (int i = 0; i < menu.length; i++) {
                 Log.v("fb", "is_notification: " + psetting[i]);
@@ -170,8 +164,8 @@ public class Tab4 extends Fragment implements Transformation {
             e.printStackTrace();
         }
 
-
     }
+
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
             Log.i("fb", "Logged in...");

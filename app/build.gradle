@@ -1,19 +1,30 @@
 apply plugin: 'android'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'MyAndroidKey'
+            keyPassword 'Breesh1234'
+            storeFile file('/Users/Breeshy/Documents/android projects/android.jks')
+            storePassword 'Breesh1234'
+        }
+    }
     compileSdkVersion 19
     buildToolsVersion '19.1.0'
     defaultConfig {
         applicationId 'com.marketbike.app'
         minSdkVersion 16
         targetSdkVersion 19
-        versionCode 108
-        versionName '1.0.8'
+        versionCode 109
+        versionName '1.0.9'
     }
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     productFlavors {
