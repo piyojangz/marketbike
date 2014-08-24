@@ -1,11 +1,10 @@
 package com.marketbike.app;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,24 +12,22 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
-import android.widget.Button;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
 import com.marketbike.app.RefreshableListView.onListRefreshListener;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Tab2 extends Fragment implements onListRefreshListener, onListLoadMoreListener {
+
+public class Tab0 extends Fragment implements onListRefreshListener, onListLoadMoreListener {
 
     private ArrayList<HashMap<String, String>> DataList;
     private HashMap map;
@@ -38,30 +35,25 @@ public class Tab2 extends Fragment implements onListRefreshListener, onListLoadM
     protected ArrayList<HashMap<String, String>> sList;
     private AsyncTask<Void, Void, Void> task;
     private Menu optionsMenu;
-    private String cateid;
     private boolean isfirst = true;
     private static final int LIMIT = 10;
     private int OFFSET = 0;
-    AbsoluteLayout btn_add_item2;
     private RefreshableListView lv;
     private boolean FLAG_END;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.tab2, container, false);
-        this.btn_add_item2 = (AbsoluteLayout) rootView.findViewById(R.id.wrap_item);
+        View rootView = inflater.inflate(R.layout.tab0, container, false);
         //RefreshableList lines start
         setHasOptionsMenu(true);
-        this.lv = (RefreshableListView) rootView.findViewById(R.id.prod_listView);
-        this.lv.setAddButton(this.btn_add_item2);
+        this.lv = (RefreshableListView) rootView.findViewById(R.id.news_listView);
         this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
         this.lv.setOnListLoadMoreListener(this);
         this.lv.setDistanceFromBottom(2);
         //RefreshableList Lines end
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
-        this.cateid = "2";
         this.firstload();
         return rootView;
     }
@@ -157,7 +149,7 @@ AdRequest request = new AdRequest.Builder()
     private void loadItemList(float size) {
 
         try {
-            String url = "http://marketbike.zoaish.com/api/get_all_product/" + OFFSET + "/" + LIMIT;
+            String url = "http://marketbike.zoaish.com/api/get_all_content/" + OFFSET + "/" + LIMIT;
             Log.i("mylog", "url: " + url);
             JSONArray data = JsonHelper.getJson(url).getJSONArray("result");
             if (data.length() == 0) {
@@ -217,8 +209,7 @@ AdRequest request = new AdRequest.Builder()
 
     private void onLoad() {
         //Log.i("mylog", "onLoad: ");
-        this.lv.finishRefresh();//-------------------------------------------------------------------------Important
-        this.lv.finishLoadingMore();//---------------------------------------------------------------------Important
+
         this.setRefreshActionButtonState(false);
 
     }
@@ -250,8 +241,7 @@ AdRequest request = new AdRequest.Builder()
                 protected RefreshableListView doInBackground(RefreshableListView... params) {
                     try {
                         loadItemList(0);
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                     }
                     return params[0];
 
@@ -262,6 +252,7 @@ AdRequest request = new AdRequest.Builder()
                     //I just finish both here to not have to write two example mocks
                     onLoad();
                     listAdpt.notifyDataSetChanged();
+                    lv.finishLoadingMore();//---------------------------------------------------------------------Important
                     super.onPostExecute(list);
                 }
             }.execute(list);
@@ -311,6 +302,9 @@ AdRequest request = new AdRequest.Builder()
                         return false;
                     }
                 });
+
+               lv.finishRefresh();//-------------------------------------------------------------------------Important
+
 
                 super.onPostExecute(list);
             }

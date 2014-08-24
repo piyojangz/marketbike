@@ -9,16 +9,24 @@ import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import  com.marketbike.app.helper.JsonHelper;
+import com.marketbike.app.helper.JsonHelper;
+
 import android.support.v4.app.Fragment;
+
 import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,8 +41,9 @@ public class Tab1 extends Fragment {
     AsyncTask<Void, Void, Void> task;
     private ProgressDialog progress;
     private JSONArray data;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.tab1, container, false);
 
@@ -46,13 +55,12 @@ public class Tab1 extends Fragment {
         this.createMenu();
 
 
-
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String ID = sList.get(position).get(ListItem.KEY_MENU_ID).toString();
                 String TITLE = sList.get(position).get(ListItem.KEY_MENU_TITLE).toString();
-                Intent newActivity = new Intent(container.getContext(),News.class);
+                Intent newActivity = new Intent(container.getContext(), News.class);
                 newActivity.putExtra(ListItem.KEY_MENU_ID, ID);
                 newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
                 startActivity(newActivity);
@@ -64,7 +72,6 @@ public class Tab1 extends Fragment {
     }
 
 
-
     private void createMenu() {
 
         this.task = new AsyncTask<Void, Void, Void>() {
@@ -73,10 +80,6 @@ public class Tab1 extends Fragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                //progress.setMessage("Downloading... :) ");
-                //progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                //progress.setIndeterminate(true);
-                //progress.show();
             }
 
             @Override
@@ -84,9 +87,9 @@ public class Tab1 extends Fragment {
                 try {
                     String url = "http://marketbike.zoaish.com/api/get_category";
 
-                     data =  JsonHelper.getJson(url).getJSONArray("result");
+                    data = JsonHelper.getJson(url).getJSONArray("result");
 
-                    for(int i = 0; i < data.length(); i++){
+                    for (int i = 0; i < data.length(); i++) {
 
                         String id = data.getJSONObject(i).getString("ID");
                         String title = data.getJSONObject(i).getString("Headline");
@@ -94,7 +97,7 @@ public class Tab1 extends Fragment {
 
                         map = new HashMap<String, String>();
                         map.put(ListItem.KEY_MENU_ID, id);
-                        map.put(ListItem.KEY_MENU_TITLE,title);
+                        map.put(ListItem.KEY_MENU_TITLE, title);
                         map.put(ListItem.KEY_MENU_LOGO, thumbnail);
                         sList.add(map);
                     }
@@ -108,8 +111,6 @@ public class Tab1 extends Fragment {
 
             @Override
             protected void onPostExecute(Void result) {
-               // progress.dismiss();
-               // Log.i("mylog", "obj: " + data);
                 bindList();
             }
 

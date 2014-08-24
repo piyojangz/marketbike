@@ -6,6 +6,14 @@
         <item name="android:actionBarTabStyle">@style/tabStyle</item>
         <item name="android:actionBarTabBarStyle">@style/Divider</item>
         <item name="android:actionBarTabTextStyle">@style/tabtextcolor</item>
+        <item name="android:progressBarStyleHorizontal">@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center</item>
+    </style>
+
+    <style name="Widget.PullToRefresh.ProgressBar.Horizontal.Center" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/ptr_progress_horizontal_holo_center</item>
+        <item name="android:indeterminateDrawable">@drawable/ptr_progress_indeterminate_horizontal_holo</item>
+        <item name="android:minHeight">4dip</item>
+        <item name="android:maxHeight">4dip</item>
     </style>
 
     <!-- ActionBar styles -->

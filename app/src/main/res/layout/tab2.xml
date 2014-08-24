@@ -1,17 +1,47 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tab2"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ddd"
-    android:gravity="center">
+    android:background="#ddd">
 
-    <TextView
+    <com.marketbike.app.RefreshableListView
+        android:id="@+id/prod_listView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="#22313F"
+        android:dividerHeight="1dp">
+    </com.marketbike.app.RefreshableListView>
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Comming soon"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center|center_horizontal"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:textColor="#22313F"
+            android:text="Coming soon..."/>
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_centerHorizontal="true">
 
-</LinearLayout>
+        <AbsoluteLayout
+            android:id="@+id/wrap_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="20dp">
+
+            <ImageButton
+                android:id="@+id/btn_add_item"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/ic_add_fix"
+                android:text="Get more" />
+        </AbsoluteLayout>
+    </RelativeLayout>
+</FrameLayout>

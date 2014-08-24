@@ -13,10 +13,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -51,10 +54,9 @@ public class News extends Activity implements onListRefreshListener, onListLoadM
     private Menu optionsMenu;
     private String cateid;
     private boolean isfirst = true;
-    private static final int LIMIT = 10;
+    private static final int LIMIT = 20;
     private int OFFSET = 0;
     private boolean FLAG_END;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +73,12 @@ public class News extends Activity implements onListRefreshListener, onListLoadM
         this.lv = (RefreshableListView) findViewById(R.id.menu_listView);
         this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
         this.lv.setOnListLoadMoreListener(this);
-        this.lv.setDistanceFromBottom(2);
+        this.lv.setDistanceFromBottom(5);
         //RefreshableList Lines end
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.cateid = this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_ID).toString();
+
     }
 
     private void bindList() {
@@ -158,7 +161,6 @@ AdRequest request = new AdRequest.Builder()
     }
 
     private void loadItemList(float size) {
-
         try {
             String url = "http://marketbike.zoaish.com/api/get_content_by_cate/" + cateid + "/" + OFFSET + "/" + LIMIT;
             Log.i("mylog", "url: " + url);
@@ -261,9 +263,7 @@ AdRequest request = new AdRequest.Builder()
     }
 
     private void onLoad() {
-        //Log.i("mylog", "onLoad: ");
-        this.lv.finishRefresh();//-------------------------------------------------------------------------Important
-        this.lv.finishLoadingMore();//---------------------------------------------------------------------Important
+
         this.setRefreshActionButtonState(false);
 
     }
@@ -278,8 +278,7 @@ AdRequest request = new AdRequest.Builder()
                 protected RefreshableListView doInBackground(RefreshableListView... params) {
                     try {
                         loadItemList(0);
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                     }
                     return params[0];
 
@@ -290,6 +289,7 @@ AdRequest request = new AdRequest.Builder()
                     //I just finish both here to not have to write two example mocks
                     onLoad();
                     listAdpt.notifyDataSetChanged();
+                    lv.finishLoadingMore();//---------------------------------------------------------------------Important
                     super.onPostExecute(list);
                 }
             }.execute(list);
@@ -304,7 +304,13 @@ AdRequest request = new AdRequest.Builder()
         isfirst = true;
         FLAG_END = false;
         sList.clear();
-        ////This just asyncly waits 3 seconds then does the finishRefresh()
+        lv.getListView().setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         new AsyncTask<RefreshableListView, Object, RefreshableListView>() {
             protected RefreshableListView doInBackground(RefreshableListView... params) {
                 try {
@@ -312,23 +318,29 @@ AdRequest request = new AdRequest.Builder()
                 } catch (Exception e) {
                 }
                 return params[0];
-
             }
 
             @Override
             protected void onPostExecute(RefreshableListView list) {
 
-
                 Animation animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_in);
                 lv.startAnimation(animation);
-
                 //I just finish both here to not have to write two example mocks
                 onLoad();
                 listAdpt.notifyDataSetChanged();
+                lv.finishRefresh();//-------------------------------------------------------------------------Important
+
+                lv.getListView().setOnTouchListener(new View.OnTouchListener() {
+
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return false;
+                    }
+                });
+
+
                 super.onPostExecute(list);
             }
         }.execute(list);
-
 
     }
 

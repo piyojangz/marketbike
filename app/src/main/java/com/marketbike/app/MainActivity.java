@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.facebook.Session;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -70,12 +71,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     break;
                 case 1:
                     actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_cart)
+                            .setIcon(R.drawable.ic_category)
                             .setTabListener(this));
                     break;
                 case 2:
                     actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_setting_red)
+                            .setIcon(R.drawable.ic_cart)
                             .setTabListener(this));
                     break;
                 default:
@@ -199,15 +200,24 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         switch (tab.getPosition()) {
             case 0:
                 tab.setIcon(R.drawable.ic_news_feed_hover);
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(0));
+
                 break;
             case 1:
-                tab.setIcon(R.drawable.ic_cart_hover);
+                tab.setIcon(R.drawable.ic_category_hover);
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(1));
+
                 break;
             case 2:
-                tab.setIcon(R.drawable.ic_setting_red_hover);
+                tab.setIcon(R.drawable.ic_cart_hover);
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(2));
+
                 break;
-            default:
+            case 3:
                 tab.setIcon(R.drawable.ic_setting_red_hover);
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(2));
+
+                break;
         }
         mViewPager.setCurrentItem(tab.getPosition());
     }
@@ -220,9 +230,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 tab.setIcon(R.drawable.ic_news_feed);
                 break;
             case 1:
-                tab.setIcon(R.drawable.ic_cart);
+                tab.setIcon(R.drawable.ic_category);
                 break;
             case 2:
+                tab.setIcon(R.drawable.ic_cart);
+                break;
+            case 3:
                 tab.setIcon(R.drawable.ic_setting_red);
                 break;
             default:
@@ -243,7 +256,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class CollectionPagerAdapter extends FragmentPagerAdapter {
 
-        final int NUM_ITEMS = 3; // number of tabs
+        final int NUM_ITEMS = 4; // number of tabs
 
         public CollectionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -254,10 +267,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    return new Tab1();
+                    return new Tab0();
                 case 1:
-                    return new Tab2();
+                    return new Tab1();
                 case 2:
+                    return new Tab2();
+                case 3:
                     return new Tab4();
             }
 
@@ -278,9 +293,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     tabLabel = "NEWS";
                     break;
                 case 1:
-                    tabLabel = "MARKET";
+                    tabLabel = "CATEGORY";
                     break;
                 case 2:
+                    tabLabel = "MARKET";
+                    break;
+                case 4:
                     tabLabel = "SETTING";
                     break;
 

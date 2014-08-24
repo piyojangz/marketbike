@@ -1,7 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:id="@+id/action_more"
+
+
+    <item android:id="@+id/action_more"
     android:icon="@drawable/ic_action_overflow"
     android:title="More..."
+        android:orderInCategory="1"
     android:showAsAction="ifRoom">
     <menu android:id="@+id/group">
         <item android:id="@+id/action_login"
