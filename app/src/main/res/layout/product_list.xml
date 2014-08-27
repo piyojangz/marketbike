@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/myfeed_list"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_card"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_thumnail"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:adjustViewBounds="true"
+                android:background="@color/slidemenu_bg"
+                android:scaleType="centerCrop"
+                android:layout_gravity="top" />
+
+
+
+
+
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="@string/lorem"
+            android:textColor="#000"
+            android:id="@+id/txt_title"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:layout_below="@+id/img_thumnail"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="@string/lorem"
+                android:textColor="#000"
+                android:id="@+id/txt_price"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:layout_below="@+id/txt_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="Small Text"
+                android:textColor="#ddd"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/txt_user"
+                android:layout_below="@+id/txt_price" />
+
+
+        </RelativeLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

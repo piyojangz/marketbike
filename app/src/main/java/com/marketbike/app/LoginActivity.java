@@ -2,9 +2,9 @@ package com.marketbike.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 
 import com.facebook.Request;
@@ -14,7 +14,6 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,7 +29,6 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -40,11 +38,11 @@ public class LoginActivity extends Activity {
     private UiLifecycleHelper uiHelper;
     public Session.StatusCallback callback;
     private String get_id, get_name, get_gender, get_email, get_birthday,get_link,get_fname,get_lname,get_username;
-
+    private  SharedPreferences.Editor editor;
     GoogleCloudMessaging gcm;
     String regid;
     String PROJECT_NUMBER = "416625437190";
-
+    public static final String PREFS_NAME = "MyData_Settings";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +53,9 @@ public class LoginActivity extends Activity {
         LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
         permissions = Arrays.asList("user_likes", "public_profile", "user_friends","email","user_birthday");
         //,"user_birthday","user_location" not approve
-        authButton.setReadPermissions(permissions);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        editor = settings.edit();
+
     }
 
 
@@ -83,8 +83,9 @@ public class LoginActivity extends Activity {
                                         get_gender = (String) user.getProperty("gender");
                                         get_email = (String) user.getProperty("email");
                                         get_birthday = user.getBirthday();
-                                        Log.v("fb", "user: " + user);
 
+                                        editor.putString("fbid", get_id);
+                                        editor.commit();
 
                                         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 

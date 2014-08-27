@@ -26,11 +26,17 @@
         revision="19.1.0"
         sha1="ca274930dbe6b32e0ea3192336c5b93883192a0b"/>
     <item
+        dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/httpmime-4.2.5-630b4a2c0ec3eb646d8b43cdee9ff8f31c135125.jar"
+        jar="/Users/Breeshy/Documents/android projects/marketbike/app/libs/httpmime-4.2.5.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="412b9914d0adec6d5716df1ada8acbc4f6f2dd37"/>
+    <item
         dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/classes-3f699067b0ca45b2d692e183d98475f0849829ed.jar"
         jar="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/exploded-aar/marketbike/facebook/unspecified/classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="b401b59e7109f3d05c568bbbe1a324e73bd4279d"/>
+        sha1="237b2a5cbc5cc1623e36ce7982501444b7a9e091"/>
     <item
         dex="/Users/Breeshy/Documents/android projects/marketbike/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
         jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"

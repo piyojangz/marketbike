@@ -6,11 +6,11 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <!--<com.google.android.gms.ads.AdView android:id="@+id/adView_detail"
+    <com.google.android.gms.ads.AdView android:id="@+id/adView_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         ads:adUnitId="ca-app-pub-6496432517273490/1737055571"
-        ads:adSize="SMART_BANNER"/>-->
+        ads:adSize="SMART_BANNER"/>
 
     <WebView
         android:layout_width="match_parent"

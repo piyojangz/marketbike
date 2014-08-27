@@ -18,23 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.marketbike.app.custom.setAppFont;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
@@ -73,7 +65,10 @@ public class News extends Activity implements onListRefreshListener, onListLoadM
         this.lv = (RefreshableListView) findViewById(R.id.menu_listView);
         this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
         this.lv.setOnListLoadMoreListener(this);
-        this.lv.setDistanceFromBottom(5);
+        this.lv.setDistanceFromBottom(2);
+        this.lv.getListView().setFooterDividersEnabled(false);
+        this.lv.getListView().setDivider(null);
+        this.lv.getListView().setDividerHeight(0);
         //RefreshableList Lines end
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
@@ -146,9 +141,9 @@ AdRequest request = new AdRequest.Builder()
     .setBirthday(new GregorianCalendar(1985, 1, 1).getTime())
     .setLocation(location)
     .build();
- */
 
-      /*  AdView adView = (AdView) this.findViewById(R.id.adView);
+
+        AdView adView = (AdView) this.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 */

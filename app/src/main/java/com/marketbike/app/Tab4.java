@@ -1,8 +1,5 @@
 package com.marketbike.app;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -21,28 +18,21 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.widget.LoginButton;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.marketbike.app.R;
-
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import com.facebook.*;
-import com.facebook.model.*;
 import com.marketbike.app.helper.JsonHelper;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Tab4 extends Fragment implements Transformation {
 
@@ -65,8 +55,6 @@ public class Tab4 extends Fragment implements Transformation {
     private  Session session;
     private RelativeLayout profileConsole;
     private LinearLayout tab4;
-    static SharedPreferences settings;
-    static SharedPreferences.Editor editor;
     private String _is_notification;
     private String is_notification;
     private View rootView;
@@ -77,17 +65,13 @@ public class Tab4 extends Fragment implements Transformation {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        setHasOptionsMenu(false);
         this.rootView = inflater.inflate(R.layout.tab4, container, false);
         image_profile = (ImageView) rootView.findViewById(R.id.image_profile);
         imageBgProfile = (ImageView) rootView.findViewById(R.id.imageBgProfile);
         profileConsole = (RelativeLayout)rootView.findViewById(R.id.profileConsole);
         txtFullName = (TextView) rootView.findViewById(R.id.txtFullName);
         tab4  = (LinearLayout)rootView.findViewById(R.id.tab4);
-
-        settings = getActivity().getPreferences(getActivity().MODE_WORLD_WRITEABLE);
-        editor = settings.edit();
-
         session = Session.getActiveSession();
         if (session != null && (session.isOpened() || session.isClosed())) {
             onSessionStateChange(session, session.getState(), null);
@@ -150,7 +134,7 @@ public class Tab4 extends Fragment implements Transformation {
 
             sList = new ArrayList<HashMap<String, String>>();
             for (int i = 0; i < menu.length; i++) {
-                Log.v("fb", "is_notification: " + psetting[i]);
+                //Log.v("fb", "is_notification: " + psetting[i]);
 
                 map = new HashMap<String, String>();
                 map.put(ListItem.KEY_TITLE, menu[i]);
@@ -168,7 +152,7 @@ public class Tab4 extends Fragment implements Transformation {
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            Log.i("fb", "Logged in...");
+            //Log.i("fb", "Logged in...");
             Request.executeMeRequestAsync(session,
                     new Request.GraphUserCallback() {
                         @Override
@@ -186,8 +170,6 @@ public class Tab4 extends Fragment implements Transformation {
                                     String imgBg = "http://marketbike.zoaish.com/public/images/default_bg.jpg";
                                     Picasso.with(getActivity()).load(imgBg).into(imageBgProfile);
                                     txtFullName.setText(get_name);
-                                    editor.putString("fbid",get_id);
-                                    editor.commit();
 
 
                                 } catch (Exception e) {

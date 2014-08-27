@@ -47,7 +47,7 @@ public class Tab1 extends Fragment {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.tab1, container, false);
 
-
+        setHasOptionsMenu(false);
         this.lv = (ListView) rootView.findViewById(R.id.menu_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
         this.progress = new ProgressDialog(this.getActivity());
@@ -67,6 +67,9 @@ public class Tab1 extends Fragment {
             }
         });
 
+        /*AdView adView = (AdView) rootView.findViewById(R.id.adView1);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);*/
 
         return rootView;
     }

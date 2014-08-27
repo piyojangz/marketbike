@@ -6,10 +6,12 @@ public class ListItem {
     public static String USERID;
     public static String KEY_ID = "KEY_ID";
     public static String KEY_TITLE = "KEYTITLE";
+    public static String KEY_PRICE = "KEY_PRICE";
     public static String KEY_CREATEDATE = "KEY_CREATEDATE";
     public static String KEY_SET = "KEY_SET";
     public static String KEY_IMAGE = "KEY_IMAGE";
     public static String KEY_DESC = "KEY_DESC";
+    public static String KEY_USER = "KEY_USER";
     public static String KEY_TYPE = "KEY_TYPE";
     public static String KEY_URL = "KEY_URL";
     public static String KEY_IMAGE_HEADER = "KEY_IMAGE_HEADER";

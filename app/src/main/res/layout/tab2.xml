@@ -1,28 +1,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ddd">
+    android:background="#EEEEEE">
+    <!--<com.google.android.gms.ads.AdView android:id="@+id/adView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adUnitId="ca-app-pub-6496432517273490/7583282770"
+        ads:adSize="SMART_BANNER"/>-->
 
     <com.marketbike.app.RefreshableListView
         android:id="@+id/prod_listView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:divider="#22313F"
-        android:dividerHeight="1dp">
+        android:footerDividersEnabled="false">
     </com.marketbike.app.RefreshableListView>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|center_horizontal"
-        android:layout_centerHorizontal="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24dp"
-            android:textColor="#22313F"
-            android:text="Coming soon..."/>
-        </RelativeLayout>
+
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

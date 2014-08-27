@@ -3,30 +3,19 @@ package com.marketbike.app;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.marketbike.app.MenuAdapter;
-import com.marketbike.app.R;
-import com.marketbike.app.custom.setAppFont;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class News_detail extends Activity {
-    private  String title;
-    private  WebView webview;
+    private String title;
+    private WebView webview;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +23,17 @@ public class News_detail extends Activity {
         this.title = this.getIntent().getCharSequenceExtra(ListItem.KEY_TITLE).toString();
         CharSequence id = this.getIntent().getCharSequenceExtra(ListItem.KEY_ID);
         setTitle(this.title);
-         webview = (WebView) findViewById(R.id.news_detail);
+        webview = (WebView) findViewById(R.id.news_detail);
         webview.loadUrl("http://marketbike.zoaish.com/api/get_content/" + id);
 
 
-        /*AdView adView = (AdView) this.findViewById(R.id.adView_detail);
+        AdView adView = (AdView) this.findViewById(R.id.adView_detail);
         AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);*/
+        adView.loadAd(adRequest);
 
-        NotificationManager mNotificationManager =  (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(Integer.parseInt(id.toString()));
     }
-
 
 
     @Override
@@ -74,12 +62,11 @@ public class News_detail extends Activity {
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, this.title);
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.abc_action_bar_home_description)));
-                return  true;
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
 }

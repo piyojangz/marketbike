@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
 
 import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
@@ -51,10 +49,18 @@ public class Tab0 extends Fragment implements onListRefreshListener, onListLoadM
         this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
         this.lv.setOnListLoadMoreListener(this);
         this.lv.setDistanceFromBottom(2);
+        this.lv.getListView().setFooterDividersEnabled(false);
+        this.lv.getListView().setDivider(null);
+        this.lv.getListView().setDividerHeight(0);
         //RefreshableList Lines end
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();
         this.firstload();
+
+       /* AdView adView = (AdView) rootView.findViewById(R.id.adView0);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);*/
+
         return rootView;
     }
 
@@ -150,7 +156,6 @@ AdRequest request = new AdRequest.Builder()
 
         try {
             String url = "http://marketbike.zoaish.com/api/get_all_content/" + OFFSET + "/" + LIMIT;
-            Log.i("mylog", "url: " + url);
             JSONArray data = JsonHelper.getJson(url).getJSONArray("result");
             if (data.length() == 0) {
                 FLAG_END = true;

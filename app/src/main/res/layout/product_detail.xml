@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:weightSum="1">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/frame_thumnail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_thumnail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"
+                android:maxHeight="200dp"
+                android:cropToPadding="true"
+                android:background="@color/slidemenu_bg"
+                android:scaleType="centerCrop"
+                android:layout_gravity="top" />
+        </RelativeLayout>
+
+        <com.marketbike.app.helper.ScrollViewExt
+            android:id="@+id/scroll_detail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:paddingTop="200dp"
+                android:id="@+id/myfeed_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/myfeed_profile_bg"
+                    android:background="#fff"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:clipToPadding="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="@string/lorem"
+                        android:id="@+id/txt_headeline"
+                        android:paddingBottom="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/frame_topuserprofile"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/bg_top_line"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_headeline">
+
+                        <RelativeLayout
+                            android:id="@+id/frame_userprofile"
+                            android:layout_width="50dip"
+                            android:layout_height="50dip"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/circle"
+                            android:padding="2dp"
+                            android:layout_gravity="left"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/image_profile"
+                                android:adjustViewBounds="true"
+                                android:cropToPadding="true"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:text="Small Text"
+                            android:textColor="#000"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginLeft="60dp"
+                            android:id="@+id/txt_userfullname" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="24dp"
+                            android:text="24 K"
+                            android:textColor="#EF4836"
+                            android:id="@+id/textView"
+                            android:textStyle="bold"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@+id/frame_userprofile"
+                            android:layout_toEndOf="@+id/frame_userprofile" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:text="Large Text"
+                            android:textColor="#2574A9"
+                            android:paddingTop="18dp"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/txt_price"
+                            android:layout="@+id/label"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_below="@+id/frame_topuserprofile"
+                        android:id="@+id/frame_detail"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:paddingTop="10dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_top_line"
+                        android:layout_marginBottom="10dp"
+                        android:clipToPadding="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:text="Small Text"
+                            android:id="@+id/txt_description" />
+                    </RelativeLayout>
+
+
+                    <ImageView
+                        android:id="@+id/img_1"
+                        android:layout_below="@+id/frame_detail"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp"
+                        android:maxHeight="200dp"
+                        android:cropToPadding="true"
+                        android:background="@color/slidemenu_bg"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="top" />
+
+                    <ImageView
+                        android:id="@+id/img_2"
+                        android:layout_marginBottom="10dp"
+                        android:layout_below="@+id/img_1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp"
+                        android:maxHeight="200dp"
+                        android:cropToPadding="true"
+                        android:background="@color/slidemenu_bg"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="top" />
+
+                    <ImageView
+                        android:id="@+id/img_3"
+                        android:layout_marginBottom="10dp"
+                        android:layout_below="@+id/img_2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp"
+                        android:maxHeight="200dp"
+                        android:cropToPadding="true"
+                        android:background="@color/slidemenu_bg"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="top" />
+
+                    <ImageView
+                        android:layout_below="@+id/img_3"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/img_4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp"
+                        android:maxHeight="200dp"
+                        android:cropToPadding="true"
+                        android:background="@color/slidemenu_bg"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="top" />
+
+                    <ImageView
+                        android:layout_below="@+id/img_4"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/img_5"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp"
+                        android:maxHeight="200dp"
+                        android:cropToPadding="true"
+                        android:background="@color/slidemenu_bg"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="top" />
+
+                </RelativeLayout>
+
+
+            </FrameLayout>
+        </com.marketbike.app.helper.ScrollViewExt>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_centerHorizontal="true">
+
+            <AbsoluteLayout
+                android:id="@+id/wrap_item"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#2C3E50"
+                android:layout_alignParentBottom="true"
+                android:padding="10dp">
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:text="พูดคุย"
+                    android:background="@drawable/bg_fbbutton_green" />
+            </AbsoluteLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

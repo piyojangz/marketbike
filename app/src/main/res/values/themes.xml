@@ -6,12 +6,18 @@
         <item name="android:actionBarTabStyle">@style/tabStyle</item>
         <item name="android:actionBarTabBarStyle">@style/Divider</item>
         <item name="android:actionBarTabTextStyle">@style/tabtextcolor</item>
-        <item name="android:progressBarStyleHorizontal">@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:progressBarStyleHorizontal">
+            @style/Widget.PullToRefresh.ProgressBar.Horizontal.Center
+        </item>
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
     </style>
 
     <style name="Widget.PullToRefresh.ProgressBar.Horizontal.Center" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/ptr_progress_horizontal_holo_center</item>
-        <item name="android:indeterminateDrawable">@drawable/ptr_progress_indeterminate_horizontal_holo</item>
+        <item name="android:indeterminateDrawable">
+            @drawable/ptr_progress_indeterminate_horizontal_holo
+        </item>
         <item name="android:minHeight">4dip</item>
         <item name="android:maxHeight">4dip</item>
     </style>
@@ -51,4 +57,9 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="MenuTextStyle" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
