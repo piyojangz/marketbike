@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,12 +30,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.marketbike.app.helper.JsonHelper;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -57,7 +60,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Product_add extends Activity {
 
@@ -79,7 +84,10 @@ public class Product_add extends Activity {
     private EditText txt_description;
     private String fbid;
     public static final String PREFS_NAME = "MyData_Settings";
-    private  SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
+    private HashMap<String, String> imagespath = new HashMap<String, String>();
+    private int cntImgs = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +111,7 @@ public class Product_add extends Activity {
         this.txt_title.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && inputFiles != "") {
+                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && imagespath.size() > 0) {
                     setEnableMenu(true);
                 } else {
                     setEnableMenu(false);
@@ -115,7 +123,7 @@ public class Product_add extends Activity {
         this.txt_price.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && inputFiles != "") {
+                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && imagespath.size() > 0) {
                     setEnableMenu(true);
                 } else {
                     setEnableMenu(false);
@@ -140,19 +148,59 @@ public class Product_add extends Activity {
 
     View insertPhoto(String path) {
 
+        int _layid = 75;
+        int _imgid = 976;
+
+        File imgFile = new File(path);
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        Log.d("fb", "myBitmap = " + myBitmap);
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
         params.setMargins(10, 0, 0, 0);
-        LinearLayout layout = new LinearLayout(getApplicationContext());
+        final RelativeLayout layout = new RelativeLayout(getApplicationContext());
         layout.setLayoutParams(params);
         layout.setGravity(Gravity.CENTER);
+        layout.setId(_layid + cntImgs);
+
+        this.imagespath.put(String.valueOf(_layid + cntImgs), path);
 
         ImageView imageView = new ImageView(getApplicationContext());
         imageView.setLayoutParams(new ViewGroup.LayoutParams(220, 220));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setImageBitmap(bm);
-
-        Picasso.with(getBaseContext()).load(path).into(imageView);
+        imageView.setImageBitmap(myBitmap);
         layout.addView(imageView, params);
+
+
+        //Image btn
+        final ImageButton btnRemove = new ImageButton(getApplicationContext());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(50, 50);
+        btnRemove.setLayoutParams(lp);
+        Drawable removeIcon = getResources().getDrawable(R.drawable.ic_remove_img);
+        btnRemove.setBackground(removeIcon);
+        btnRemove.setId(_imgid + cntImgs);
+        layout.addView(btnRemove);
+
+
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout root = (LinearLayout) findViewById(R.id.mygallery);
+                final RelativeLayout child = (RelativeLayout) findViewById(layout.getId());
+                int index = layout.getId();
+
+                imagespath.remove(String.valueOf(index));
+
+                root.removeView(child);
+                cntImgs--;
+                Log.d("clicked", "imagespath = " + imagespath);
+            }
+        });
+
+        cntImgs++;
+
+
+        //Picasso.with(getBaseContext()).load(path).into(imageView);
 
 
         return layout;
@@ -162,46 +210,11 @@ public class Product_add extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == IMAGE_PICKER_SELECT && resultCode == Activity.RESULT_OK) {
-            //dialog = ProgressDialog.show(Product_add.this, "", "Uploading file...", true);
+
             String strSDPath = getPictuerPath(data, getBaseContext());
-            String strUrlServer = getString(R.string.WebServiceURL) + "/upload_images";
+            //Log.d("fb", "strSDPath = " + strSDPath);
 
-            String resServer = uploadFiletoServer(strSDPath, strUrlServer);
-
-            /*** Default Value ***/
-            String strStatusID = "0";
-            String strError = "Unknow Status!";
-            String strFileName = "";
-
-            Log.d("fb", "resServer = " + resServer);
-            try {
-                JSONObject c = new JSONObject(resServer);
-                strStatusID = c.getString("StatusID");
-                strError = c.getString("Error");
-                strFileName = c.getString("FileName");
-                inputFiles = inputFiles + strFileName + ";";
-
-                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && inputFiles != "") {
-                    setEnableMenu(true);
-                } else {
-                    setEnableMenu(false);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (strStatusID.equals("0")) {
-                ad.setTitle("Error!");
-                ad.setIcon(android.R.drawable.btn_star_big_on);
-                ad.setMessage(strError);
-                ad.setPositiveButton("Close", null);
-                ad.show();
-                //dialog.dismiss();
-            } else {
-                myGallery.addView(insertPhoto(strFileName));
-                //dialog.dismiss();
-            }
+            myGallery.addView(insertPhoto(strSDPath));
 
         }
     }
@@ -307,49 +320,72 @@ public class Product_add extends Activity {
         int itemId = item.getItemId();
 
 
-
         switch (itemId) {
             case R.id.action_save:
-                String category = (String) this.sp.getSelectedItem();
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://marketbike.zoaish.com/api/set_product");
-                try {
-                    // Add your data
 
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                    nameValuePairs.add(new BasicNameValuePair("fbid", fbid));
-                    nameValuePairs.add(new BasicNameValuePair("txt_title", txt_title.getText().toString()));
-                    nameValuePairs.add(new BasicNameValuePair("inputFiles", inputFiles));
-                    nameValuePairs.add(new BasicNameValuePair("category", category));
-                    nameValuePairs.add(new BasicNameValuePair("txt_price", txt_price.getText().toString()));
-                    nameValuePairs.add(new BasicNameValuePair("txt_description", txt_description.getText().toString()));
+                new AsyncTask<Void, Void, Void>() {
 
-
-                    UrlEncodedFormEntity formEntity = null;
-                    try {
-                        formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-                    } catch (UnsupportedEncodingException e2) {
-                        e2.printStackTrace();
+                    @Override
+                    protected void onPreExecute() {
+                        dialog = ProgressDialog.show(Product_add.this, "", "Saving ...", true);
+                        super.onPreExecute();
                     }
-                    if (formEntity != null)
-                        httppost.setEntity(formEntity);
-
-                   // httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    // Execute HTTP Post Request
-                    HttpResponse response = httpclient.execute(httppost);
-                   // Log.d("fb", "response = " + response);
 
 
-                } catch (ClientProtocolException e) {
-                    // TODO Auto-generated catch block
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                }
+                    @Override
+                    protected Void doInBackground(Void... params) {
 
-                Intent resultData = new Intent();
-                resultData.putExtra("Additem", "OK");
-                setResult(Activity.RESULT_OK, resultData);
-                finish();
+
+                        Addimage();
+
+                        String category = (String) sp.getSelectedItem();
+                        HttpClient httpclient = new DefaultHttpClient();
+                        HttpPost httppost = new HttpPost("http://marketbike.zoaish.com/api/set_product");
+                        try {
+                            // Add your data
+
+                            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                            nameValuePairs.add(new BasicNameValuePair("fbid", fbid));
+                            nameValuePairs.add(new BasicNameValuePair("txt_title", txt_title.getText().toString()));
+                            nameValuePairs.add(new BasicNameValuePair("inputFiles", inputFiles));
+                            nameValuePairs.add(new BasicNameValuePair("category", category));
+                            nameValuePairs.add(new BasicNameValuePair("txt_price", txt_price.getText().toString()));
+                            nameValuePairs.add(new BasicNameValuePair("txt_description", txt_description.getText().toString()));
+
+
+                            UrlEncodedFormEntity formEntity = null;
+                            try {
+                                formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+                            } catch (UnsupportedEncodingException e2) {
+                                e2.printStackTrace();
+                            }
+                            if (formEntity != null)
+                                httppost.setEntity(formEntity);
+                            HttpResponse response = httpclient.execute(httppost);
+
+                        } catch (ClientProtocolException e) {
+                            // TODO Auto-generated catch block
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                        }
+
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        dialog.dismiss();
+                        Intent resultData = new Intent();
+                        resultData.putExtra("Additem", "OK");
+                        setResult(Activity.RESULT_OK, resultData);
+
+
+                        finish();
+                    }
+                }.execute();
+
+
                 return true;
             case android.R.id.home:
                 finish();
@@ -357,7 +393,58 @@ public class Product_add extends Activity {
 
         }
 
+
         return true;
+    }
+
+
+    private void Addimage() {
+
+
+        for (Map.Entry<String, String> entry : imagespath.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            // ...
+
+
+            Log.d("fb", "value = " + value);
+
+
+            String strUrlServer = getString(R.string.WebServiceURL) + "/upload_images";
+
+            String resServer = uploadFiletoServer(value, strUrlServer);
+
+            String strStatusID = "0";
+            String strError = "Unknow Status!";
+            String strFileName = "";
+
+            Log.d("fb", "resServer = " + resServer);
+            try {
+                JSONObject c = new JSONObject(resServer);
+                strStatusID = c.getString("StatusID");
+                strError = c.getString("Error");
+                strFileName = c.getString("FileName");
+                inputFiles = inputFiles + strFileName + ";";
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (strStatusID.equals("0")) {
+                ad.setTitle("Error!");
+                ad.setIcon(android.R.drawable.btn_star_big_on);
+                ad.setMessage(strError);
+                ad.setPositiveButton("Close", null);
+                ad.show();
+
+            } else {
+                // myGallery.addView(insertPhoto(strFileName));
+            }
+
+        }
+
+        // Log.d("fb", "resServer = " + inputFiles);
+
     }
 
     public String uploadFiletoServer(String strSDPath, String strUrlServer) {

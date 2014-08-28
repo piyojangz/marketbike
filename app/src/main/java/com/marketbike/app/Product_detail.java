@@ -290,7 +290,7 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
         //Log.d("fb", "oldy : " + oldy);
         //Log.d("fb", "diff : " + diff);
         if (diff > 0) {
-            if (y > 500 && y >= oldy && !is_view_gone) {
+            if (y > 10 && y >= oldy && !is_view_gone) {
 
                 is_view_gone = true;
                 if (this.wrap_item.INVISIBLE != View.GONE) {
