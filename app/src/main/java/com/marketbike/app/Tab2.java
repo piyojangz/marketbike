@@ -62,9 +62,9 @@ public class Tab2 extends Fragment implements onListRefreshListener, onListLoadM
         this.lv.setOnListLoadMoreListener(this);
         this.lv.setDistanceFromBottom(2);
         this.lv.setAddButton(this.wrap_item);
-        this.lv.getListView().setFooterDividersEnabled(false);
-        this.lv.getListView().setDivider(null);
-        this.lv.getListView().setDividerHeight(0);
+        //this.lv.getListView().setFooterDividersEnabled(false);
+        //this.lv.getListView().setDivider(null);
+        //this.lv.getListView().setDividerHeight(0);
         this.lv.getListView().setSelector(new ColorDrawable(Color.TRANSPARENT));
         this.sList = new ArrayList<HashMap<String, String>>();
         this.DataList = new ArrayList<HashMap<String, String>>();

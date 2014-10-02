@@ -16,6 +16,10 @@ public class ListItem {
     public static String KEY_URL = "KEY_URL";
     public static String KEY_IMAGE_HEADER = "KEY_IMAGE_HEADER";
     public static String KEY_IMAGE_LOGO = "KEY_IMAGE_LOGO";
+    public static String KEY_NAME = "KEY_NAME";
+    public static String KEY_FBID = "KEY_FBID";
+    public static String KEY_EMAIL = "KEY_EMAIL";
+    public static String KEY_STATUS = "KEY_STATUS";
 
 
     //------------------------------------------------------------------------
@@ -25,6 +29,7 @@ public class ListItem {
 
     // --------------------------------------------------------------------------
     public static String AD_UNIT_ID = "ca-app-pub-6496432517273490/5248925178";
+
     public ListItem() {
 
 

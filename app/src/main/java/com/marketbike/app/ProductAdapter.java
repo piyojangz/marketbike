@@ -17,14 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.marketbike.app.custom.setAppFont;
-import com.marketbike.app.helper.TimeAgo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -64,7 +60,7 @@ public class ProductAdapter extends BaseAdapter implements Transformation {
         Context context = this.activity;
         smart = this.data.get(position);
         String title = smart.get(ListItem.KEY_TITLE).toString();
-        String user  = smart.get(ListItem.KEY_USER).toString();
+        String user = smart.get(ListItem.KEY_USER).toString();
         String price = smart.get(ListItem.KEY_PRICE).toString();
         String url = smart.get(ListItem.KEY_IMAGE).toString();
 
@@ -79,7 +75,7 @@ public class ProductAdapter extends BaseAdapter implements Transformation {
         TextView txt_user = (TextView) convertView.findViewById(R.id.txt_user);
 
         txt_title.setText(title);
-        txt_price.setText(price + "฿");
+        txt_price.setText(price + " บาท");
         txt_user.setText(user);
 
 

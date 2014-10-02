@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_detail"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="#fff"
+    android:padding="10dp"
+    android:orientation="horizontal">
 
     <FrameLayout
         android:id="@+id/myfeed_list"
         android:layout_width="match_parent"
-        android:background="@drawable/bg_card"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:paddingBottom="10dp"
+        android:background="#fff"
         android:layout_height="wrap_content">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/img_thumnail"
-                android:layout_width="fill_parent"
-                android:layout_height="150dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:adjustViewBounds="true"
                 android:background="@color/slidemenu_bg"
                 android:scaleType="centerCrop"
                 android:layout_gravity="top" />
 
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="@string/lorem"
+                    android:textColor="#2c3e50"
+                    android:id="@+id/txt_title"
+                    android:singleLine="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="Small Text"
+                    android:textColor="#ff686868"
+                    android:padding="10dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/txt_user" />
 
 
-            <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="@string/lorem"
-            android:textColor="#000"
-            android:id="@+id/txt_title"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="5dp"
-            android:singleLine="true"
-            android:layout_below="@+id/img_thumnail"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="@string/lorem"
-                android:textColor="#000"
-                android:id="@+id/txt_price"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginTop="5dp"
-                android:singleLine="true"
-                android:layout_below="@+id/txt_title"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="25,000"
+                    android:textColor="#c0392b"
+                    android:id="@+id/txt_price"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true" />
 
 
+            </LinearLayout>
+        </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:text="Small Text"
-                android:textColor="#ddd"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/txt_user"
-                android:layout_below="@+id/txt_price" />
-
-
-        </RelativeLayout>
     </FrameLayout>
 
+    <ImageView
+        android:layout_width="7dp"
+        android:layout_height="13dp"
+        android:id="@+id/imageButton"
+        android:background="@drawable/arrow_next"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
 
-</LinearLayout>
+</RelativeLayout>

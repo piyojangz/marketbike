@@ -2,14 +2,21 @@ package com.marketbike.app;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.support.v4.app.Fragment;
+
+import com.marketbike.app.helper.JsonHelper;
+
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,22 +27,34 @@ public class Tab3 extends Fragment {
      */
     private ArrayList<HashMap<String, String>> DataList;
     private HashMap map;
-    private TripAdapter tripAdpt;
+    private UserAdapter userAdpt;
     private ListView lv;
+    AsyncTask<Void, Void, Void> task;
+    private JSONArray data;
+    private static final int LIMIT = 100;
+    private int OFFSET = 0;
     protected ArrayList<HashMap<String, String>> sList;
+    public static final String PREFS_NAME = "MyData_Settings";
+    private String userid;
+    private SharedPreferences.Editor editor;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.tab3, container, false);
+
+
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, getActivity().MODE_PRIVATE);
+        this.userid = settings.getString("fbid", "");
+
 
         this.lv = (ListView) rootView.findViewById(R.id.tab3_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
         this.DataList = new ArrayList<HashMap<String, String>>();
-        this.createTrips();
-        this.tripAdpt = new TripAdapter(this.getActivity(), this.sList);
-        this.lv.setAdapter(this.tripAdpt);
+
+
+        this.createList();
 
 
         this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -50,55 +69,70 @@ public class Tab3 extends Fragment {
                 startActivity(newActivity);
             }
         });
-
+        this.lv.setScrollingCacheEnabled(false);
         return rootView;
     }
 
-    private void createTrips() {
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "ER6-Club Thailand");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/t1.0-1/c33.33.418.418/s160x160/561413_356182494488330_715098968_n.jpg");
-        this.sList.add(map);
+    private void bindList() {
+        this.userAdpt = new UserAdapter(this.getActivity(), this.sList);
+        this.lv.setAdapter(this.userAdpt);
+    }
 
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Ninja300 Club Thailand");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/c1.0.160.160/p160x160/10401932_1424591527806439_6608546196938191283_n.jpg");
-        this.sList.add(map);
+    private void createList() {
 
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Z800 Club Thailand");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/t1.0-1/c95.3.395.395/s160x160/1234747_194747977371010_1425671170_n.jpg");
-        this.sList.add(map);
+        this.task = new AsyncTask<Void, Void, Void>() {
 
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Ducati Thailand");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t1.0-1/c66.66.828.828/s160x160/65184_429211237146806_1255761957_n.jpg");
-        this.sList.add(map);
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Honda CBR250R");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/t1.0-1/p160x160/1426668_617784511593570_593621757_n.jpg");
-        this.sList.add(map);
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    String url = "http://marketbike.zoaish.com/api/get_all_user/" + userid + "/" + OFFSET + "/" + LIMIT;
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Honda CBR 150R");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/t1.0-1/c22.22.272.272/s160x160/250599_221837081179111_3748108_n.jpg");
-        this.sList.add(map);
+                    data = JsonHelper.getJson(url).getJSONArray("result");
 
+                    for (int i = 0; i < data.length(); i++) {
 
-        this.map = new HashMap<String, String>();
-        this.map.put(ListItem.KEY_MENU_ID, "1");
-        this.map.put(ListItem.KEY_MENU_TITLE, "Honda CBR 150R");
-        this.map.put(ListItem.KEY_MENU_LOGO, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/t1.0-1/c22.22.272.272/s160x160/250599_221837081179111_3748108_n.jpg");
-        this.sList.add(map);
+                        String id = data.getJSONObject(i).getString("userid");
+                        String name = data.getJSONObject(i).getString("name");
+                        String fbid = data.getJSONObject(i).getString("fbid");
+                        String email = data.getJSONObject(i).getString("email");
+                        String status = data.getJSONObject(i).getString("status");
+
+                        String create_date = data.getJSONObject(i).getString("create_date");
+                        String thumbnail = "https://graph.facebook.com/" + fbid + "/picture?type=large";
+
+                        map = new HashMap<String, String>();
+                        map.put(ListItem.KEY_ID, id);
+                        map.put(ListItem.KEY_NAME, name);
+                        map.put(ListItem.KEY_FBID, fbid);
+                        map.put(ListItem.KEY_EMAIL, email);
+                        map.put(ListItem.KEY_CREATEDATE, create_date);
+                        map.put(ListItem.KEY_MENU_LOGO, thumbnail);
+                        map.put(ListItem.KEY_STATUS, status);
+                        sList.add(map);
+                    }
+
+                } catch (Throwable e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                bindList();
+            }
+
+        };
+        this.task.execute((Void[]) null);
+
     }
 }

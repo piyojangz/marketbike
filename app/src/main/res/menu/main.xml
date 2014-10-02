@@ -1,15 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:id="@+id/action_more"
-    android:icon="@drawable/ic_action_overflow"
-    android:title="More..."
-        android:orderInCategory="1"
-    android:showAsAction="ifRoom">
-    <menu android:id="@+id/group">
-        <item android:id="@+id/action_login"
-            android:onClick="onLoginClick"
-            android:title="เข้าสู่ระบบ"/>
-    </menu>
+    <item
+        android:id="@+id/action_more"
+        android:icon="@drawable/ic_action_overflow"
+        android:title="More..."
+        android:orderInCategory="2"
+        android:showAsAction="ifRoom">
+        <menu android:id="@+id/group">
+            <item
+                android:id="@+id/action_login"
+                android:onClick="onLoginClick"
+                android:title="เข้าสู่ระบบ" />
+        </menu>
     </item>
+
+    <item
+        android:id="@+id/action_noti"
+        android:actionLayout="@layout/badge"
+        android:showAsAction="always"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_bell"
+        android:title="noti" />
+
+
 </menu>

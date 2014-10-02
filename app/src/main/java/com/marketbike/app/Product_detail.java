@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,14 +14,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.marketbike.app.custom.setAppFont;
 import com.marketbike.app.helper.JsonHelper;
 import com.marketbike.app.helper.ScrollViewExt;
 import com.squareup.picasso.Picasso;
@@ -37,7 +33,7 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
     private String id;
     private HashMap map;
     private AsyncTask<Void, Void, Void> task;
-    private String title, headline, thumbnail, userimg, price, user, description, image1, image2, image3, image4, image5,Images;
+    private String title, headline, thumbnail, userimg, price, user, description, image1, image2, image3, image4, image5, Images;
     private Menu optionsMenu;
     protected ArrayList<HashMap<String, String>> sList;
     private ScrollViewExt scroll_detail;
@@ -49,9 +45,9 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_detail);
-        Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+        //Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
         final ViewGroup mContainer = (ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content);
-        setAppFont.setAppFont(mContainer, typeFace);
+        //setAppFont.setAppFont(mContainer, typeFace);
         this.title = this.getIntent().getCharSequenceExtra(ListItem.KEY_TITLE).toString();
         id = this.getIntent().getCharSequenceExtra(ListItem.KEY_ID).toString();
         setTitle(this.title);
@@ -122,19 +118,15 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
         String[] imgs = this.Images.split(";");
         int i = 1;
         for (String each : imgs) {
-            if(i==1) {
+            if (i == 1) {
                 this.image1 = each;
-            }
-            else if(i==2){
+            } else if (i == 2) {
                 this.image2 = each;
-            }
-            else if(i==3){
+            } else if (i == 3) {
                 this.image3 = each;
-            }
-            else if(i==4){
+            } else if (i == 4) {
                 this.image4 = each;
-            }
-            else if(i==5){
+            } else if (i == 5) {
                 this.image5 = each;
             }
             i++;
@@ -184,7 +176,7 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
             this.image3 = data.getString("Image_3");
             this.image4 = data.getString("Image_4");
             this.image5 = data.getString("Image_5");
-            this.Images =  data.getString("Images");
+            this.Images = data.getString("Images");
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -289,7 +281,7 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
         //Log.d("fb", "y : " + y);
         //Log.d("fb", "oldy : " + oldy);
         //Log.d("fb", "diff : " + diff);
-        if (diff > 0) {
+        /*if (diff > 0) {
             if (y > 10 && y >= oldy && !is_view_gone) {
 
                 is_view_gone = true;
@@ -327,6 +319,8 @@ public class Product_detail extends Activity implements Transformation, ScrollVi
             } else {
 
             }
-        }
+        }*/
+
     }
+
 }

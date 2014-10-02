@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -15,7 +14,6 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -24,9 +22,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,12 +35,13 @@ public class LoginActivity extends Activity {
     private List<String> permissions;
     private UiLifecycleHelper uiHelper;
     public Session.StatusCallback callback;
-    private String get_id, get_name, get_gender, get_email, get_birthday,get_link,get_fname,get_lname,get_username;
-    private  SharedPreferences.Editor editor;
+    private String get_id, get_name, get_gender, get_email, get_birthday, get_link, get_fname, get_lname, get_username;
+    private SharedPreferences.Editor editor;
     GoogleCloudMessaging gcm;
     String regid;
     String PROJECT_NUMBER = "416625437190";
     public static final String PREFS_NAME = "MyData_Settings";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +50,7 @@ public class LoginActivity extends Activity {
         uiHelper.onCreate(savedInstanceState);
         //define facebook button
         LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
-        permissions = Arrays.asList("user_likes", "public_profile", "user_friends","email","user_birthday");
+        permissions = Arrays.asList("user_likes", "public_profile", "user_friends", "email", "user_birthday");
         //,"user_birthday","user_location" not approve
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         editor = settings.edit();
@@ -117,18 +116,31 @@ public class LoginActivity extends Activity {
                                                     nameValuePairs.add(new BasicNameValuePair("lname", get_lname));
                                                     nameValuePairs.add(new BasicNameValuePair("username", get_username));
 
-                                                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                                                   /* httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                                                     // execute HTTP post request
                                                     HttpResponse response = httpclient.execute(httppost);
-                                                    HttpEntity resEntity = response.getEntity();
+                                                    HttpEntity resEntity = response.getEntity();*/
 
-                                                    if (resEntity != null) {
+
+                                                    UrlEncodedFormEntity formEntity = null;
+                                                    try {
+                                                        formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+                                                    } catch (UnsupportedEncodingException e2) {
+                                                        e2.printStackTrace();
+                                                    }
+                                                    if (formEntity != null)
+                                                        httppost.setEntity(formEntity);
+                                                    HttpResponse response = httpclient.execute(httppost);
+                                                    //Log.v("fb", "Response: " + response);
+
+
+                                                  /*  if (resEntity != null) {
 
                                                         String responseStr = EntityUtils.toString(resEntity).trim();
                                                         Log.v("fb", "Response: " + responseStr);
 
                                                         // you can add an if statement here and do other actions based on the response
-                                                    }
+                                                    }*/
 
                                                 } catch (ClientProtocolException e) {
                                                     e.printStackTrace();

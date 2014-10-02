@@ -2,28 +2,32 @@ package com.marketbike.app;
 
 
 import android.app.ActionBar;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.marketbike.app.helper.JsonHelper;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -34,11 +38,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
+    private JSONArray data;
     GoogleCloudMessaging gcm;
     String regid;
     String PROJECT_NUMBER = "416625437190";
     Session session;
     private Menu menu;
+    private String title, id, type;
+    private int hot_number = 0;
+    private TextView ui_noti = null;
+    AsyncTask<Integer, Void, Integer> task;
+    public static final String PREFS_NAME = "MyData_Settings";
+    private String fbid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +72,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         });
 
+        SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, this.MODE_PRIVATE);
+        this.fbid = settings.getString("fbid", "");
+
+
         for (int i = 0; i < mCollectionPagerAdapter.getCount(); i++) {
 
             switch (i) {
@@ -77,6 +92,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 2:
                     actionBar.addTab(actionBar.newTab()
                             .setIcon(R.drawable.ic_cart)
+                            .setTabListener(this));
+                    break;
+                case 3:
+                    actionBar.addTab(actionBar.newTab()
+                            .setIcon(R.drawable.ic_action_person)
+                            .setTabListener(this));
+                    break;
+                case 4:
+                    actionBar.addTab(actionBar.newTab()
+                            .setIcon(R.drawable.ic_setting_red)
                             .setTabListener(this));
                     break;
                 default:
@@ -103,6 +128,41 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         } catch (NoSuchAlgorithmException e) {
             Log.i("KeyHash:", "error");
+        }
+
+        if (this.getIntent().hasExtra(ListItem.KEY_ID)) {
+            this.title = this.getIntent().getCharSequenceExtra(ListItem.KEY_TITLE).toString();
+            this.id = this.getIntent().getCharSequenceExtra(ListItem.KEY_ID).toString();
+            this.type = this.getIntent().getCharSequenceExtra(ListItem.KEY_TYPE).toString();
+            if (!this.id.equals("")) {
+                this.openIntend();
+            }
+        }
+
+    }
+
+    private void openIntend() {
+        Intent resultIntent;
+
+        switch (Integer.parseInt(this.type)) {
+            case 0:
+                resultIntent = new Intent(this, News_detail.class);
+                resultIntent.putExtra(ListItem.KEY_URL, "");
+                resultIntent.putExtra(ListItem.KEY_TITLE, this.title);
+                resultIntent.putExtra(ListItem.KEY_ID, String.valueOf(id));
+                startActivity(resultIntent);
+                break;
+            case 1:
+                resultIntent = new Intent(this, FriendRequest_list.class);
+                resultIntent.putExtra(ListItem.KEY_URL, "");
+                resultIntent.putExtra(ListItem.KEY_TITLE, this.title);
+                resultIntent.putExtra(ListItem.KEY_ID, String.valueOf(id));
+                startActivity(resultIntent);
+                break;
+            case 2: // accept friend
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(Integer.parseInt(id.toString()));
+                break;
         }
 
     }
@@ -169,16 +229,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         task.execute((Void[]) null);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         this.menu = menu;
+        final View menu_hotlist = this.menu.findItem(R.id.action_noti).getActionView();
+        this.ui_noti = (TextView) menu_hotlist.findViewById(R.id.noti_count);
+        this.ui_noti.setVisibility(View.INVISIBLE);
+        checkRequestFriend();
         session = Session.getActiveSession();
         if (session != null && (session.isOpened() || session.isClosed())) {
             if (session.isOpened()) {
-                this.menu.getItem(0).getSubMenu().getItem(0).setTitle("ออกจากระบบ");
-                this.menu.getItem(0).getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                this.menu.getItem(1).getSubMenu().getItem(0).setTitle("ออกจากระบบ");
+                this.menu.getItem(1).getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         session.close();
                         session.closeAndClearTokenInformation();
@@ -191,8 +256,94 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             }
 
         }
+
+        new MyMenuItemStuffListener(menu_hotlist, "Show hot message") {
+            @Override
+            public void onClick(View v) {
+                // String url = "http://marketbike.zoaish.com/api/set_notification_zero/" + fbid;
+                Intent resultIntent = new Intent(getApplicationContext(), FriendRequest_list.class);
+                resultIntent.putExtra(ListItem.KEY_URL, "");
+                resultIntent.putExtra(ListItem.KEY_TITLE, "");
+                resultIntent.putExtra(ListItem.KEY_ID, String.valueOf("0"));
+                startActivity(resultIntent);
+            }
+        };
+
+
         return super.onCreateOptionsMenu(menu);
     }
+
+
+    static abstract class MyMenuItemStuffListener implements View.OnClickListener {
+        private String hint;
+        private View view;
+
+        MyMenuItemStuffListener(View view, String hint) {
+            this.view = view;
+            this.hint = hint;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        abstract public void onClick(View v);
+    }
+
+
+    public void checkRequestFriend() {
+
+
+        task = new AsyncTask<Integer, Void, Integer>() {
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Integer doInBackground(Integer... arg0) {
+                Integer notice = 0;
+                try {
+                    String url = "http://marketbike.zoaish.com/api/get_friend_request_notification/" + fbid;
+                    Object data = JsonHelper.getJson(url).getString("result");
+                    //Log.v("debug","data = " + data);
+                    notice = Integer.parseInt(data.toString());
+
+                } catch (Throwable e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return notice;
+            }
+
+            @Override
+            protected void onPostExecute(Integer result) {
+                hot_number = result;
+                updateNotiCount(hot_number);
+            }
+
+        };
+        task.execute((Integer[]) null);
+
+
+    }
+
+    public void updateNotiCount(final int new_hot_number) {
+        hot_number = new_hot_number;
+        if (ui_noti == null) return;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (new_hot_number == 0)
+                    ui_noti.setVisibility(View.INVISIBLE);
+                else {
+                    ui_noti.setVisibility(View.VISIBLE);
+                    ui_noti.setText(Integer.toString(new_hot_number));
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
@@ -214,8 +365,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
                 break;
             case 3:
+                tab.setIcon(R.drawable.ic_action_person_hover);
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(3));
+                break;
+            case 4:
                 tab.setIcon(R.drawable.ic_setting_red_hover);
-                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(2));
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(4));
 
                 break;
         }
@@ -236,10 +391,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 tab.setIcon(R.drawable.ic_cart);
                 break;
             case 3:
+                tab.setIcon(R.drawable.ic_action_person);
+                break;
+            case 4:
                 tab.setIcon(R.drawable.ic_setting_red);
                 break;
             default:
                 tab.setIcon(R.drawable.ic_setting_red);
+                break;
         }
     }
 
@@ -256,7 +415,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class CollectionPagerAdapter extends FragmentPagerAdapter {
 
-        final int NUM_ITEMS = 4; // number of tabs
+        final int NUM_ITEMS = 5; // number of tabs
 
         public CollectionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -273,6 +432,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 2:
                     return new Tab2();
                 case 3:
+                    return new Tab3();
+                case 4:
                     return new Tab4();
             }
 
@@ -297,6 +458,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     break;
                 case 2:
                     tabLabel = "MARKET";
+                    break;
+                case 3:
+                    tabLabel = "FRIEND";
                     break;
                 case 4:
                     tabLabel = "SETTING";
