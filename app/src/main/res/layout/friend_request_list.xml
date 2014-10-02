@@ -2,19 +2,16 @@
     android:id="@+id/tab3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#fff"
-    android:gravity="center|top">
+    android:background="#fff">
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:id="@+id/tab3_listView"
+        android:id="@+id/friend_req_listView"
         android:dividerHeight="1dp"
         android:divider="@drawable/list_divider"
         android:focusable="false"
-        android:layout_gravity="top"
         android:choiceMode="singleChoice" />
 
 </LinearLayout>

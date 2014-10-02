@@ -34,7 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Tab4 extends Fragment implements Transformation {
+public class Tab4 extends Fragment {
 
     /**
      * Called when the activity is first created.
@@ -52,7 +52,7 @@ public class Tab4 extends Fragment implements Transformation {
     private ImageView image_profile;
     private TextView txtFullName;
     private ImageView imageBgProfile;
-    private  Session session;
+    private Session session;
     private RelativeLayout profileConsole;
     private LinearLayout tab4;
     private String _is_notification;
@@ -61,7 +61,7 @@ public class Tab4 extends Fragment implements Transformation {
     GoogleCloudMessaging gcm;
     String regid;
     String PROJECT_NUMBER = "416625437190";
-    private  com.squareup.picasso.Transformation transformation = this;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,9 +69,9 @@ public class Tab4 extends Fragment implements Transformation {
         this.rootView = inflater.inflate(R.layout.tab4, container, false);
         image_profile = (ImageView) rootView.findViewById(R.id.image_profile);
         imageBgProfile = (ImageView) rootView.findViewById(R.id.imageBgProfile);
-        profileConsole = (RelativeLayout)rootView.findViewById(R.id.profileConsole);
+        profileConsole = (RelativeLayout) rootView.findViewById(R.id.profileConsole);
         txtFullName = (TextView) rootView.findViewById(R.id.txtFullName);
-        tab4  = (LinearLayout)rootView.findViewById(R.id.tab4);
+        tab4 = (LinearLayout) rootView.findViewById(R.id.tab4);
         session = Session.getActiveSession();
         if (session != null && (session.isOpened() || session.isClosed())) {
             onSessionStateChange(session, session.getState(), null);
@@ -100,8 +100,8 @@ public class Tab4 extends Fragment implements Transformation {
 
             @Override
             protected void onPostExecute(Void result) {
-                list_menu = (ListView)rootView.findViewById(R.id.list_menu);
-                if(sList != null) {
+                list_menu = (ListView) rootView.findViewById(R.id.list_menu);
+                if (sList != null) {
                     SettingAdapter = new SettingAdapter(getActivity(), sList);
                     list_menu.setAdapter(SettingAdapter);
                 }
@@ -109,8 +109,6 @@ public class Tab4 extends Fragment implements Transformation {
 
         };
         task.execute((Void[]) null);
-
-
 
 
         return rootView;
@@ -139,7 +137,7 @@ public class Tab4 extends Fragment implements Transformation {
                 map = new HashMap<String, String>();
                 map.put(ListItem.KEY_TITLE, menu[i]);
                 map.put(ListItem.KEY_IMAGE, img[i]);
-                map.put(ListItem.KEY_SET,psetting[i]);
+                map.put(ListItem.KEY_SET, psetting[i]);
                 sList.add(map);
             }
 
@@ -166,9 +164,49 @@ public class Tab4 extends Fragment implements Transformation {
                                     get_email = (String) user.getProperty("email");
                                     get_birthday = user.getBirthday();
                                     imageURL = "https://graph.facebook.com/" + get_id + "/picture?type=large";
-                                    Picasso.with(getActivity()).load(imageURL).into(image_profile);
+                                    Transformation tm = new Transformation() {
+                                        @Override
+                                        public Bitmap transform(Bitmap bitmap) {
+                                            Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                                                    .getHeight(), Bitmap.Config.ARGB_8888);
+                                            Canvas canvas = new Canvas(output);
+
+
+                                            final int color = 0xff424242;
+                                            final Paint paint = new Paint();
+                                            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+
+                                            paint.setAntiAlias(true);
+                                            canvas.drawARGB(0, 0, 0, 0);
+                                            paint.setColor(color);
+
+                                            canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                                                    bitmap.getWidth() / 2, paint);
+                                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+                                            canvas.drawBitmap(bitmap, rect, rect, paint);
+
+
+                                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+
+                                            if (output != bitmap) {
+                                                bitmap.recycle();
+                                            }
+
+
+                                            return output;
+                                        }
+
+                                        @Override
+                                        public String key() {
+                                            return "circle()";
+                                        }
+                                    };
+
+                                    Picasso.with(Tab4.this.getActivity()).load(imageURL).into(image_profile);
                                     String imgBg = "http://marketbike.zoaish.com/public/images/default_bg.jpg";
-                                    Picasso.with(getActivity()).load(imgBg).into(imageBgProfile);
+                                    Picasso.with(Tab4.this.getActivity()).load(imgBg).transform(tm).into(imageBgProfile);
                                     txtFullName.setText(get_name);
 
 
@@ -181,49 +219,10 @@ public class Tab4 extends Fragment implements Transformation {
         } else if (state.isClosed()) {
             Log.i("fb", "Logged out...");
             profileConsole.setVisibility(View.GONE);
-            tab4.setPadding(0,20,0,0);
+            tab4.setPadding(0, 20, 0, 0);
         }
 
     }
 
 
-    @Override
-    public Bitmap transform(Bitmap bitmap) {
-
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-                .getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                bitmap.getWidth() / 2, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-
-
-
-        return output;
-
-
-    }
-
-
-
-    @Override
-    public String key() {
-        return "circle()";
-    }
 }

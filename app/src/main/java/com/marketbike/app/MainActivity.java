@@ -81,32 +81,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             switch (i) {
                 case 0:
                     actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_news_feed)
+                            .setIcon(R.drawable.ic_news)
                             .setTabListener(this));
                     break;
                 case 1:
                     actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_category)
+                            .setIcon(R.drawable.ic_news_feed)
                             .setTabListener(this));
                     break;
                 case 2:
                     actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_cart)
-                            .setTabListener(this));
-                    break;
-                case 3:
-                    actionBar.addTab(actionBar.newTab()
                             .setIcon(R.drawable.ic_action_person)
                             .setTabListener(this));
                     break;
-                case 4:
-                    actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_setting_red)
-                            .setTabListener(this));
-                    break;
+
                 default:
                     actionBar.addTab(actionBar.newTab()
-                            .setIcon(R.drawable.ic_setting_red)
+                            .setIcon(R.drawable.ic_news)
                             .setTabListener(this));
             }
 
@@ -153,7 +144,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 startActivity(resultIntent);
                 break;
             case 1:
-                resultIntent = new Intent(this, FriendRequest_list.class);
+                resultIntent = new Intent(this, Notification_list.class);
                 resultIntent.putExtra(ListItem.KEY_URL, "");
                 resultIntent.putExtra(ListItem.KEY_TITLE, this.title);
                 resultIntent.putExtra(ListItem.KEY_ID, String.valueOf(id));
@@ -240,7 +231,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         this.ui_noti.setVisibility(View.INVISIBLE);
         checkRequestFriend();
         session = Session.getActiveSession();
-        if (session != null && (session.isOpened() || session.isClosed())) {
+       /* if (session != null && (session.isOpened() || session.isClosed())) {
             if (session.isOpened()) {
                 this.menu.getItem(1).getSubMenu().getItem(0).setTitle("ออกจากระบบ");
                 this.menu.getItem(1).getSubMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -255,13 +246,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 });
             }
 
-        }
+        }*/
 
         new MyMenuItemStuffListener(menu_hotlist, "Show hot message") {
             @Override
             public void onClick(View v) {
                 // String url = "http://marketbike.zoaish.com/api/set_notification_zero/" + fbid;
-                Intent resultIntent = new Intent(getApplicationContext(), FriendRequest_list.class);
+                Intent resultIntent = new Intent(getApplicationContext(), Notification_list.class);
                 resultIntent.putExtra(ListItem.KEY_URL, "");
                 resultIntent.putExtra(ListItem.KEY_TITLE, "");
                 resultIntent.putExtra(ListItem.KEY_ID, String.valueOf("0"));
@@ -350,27 +341,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         tab.setIcon(R.drawable.appicon);
         switch (tab.getPosition()) {
             case 0:
-                tab.setIcon(R.drawable.ic_news_feed_hover);
+                tab.setIcon(R.drawable.ic_news_hover);
                 getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(0));
 
                 break;
             case 1:
-                tab.setIcon(R.drawable.ic_category_hover);
+                tab.setIcon(R.drawable.ic_news_feed_hover);
                 getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(1));
 
                 break;
             case 2:
-                tab.setIcon(R.drawable.ic_cart_hover);
-                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(2));
-
-                break;
-            case 3:
                 tab.setIcon(R.drawable.ic_action_person_hover);
-                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(3));
-                break;
-            case 4:
-                tab.setIcon(R.drawable.ic_setting_red_hover);
-                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(4));
+                getActionBar().setTitle(mCollectionPagerAdapter.getPageTitle(2));
 
                 break;
         }
@@ -382,22 +364,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         tab.setIcon(R.drawable.appicon);
         switch (tab.getPosition()) {
             case 0:
-                tab.setIcon(R.drawable.ic_news_feed);
+                tab.setIcon(R.drawable.ic_news);
                 break;
             case 1:
-                tab.setIcon(R.drawable.ic_category);
+                tab.setIcon(R.drawable.ic_news_feed);
                 break;
             case 2:
-                tab.setIcon(R.drawable.ic_cart);
-                break;
-            case 3:
                 tab.setIcon(R.drawable.ic_action_person);
-                break;
-            case 4:
-                tab.setIcon(R.drawable.ic_setting_red);
-                break;
-            default:
-                tab.setIcon(R.drawable.ic_setting_red);
                 break;
         }
     }
@@ -405,6 +378,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
 
+    }
+
+    public void onFriendlistClick(MenuItem item) {
+        Intent newActivity = new Intent(this, FriendlistActivity.class);
+        startActivity(newActivity);
     }
 
     public void onLoginClick(MenuItem item) {
@@ -415,7 +393,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     public class CollectionPagerAdapter extends FragmentPagerAdapter {
 
-        final int NUM_ITEMS = 5; // number of tabs
+        final int NUM_ITEMS = 3; // number of tabs
 
         public CollectionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -428,12 +406,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 0:
                     return new Tab0();
                 case 1:
-                    return new Tab1();
-                case 2:
                     return new Tab2();
-                case 3:
-                    return new Tab3();
-                case 4:
+                case 2:
                     return new Tab4();
             }
 
@@ -454,18 +428,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     tabLabel = "NEWS";
                     break;
                 case 1:
-                    tabLabel = "CATEGORY";
+                    tabLabel = "Feeds";
                     break;
                 case 2:
-                    tabLabel = "MARKET";
+                    tabLabel = "Profile";
                     break;
-                case 3:
-                    tabLabel = "FRIEND";
-                    break;
-                case 4:
-                    tabLabel = "SETTING";
-                    break;
-
             }
 
             return tabLabel;

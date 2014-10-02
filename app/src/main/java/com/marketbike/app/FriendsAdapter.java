@@ -2,58 +2,43 @@ package com.marketbike.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.marketbike.app.helper.TimeAgo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Breeshy on 08/06/2014.
  */
 
 
-public class UserReqAdapter extends BaseAdapter implements Transformation {
+public class FriendsAdapter extends BaseAdapter implements Transformation {
     private Activity activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater = null;
     public static final String PREFS_NAME = "MyData_Settings";
     private boolean[] mHighlightedPositions;
 
-    public UserReqAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+    public FriendsAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
         this.activity = a;
         this.data = d;
         this.mHighlightedPositions = new boolean[this.data.size()];
@@ -94,7 +79,7 @@ public class UserReqAdapter extends BaseAdapter implements Transformation {
         String title = smart.get(ListItem.KEY_NAME).toString();
         String url = smart.get(ListItem.KEY_MENU_LOGO).toString();
         String createdate = smart.get(ListItem.KEY_CREATEDATE).toString();
-        String requestdate = smart.get(ListItem.KEY_REQUESTDATE).toString();
+        String requestdate = smart.get(ListItem.KEY_APPROVEDATE).toString();
         String status = smart.get(ListItem.KEY_STATUS).toString();
         final String fbid = smart.get(ListItem.KEY_FBID).toString();
         final String friendid = smart.get(ListItem.KEY_ID).toString();
@@ -109,77 +94,14 @@ public class UserReqAdapter extends BaseAdapter implements Transformation {
             }
         }
 
-
-        btn_request_friend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-
-
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                    }
-
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, activity.MODE_PRIVATE);
-                        String userid = settings.getString("fbid", "");
-                        String url = "http://marketbike.zoaish.com/api/accept_friend/";
-                        HttpClient httpclient = new DefaultHttpClient();
-                        HttpPost httppost = new HttpPost(url);
-                        try {
-                            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                            nameValuePairs.add(new BasicNameValuePair("userid", userid));
-                            nameValuePairs.add(new BasicNameValuePair("friendid", friendid));
-
-                            UrlEncodedFormEntity formEntity = null;
-                            try {
-                                formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-                            } catch (UnsupportedEncodingException e2) {
-                                e2.printStackTrace();
-                            }
-                            if (formEntity != null)
-                                httppost.setEntity(formEntity);
-                            HttpResponse response = httpclient.execute(httppost);
-                            //Log.v("debug","response = " + response);
-                        } catch (ClientProtocolException e) {
-                            // TODO Auto-generated catch block
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        int position = Integer.valueOf(pos);
-                        // Toggle background resource
-                        RelativeLayout layout = (RelativeLayout) v.getParent();
-                        Button button = (Button) layout.getChildAt(3);
-                        if (mHighlightedPositions[position]) {
-                            button.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
-                            mHighlightedPositions[position] = false;
-                        } else {
-                            button.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
-                            mHighlightedPositions[position] = true;
-                        }
-                    }
-                }.execute();
-
-
-            }
-        });
-
+        btn_request_friend.setVisibility(View.INVISIBLE);
 
         TimeAgo tm = new TimeAgo(context);
         Date date1;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             date1 = dateFormat.parse(requestdate);
-            txt_createdate.setText("requested " + tm.timeAgo(date1));
+            txt_createdate.setText("approved " + tm.timeAgo(date1));
         } catch (ParseException e) {
             e.printStackTrace();
         }

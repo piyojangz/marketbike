@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_findfriend"
+        android:title="หาเพื่อนเพิ่ม"
+        android:showAsAction="ifRoom" />
+
+</menu>

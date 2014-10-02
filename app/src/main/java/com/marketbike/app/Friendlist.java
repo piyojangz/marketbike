@@ -1,16 +1,18 @@
 package com.marketbike.app;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.facebook.Session;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
@@ -18,59 +20,57 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Tab3 extends FragmentActivity {
+public class Friendlist extends Fragment {
 
     /**
      * Called when the activity is first created.
      */
     private ArrayList<HashMap<String, String>> DataList;
     private HashMap map;
-    private UserAdapter userAdpt;
+    private FriendsAdapter userAdpt;
     private ListView lv;
+    protected ArrayList<HashMap<String, String>> sList;
     AsyncTask<Void, Void, Void> task;
     private JSONArray data;
-    private static final int LIMIT = 100;
-    private int OFFSET = 0;
-    protected ArrayList<HashMap<String, String>> sList;
     public static final String PREFS_NAME = "MyData_Settings";
     private String userid;
-    Session session;
-    private SharedPreferences.Editor editor;
+    private static final int LIMIT = 100;
+    private int OFFSET = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab3);
-        setTitle("Suggestions");
+        View rootView = inflater.inflate(R.layout.tab3, container, false);
 
-        SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, this.MODE_PRIVATE);
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, getActivity().MODE_PRIVATE);
         this.userid = settings.getString("fbid", "");
 
-
-        this.lv = (ListView) this.findViewById(R.id.tab3_listView);
+        this.lv = (ListView) rootView.findViewById(R.id.tab3_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
         this.DataList = new ArrayList<HashMap<String, String>>();
-
-
         this.createList();
+
+
+        this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.i("mylog", "onItemClick:");
+                String ID = sList.get(position).get(ListItem.KEY_MENU_ID).toString();
+                String TITLE = sList.get(position).get(ListItem.KEY_MENU_TITLE).toString();
+                Intent newActivity = new Intent(container.getContext(), Trip.class);
+                newActivity.putExtra(ListItem.KEY_MENU_ID, ID);
+                newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
+                startActivity(newActivity);
+            }
+        });
+
+        return rootView;
     }
 
     private void bindList() {
-        this.userAdpt = new UserAdapter(this, this.sList);
+        this.userAdpt = new FriendsAdapter(this.getActivity(), this.sList);
         this.lv.setAdapter(this.userAdpt);
-    }
-
-    private boolean checkLogin() {
-        if (session == null) {
-            if (session == null) {
-                session = Session.openActiveSessionFromCache(this);
-                if (session == null) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     private void createList() {
@@ -87,7 +87,8 @@ public class Tab3 extends FragmentActivity {
             @Override
             protected Void doInBackground(Void... arg0) {
                 try {
-                    String url = "http://marketbike.zoaish.com/api/get_all_user/" + userid + "/" + OFFSET + "/" + LIMIT;
+
+                    String url = "http://marketbike.zoaish.com/api/get_friend_list/" + userid + "/" + OFFSET + "/" + LIMIT;
 
                     data = JsonHelper.getJson(url).getJSONArray("result");
 
@@ -97,9 +98,11 @@ public class Tab3 extends FragmentActivity {
                         String name = data.getJSONObject(i).getString("name");
                         String fbid = data.getJSONObject(i).getString("fbid");
                         String email = data.getJSONObject(i).getString("email");
-                        String status = data.getJSONObject(i).getString("friendstatus");
+                        String status = data.getJSONObject(i).getString("status");
 
                         String create_date = data.getJSONObject(i).getString("create_date");
+                        String approve_date = data.getJSONObject(i).getString("approve_date");
+
                         String thumbnail = "https://graph.facebook.com/" + fbid + "/picture?type=large";
 
                         map = new HashMap<String, String>();
@@ -108,11 +111,10 @@ public class Tab3 extends FragmentActivity {
                         map.put(ListItem.KEY_FBID, fbid);
                         map.put(ListItem.KEY_EMAIL, email);
                         map.put(ListItem.KEY_CREATEDATE, create_date);
+                        map.put(ListItem.KEY_APPROVEDATE, approve_date);
                         map.put(ListItem.KEY_MENU_LOGO, thumbnail);
                         map.put(ListItem.KEY_STATUS, status);
-                        if (!status.equals("2")) {
-                            sList.add(map);
-                        }
+                        sList.add(map);
                     }
 
                 } catch (Throwable e) {
@@ -131,30 +133,4 @@ public class Tab3 extends FragmentActivity {
         this.task.execute((Void[]) null);
 
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.close, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_close:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 }

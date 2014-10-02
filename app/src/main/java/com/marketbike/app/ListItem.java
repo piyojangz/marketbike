@@ -8,6 +8,10 @@ public class ListItem {
     public static String KEY_TITLE = "KEYTITLE";
     public static String KEY_PRICE = "KEY_PRICE";
     public static String KEY_CREATEDATE = "KEY_CREATEDATE";
+    public static String KEY_REQUESTDATE = "KEY_REQUESTDATE";
+    public static String KEY_APPROVEDATE = "KEY_APPROVEDATE";
+
+
     public static String KEY_SET = "KEY_SET";
     public static String KEY_IMAGE = "KEY_IMAGE";
     public static String KEY_DESC = "KEY_DESC";

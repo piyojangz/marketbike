@@ -3,8 +3,6 @@ package com.marketbike.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,21 +10,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.marketbike.app.ListAdapter;
-import com.marketbike.app.ListItem;
-import com.marketbike.app.News_detail;
-import com.marketbike.app.R;
-import com.marketbike.app.custom.setAppFont;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
+
 import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
 import com.marketbike.app.RefreshableListView.onListRefreshListener;
 
@@ -34,7 +23,7 @@ import com.marketbike.app.RefreshableListView.onListRefreshListener;
 /**
  * Created by Breeshy on 08/06/2014.
  */
-public class Trip extends Activity  implements onListRefreshListener, onListLoadMoreListener {
+public class Trip extends Activity implements onListRefreshListener, onListLoadMoreListener {
     private ArrayList<HashMap<String, String>> DataList;
     HashMap map;
     private Trip_Community_Adapter listAdpt;
@@ -53,10 +42,10 @@ public class Trip extends Activity  implements onListRefreshListener, onListLoad
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trip);
 
-       // Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
+        // Typeface typeFace = Typeface.createFromAsset(this.getAssets(), "fonts/HelveticaNeueLight.ttf");
         final ViewGroup mContainer = (ViewGroup) findViewById(
                 android.R.id.content).getRootView();
-       // setAppFont.setAppFont(mContainer, typeFace);
+        // setAppFont.setAppFont(mContainer, typeFace);
 
         setTitle(this.getIntent().getCharSequenceExtra(ListItem.KEY_MENU_TITLE));
         this.lv = (RefreshableListView) findViewById(R.id.trip_listView);
@@ -160,7 +149,7 @@ public class Trip extends Activity  implements onListRefreshListener, onListLoad
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.conversation, menu);
+        inflater.inflate(R.menu.close, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

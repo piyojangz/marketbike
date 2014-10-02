@@ -43,7 +43,10 @@
         <activity android:name=".Tab3"></activity>
         <activity android:name=".Tab4"></activity>
         <activity android:name=".News"></activity>
-        <activity android:name=".FriendRequest_list"></activity>
+        <activity android:name=".Notification_list"></activity>
+        <activity android:name=".FriendlistActivity"></activity>
+        <activity android:name=".Friendlist"></activity>
+
 
         <activity android:name=".Product_add"></activity>
         <activity android:name=".LoginActivity"></activity>

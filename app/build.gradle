@@ -13,7 +13,7 @@ android {
     buildToolsVersion '19.1.0'
     defaultConfig {
         applicationId 'com.marketbike.app'
-        minSdkVersion 16
+        minSdkVersion 11
         targetSdkVersion 19
         versionCode 120
         versionName '1.2.0'
