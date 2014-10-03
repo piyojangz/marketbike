@@ -297,7 +297,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 try {
                     String url = "http://marketbike.zoaish.com/api/get_friend_request_notification/" + fbid;
                     Object data = JsonHelper.getJson(url).getString("result");
-                    //Log.v("debug","data = " + data);
                     notice = Integer.parseInt(data.toString());
 
                 } catch (Throwable e) {

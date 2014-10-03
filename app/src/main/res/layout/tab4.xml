@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="Edit Profile"
                 android:background="@drawable/bg_card_edit"
-                android:id="@+id/button"
+                android:id="@+id/btn_editprofile"
                 android:textColor="#fff"
                 android:layout_gravity="right|top"
                 android:layout_alignTop="@+id/txtFullName"

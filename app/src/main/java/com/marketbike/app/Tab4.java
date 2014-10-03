@@ -1,21 +1,21 @@
 package com.marketbike.app;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,14 +25,8 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.marketbike.app.helper.JsonHelper;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Tab4 extends Fragment {
 
@@ -40,11 +34,6 @@ public class Tab4 extends Fragment {
      * Called when the activity is first created.
      */
 
-    private ListView list_menu;
-    private static String[] menuItems;
-    private SettingAdapter SettingAdapter;
-    private HashMap<String, String> map;
-    private ArrayList<HashMap<String, String>> sList;
 
     private boolean IS_LOGIN;
     private String get_id, get_name, get_gender, get_email, get_birthday;
@@ -55,12 +44,11 @@ public class Tab4 extends Fragment {
     private Session session;
     private RelativeLayout profileConsole;
     private LinearLayout tab4;
-    private String _is_notification;
-    private String is_notification;
     private View rootView;
     GoogleCloudMessaging gcm;
     String regid;
     String PROJECT_NUMBER = "416625437190";
+    private Button btn_editprofile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +58,7 @@ public class Tab4 extends Fragment {
         image_profile = (ImageView) rootView.findViewById(R.id.image_profile);
         imageBgProfile = (ImageView) rootView.findViewById(R.id.imageBgProfile);
         profileConsole = (RelativeLayout) rootView.findViewById(R.id.profileConsole);
+        btn_editprofile = (Button) rootView.findViewById(R.id.btn_editprofile);
         txtFullName = (TextView) rootView.findViewById(R.id.txtFullName);
         tab4 = (LinearLayout) rootView.findViewById(R.id.tab4);
         session = Session.getActiveSession();
@@ -81,72 +70,19 @@ public class Tab4 extends Fragment {
         }
 
 
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        btn_editprofile.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onClick(View v) {
+                //session.close();
+                //session.closeAndClearTokenInformation();
+                Intent resultIntent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(resultIntent);
             }
-
-            @Override
-            protected Void doInBackground(Void... arg0) {
-                try {
-                    loadSetting();
-                } catch (Throwable e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                list_menu = (ListView) rootView.findViewById(R.id.list_menu);
-                if (sList != null) {
-                    SettingAdapter = new SettingAdapter(getActivity(), sList);
-                    list_menu.setAdapter(SettingAdapter);
-                }
-            }
-
-        };
-        task.execute((Void[]) null);
-
+        });
 
         return rootView;
     }
 
-    private void loadSetting() {
-
-        try {
-            if (gcm == null) {
-                gcm = GoogleCloudMessaging.getInstance(getActivity().getApplicationContext());
-            }
-            regid = gcm.register(PROJECT_NUMBER);
-            String url = "http://marketbike.zoaish.com/api/get_notification_setting/" + regid;
-            JSONObject jsondata = JsonHelper.getJson(url).getJSONObject("result");
-            is_notification = jsondata.getString("is_notification").trim();
-
-            //list_menu
-            String[] menu = {"Notification"};
-            String[] img = {"ic_action_alarms"};
-            String[] psetting = {is_notification};
-
-            sList = new ArrayList<HashMap<String, String>>();
-            for (int i = 0; i < menu.length; i++) {
-                //Log.v("fb", "is_notification: " + psetting[i]);
-
-                map = new HashMap<String, String>();
-                map.put(ListItem.KEY_TITLE, menu[i]);
-                map.put(ListItem.KEY_IMAGE, img[i]);
-                map.put(ListItem.KEY_SET, psetting[i]);
-                sList.add(map);
-            }
-
-        } catch (Throwable e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-    }
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {

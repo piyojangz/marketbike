@@ -41,6 +41,7 @@ public class LoginActivity extends Activity {
     String regid;
     String PROJECT_NUMBER = "416625437190";
     public static final String PREFS_NAME = "MyData_Settings";
+    Session session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
+        getActionBar().hide();
         //define facebook button
         LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
         permissions = Arrays.asList("user_likes", "public_profile", "user_friends", "email", "user_birthday");
@@ -55,8 +57,24 @@ public class LoginActivity extends Activity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         editor = settings.edit();
 
+        if (checkLogin()) {
+            Intent resultIntent = new Intent(this, MainActivity.class);
+            startActivity(resultIntent);
+        }
+
     }
 
+    private boolean checkLogin() {
+        if (session == null) {
+            if (session == null) {
+                session = Session.openActiveSessionFromCache(this);
+                if (session == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
