@@ -1,83 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu_detail"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#fff"
-    android:padding="10dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="5dp"
     android:orientation="horizontal">
 
-    <FrameLayout
-        android:id="@+id/myfeed_list"
-        android:layout_width="match_parent"
-        android:background="#fff"
-        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:background="@drawable/bg_card">
 
+        <LinearLayout
+            android:id="@+id/datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/imageView2"
+                android:background="@drawable/ic_timer_grey"
+                android:layout_below="@+id/txt_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="date"
+                android:textColor="#ff878787"
+                android:id="@+id/txt_createdate"
+                android:singleLine="true" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_below="@+id/datetime"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
 
-            <ImageView
-                android:id="@+id/img_thumnail"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:adjustViewBounds="true"
-                android:background="@color/slidemenu_bg"
-                android:scaleType="centerCrop"
-                android:layout_gravity="top" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="10dp">
 
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/user_img"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="top" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:text="@string/lorem"
-                    android:textColor="#2c3e50"
-                    android:id="@+id/txt_title"
-                    android:singleLine="true"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:text="Small Text"
-                    android:textColor="#ff686868"
-                    android:padding="10dp"
-                    android:paddingRight="10dp"
-                    android:id="@+id/txt_user" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="@string/lorem"
+                        android:textColor="#2c3e50"
+                        android:padding="10dp"
+                        android:paddingRight="10dp"
+                        android:id="@+id/txt_detail" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:text="25,000"
-                    android:textColor="#c0392b"
-                    android:id="@+id/txt_price"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/img_thumnail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp"
+                    android:adjustViewBounds="true"
+                    android:background="@color/slidemenu_bg"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="top" />
 
 
             </LinearLayout>
         </LinearLayout>
 
-    </FrameLayout>
-
-    <ImageView
-        android:layout_width="7dp"
-        android:layout_height="13dp"
-        android:id="@+id/imageButton"
-        android:background="@drawable/arrow_next"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:text="Breeshy sama"
+            android:textAlignment="center"
+            android:textColor="#ff595959"
+            android:id="@+id/txt_user"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/datetime"
+            android:layout_toStartOf="@+id/datetime" />
+    </RelativeLayout>
 
 </RelativeLayout>

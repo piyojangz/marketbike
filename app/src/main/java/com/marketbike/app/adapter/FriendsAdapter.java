@@ -1,4 +1,4 @@
-package com.marketbike.app;
+package com.marketbike.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.marketbike.app.custom.ListItem;
+import com.marketbike.app.R;
 import com.marketbike.app.helper.TimeAgo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -84,13 +86,23 @@ public class FriendsAdapter extends BaseAdapter implements Transformation {
         final String fbid = smart.get(ListItem.KEY_FBID).toString();
         final String friendid = smart.get(ListItem.KEY_ID).toString();
 
+
         if (mHighlightedPositions[position]) {
-            btn_request_friend.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
+            btn_request_friend.setBackgroundResource(R.drawable.btn_friend_defult);
+            btn_request_friend.setText("Accepted");
+            btn_request_friend.setTextColor(activity.getResources().getColor(R.color.accepted));
+            btn_request_friend.setPressed(false);
         } else {
             if (status.equals("1")) {
-                btn_request_friend.setBackgroundResource(R.drawable.ic_rq_friend_2);
+                btn_request_friend.setBackgroundResource(R.drawable.btn_accept);
+                btn_request_friend.setText("Accept");
+                btn_request_friend.setTextColor(activity.getResources().getColor(R.color.accept));
+                btn_request_friend.setPressed(false);
             } else {
-                btn_request_friend.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
+                btn_request_friend.setBackgroundResource(R.drawable.btn_friend_defult);
+                btn_request_friend.setText("Accepted");
+                btn_request_friend.setTextColor(activity.getResources().getColor(R.color.accepted));
+                btn_request_friend.setPressed(false);
             }
         }
 

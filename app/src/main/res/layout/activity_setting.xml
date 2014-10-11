@@ -5,11 +5,12 @@
     android:background="#eee"
     android:gravity="top|center">
 
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:fastScrollAlwaysVisible="false"
@@ -18,5 +19,23 @@
         android:divider="@drawable/list_menu_divider"
         android:focusable="false"
         android:choiceMode="singleChoice" />
+
+    <Button
+        android:layout_margin="10dp"
+        android:id="@+id/btn_logout"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/com_facebook_button_blue"
+        android:textColor="#fff"
+        android:text="Logout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#ff979797"
+        android:text="@string/app_signator"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

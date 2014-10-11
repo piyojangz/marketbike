@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.facebook.Session;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
@@ -63,6 +64,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mCollectionPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @Override
@@ -130,11 +132,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             }
         }
 
+        getActionBar().setSelectedNavigationItem(1);
+
+
     }
 
     private void openIntend() {
         Intent resultIntent;
-
+        NotificationManager mNotificationManager;
         switch (Integer.parseInt(this.type)) {
             case 0:
                 resultIntent = new Intent(this, News_detail.class);
@@ -151,7 +156,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 startActivity(resultIntent);
                 break;
             case 2: // accept friend
-                NotificationManager mNotificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+                mNotificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(Integer.parseInt(id.toString()));
+                break;
+            case 3: // has post
+                mNotificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(Integer.parseInt(id.toString()));
+                getActionBar().setSelectedNavigationItem(1);
+                break;
+            default:
+                mNotificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
                 mNotificationManager.cancel(Integer.parseInt(id.toString()));
                 break;
         }
@@ -405,7 +419,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 case 0:
                     return new Tab0();
                 case 1:
-                    return new Tab2();
+                    return new Tab_Feed();
                 case 2:
                     return new Tab4();
             }
@@ -424,7 +438,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             String tabLabel = null;
             switch (position) {
                 case 0:
-                    tabLabel = "NEWS";
+                    tabLabel = "News";
                     break;
                 case 1:
                     tabLabel = "Feeds";

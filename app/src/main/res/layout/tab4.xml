@@ -6,97 +6,10 @@
     android:background="#eee"
     android:gravity="top|center">
 
-    <RelativeLayout
-        android:id="@+id/profileConsole"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/profileLayout"
-            android:layout_width="match_parent"
-            android:layout_height="290dp">
-
-            <ImageView
-                android:id="@+id/imageBgProfile"
-                android:layout_width="fill_parent"
-                android:layout_height="180dp"
-                android:scaleType="centerCrop"
-                android:background="#34495E" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="180dp"
-                android:background="@drawable/bg_card"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="xxxx"
-                    android:textColor="#000"
-                    android:lineSpacingExtra="1dp"
-                    android:id="@+id/txtFullName"
-                    android:layout_gravity="center"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
-
-            </RelativeLayout>
-
-            <FrameLayout
-                android:id="@+id/frameimgProfile"
-                android:layout_width="80dip"
-                android:layout_height="80dip"
-                android:layout_marginTop="30dp"
-                android:background="#fff"
-                android:padding="2dp"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/image_profile"
-                    android:background="#000"
-                    android:adjustViewBounds="true"
-                    android:cropToPadding="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </FrameLayout>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:background="@drawable/bg_card_edit"
-                android:id="@+id/btn_editprofile"
-                android:textColor="#fff"
-                android:layout_gravity="right|top"
-                android:layout_alignTop="@+id/txtFullName"
-                android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
-                android:layout_alignParentEnd="true" />
-
-
-        </FrameLayout>
-
-
-    </RelativeLayout>
-
-
-    <ListView
+    <com.marketbike.app.RefreshableListView
+        android:id="@+id/userprofile_listView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:fastScrollAlwaysVisible="false"
-        android:id="@+id/list_menu"
-        android:dividerHeight="10dp"
-        android:divider="@drawable/list_menu_divider"
-        android:focusable="false"
-        android:choiceMode="singleChoice" />
+        android:layout_height="fill_parent"></com.marketbike.app.RefreshableListView>
 
 </LinearLayout>

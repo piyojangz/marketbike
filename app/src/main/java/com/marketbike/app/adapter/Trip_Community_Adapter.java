@@ -1,4 +1,4 @@
-package com.marketbike.app;
+package com.marketbike.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.marketbike.app.custom.ListItem;
+import com.marketbike.app.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 

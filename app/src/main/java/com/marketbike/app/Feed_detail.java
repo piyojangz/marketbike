@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 import com.marketbike.app.helper.ScrollViewExt;
 import com.squareup.picasso.Picasso;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Product_detail extends Activity implements Transformation, ScrollViewExt.ScrollViewListener {
+public class Feed_detail extends Activity implements Transformation, ScrollViewExt.ScrollViewListener {
     private String id;
     private HashMap map;
     private AsyncTask<Void, Void, Void> task;

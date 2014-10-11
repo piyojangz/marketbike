@@ -17,8 +17,41 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:padding="20dp"
+            android:padding="10dp"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/user_img"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="top" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:background="@drawable/bg_top_line"
+                android:orientation="vertical"
+                android:layout_height="fill_parent">
+
+
+                <EditText
+                    android:id="@+id/txt_description"
+                    android:minHeight="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Write something..."
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:layout_width="fill_parent"></EditText>
+            </LinearLayout>
 
 
             <HorizontalScrollView
@@ -36,106 +69,18 @@
                     android:orientation="horizontal">
 
 
-
                     <Button
                         android:id="@+id/buttonLoadPicture"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="#ddd"
-                        android:layout_weight="0"
-                        android:text="[เพิ่มรูป]"></Button>
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/image_add"
+                        android:layout_weight="0"></Button>
 
 
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="หมวดหมู่" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:background="@drawable/bg_top_line"
-                android:orientation="vertical"
-                android:layout_height="fill_parent">
-
-                <Spinner
-                    android:id="@+id/cate_spinner"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <TextView
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ข้อมูลสินค้า" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bg_top_line"
-                android:layout_height="fill_parent">
-
-                <EditText
-                    android:id="@+id/txt_title"
-                    android:layout_height="wrap_content"
-                    android:hint="ชื่อสินค้า"
-                    android:inputType="text"
-                    android:layout_width="fill_parent"
-                    android:layout_marginRight="50dp"></EditText>
-
-                <EditText
-                    android:id="@+id/txt_price"
-                    android:layout_height="wrap_content"
-                    android:hint="ราคา"
-                    android:inputType="numberDecimal"
-                    android:layout_width="fill_parent"
-                    android:layout_marginRight="50dp"></EditText>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="บาท"
-                    android:id="@+id/textView"
-                    android:layout_marginTop="-20dp"
-                    android:layout_gravity="right" />
-            </LinearLayout>
-
-            <TextView
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="รายละเอียด" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:background="@drawable/bg_top_line"
-                android:orientation="vertical"
-                android:layout_height="fill_parent">
-
-
-                <EditText
-                    android:id="@+id/txt_description"
-                    android:layout_height="wrap_content"
-                    android:hint="เขียนรายละเอียดสินค้า"
-                    android:inputType="textMultiLine"
-                    android:layout_width="fill_parent"></EditText>
-            </LinearLayout>
         </LinearLayout>
 
 

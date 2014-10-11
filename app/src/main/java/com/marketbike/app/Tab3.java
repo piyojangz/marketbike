@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.facebook.Session;
+import com.marketbike.app.adapter.UserAdapter;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;

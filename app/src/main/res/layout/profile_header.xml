@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#eee"
+    android:gravity="top|center">
+
+    <RelativeLayout
+        android:id="@+id/profileConsole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/profileLayout"
+            android:layout_width="match_parent"
+            android:layout_height="290dp">
+
+            <ImageView
+                android:id="@+id/imageBgProfile"
+                android:layout_width="fill_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:background="#34495E" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="180dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="xxxx"
+                    android:textColor="#000"
+                    android:lineSpacingExtra="1dp"
+                    android:id="@+id/txtFullName"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/frameimgProfile"
+                android:layout_width="80dip"
+                android:layout_height="80dip"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/circle"
+                android:padding="2dp"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/image_profile"
+                    android:background="@drawable/circle_paading2"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setting"
+                android:background="@drawable/bg_card_edit"
+                android:id="@+id/btn_editprofile"
+                android:textColor="#fff"
+                android:layout_gravity="right|top"
+                android:layout_alignTop="@+id/txtFullName"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:layout_alignParentEnd="true" />
+
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

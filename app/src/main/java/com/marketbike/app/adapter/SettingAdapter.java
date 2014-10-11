@@ -1,14 +1,7 @@
-package com.marketbike.app;
+package com.marketbike.app.adapter;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -21,10 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.marketbike.app.custom.ListItem;
+import com.marketbike.app.R;
 import com.marketbike.app.custom.setAppFont;
-import com.marketbike.app.helper.JsonHelper;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,8 +28,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -165,10 +155,9 @@ public class SettingAdapter extends BaseAdapter {
 
 
         txt_title.setText(title);
-        if(set.equals("1")) {
+        if (set.equals("1")) {
             input_notification.setChecked(true);
-        }
-        else{
+        } else {
             input_notification.setChecked(false);
         }
         int id = this.activity.getResources().getIdentifier("com.marketbike.app:drawable/" + smart.get(ListItem.KEY_IMAGE), null, null);

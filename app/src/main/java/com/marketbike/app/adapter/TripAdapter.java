@@ -1,4 +1,4 @@
-package com.marketbike.app;
+package com.marketbike.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.marketbike.app.custom.setAppFont;
+import com.marketbike.app.custom.ListItem;
+import com.marketbike.app.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -28,15 +28,16 @@ import java.util.HashMap;
  */
 
 
-public class ProductAdapter extends BaseAdapter implements Transformation {
+public class TripAdapter extends BaseAdapter implements Transformation {
     private Activity activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater = null;
 
-    public ProductAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+    public TripAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
         this.activity = a;
         this.data = d;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
 
@@ -56,30 +57,17 @@ public class ProductAdapter extends BaseAdapter implements Transformation {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        convertView = inflater.inflate(R.layout.trip_list, parent, false);
+        TextView txt_title = (TextView) convertView.findViewById(R.id.title);
+        ImageView imglogo = (ImageView) convertView.findViewById(R.id.imglogo);
         HashMap<String, String> smart = new HashMap<String, String>();
         Context context = this.activity;
         smart = this.data.get(position);
-        String title = smart.get(ListItem.KEY_TITLE).toString();
-        String user = smart.get(ListItem.KEY_USER).toString();
-        String price = smart.get(ListItem.KEY_PRICE).toString();
-        String url = smart.get(ListItem.KEY_IMAGE).toString();
-
-        convertView = inflater.inflate(R.layout.product_list, parent, false);
-
-        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Roboto-Regular.ttf");
-        final ViewGroup mContainer = (ViewGroup) convertView.getRootView();
-        setAppFont.setAppFont(mContainer, typeFace);
-        ImageView imglogo = (ImageView) convertView.findViewById(R.id.img_thumnail);
-        TextView txt_title = (TextView) convertView.findViewById(R.id.txt_title);
-        TextView txt_price = (TextView) convertView.findViewById(R.id.txt_price);
-        TextView txt_user = (TextView) convertView.findViewById(R.id.txt_user);
-
+        String title = smart.get(ListItem.KEY_MENU_TITLE).toString();
+        String url = smart.get(ListItem.KEY_MENU_LOGO).toString();
         txt_title.setText(title);
-        txt_price.setText(price + " บาท");
-        txt_user.setText(user);
 
-
-        Picasso.with(context).load(url).into(imglogo);
+        Picasso.with(context).load(url).transform(this).into(imglogo);
         return convertView;
     }
 
@@ -94,6 +82,16 @@ public class ProductAdapter extends BaseAdapter implements Transformation {
         final int color = 0xff424242;
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
 
 
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));

@@ -18,6 +18,8 @@ import java.util.HashMap;
 
 import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
 import com.marketbike.app.RefreshableListView.onListRefreshListener;
+import com.marketbike.app.adapter.Trip_Community_Adapter;
+import com.marketbike.app.custom.ListItem;
 
 
 /**

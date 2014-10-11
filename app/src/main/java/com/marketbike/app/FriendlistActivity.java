@@ -46,7 +46,7 @@ public class FriendlistActivity extends FragmentActivity implements ActionBar.Ta
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("ย้อนกลับ");
+        setTitle("Back");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         mCollectionPagerAdapter = new CollectionPagerAdapter(
@@ -172,7 +172,7 @@ public class FriendlistActivity extends FragmentActivity implements ActionBar.Ta
                     tabLabel = "Contacts";
                     break;
                 case 1:
-                    tabLabel = "Friend request";
+                    tabLabel = "Biker request";
                     break;
             }
 

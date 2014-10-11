@@ -14,10 +14,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.marketbike.app.adapter.UserReqAdapter;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 import com.marketbike.app.helper.ScrollViewExt;
 import com.squareup.picasso.Transformation;
@@ -46,6 +50,7 @@ public class Notification_list extends Activity implements Transformation {
     private static final int LIMIT = 100;
     private int OFFSET = 0;
     private ListView lv;
+    private TextView notification_label;
     AsyncTask<Void, Void, Void> task;
     private ArrayList<HashMap<String, String>> DataList;
 
@@ -60,7 +65,7 @@ public class Notification_list extends Activity implements Transformation {
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, this.MODE_PRIVATE);
         this.userid = settings.getString("fbid", "");
 
-
+        this.notification_label = (TextView) this.findViewById(R.id.notification_label);
         this.lv = (ListView) this.findViewById(R.id.friend_req_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
@@ -258,8 +263,16 @@ public class Notification_list extends Activity implements Transformation {
     }
 
     private void bindList() {
-        this.userAdpt = new UserReqAdapter(this, this.sList);
-        this.lv.setAdapter(this.userAdpt);
+        if (this.sList.size() > 0) {
+            this.lv.setVisibility(View.VISIBLE);
+            this.notification_label.setVisibility(View.GONE);
+            this.userAdpt = new UserReqAdapter(this, this.sList);
+            this.lv.setAdapter(this.userAdpt);
+        } else {
+            this.lv.setVisibility(View.GONE);
+            this.notification_label.setVisibility(View.VISIBLE);
+            this.notification_label.setText("No new notification");
+        }
     }
 
     @Override

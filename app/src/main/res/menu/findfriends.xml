@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/action_findfriend"
-        android:title="หาเพื่อนเพิ่ม"
+        android:title="More Biker"
         android:showAsAction="ifRoom" />
 
 </menu>

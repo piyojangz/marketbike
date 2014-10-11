@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.marketbike.app.adapter.TripAdapter;
+import com.marketbike.app.custom.ListItem;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

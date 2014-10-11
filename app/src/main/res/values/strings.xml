@@ -26,17 +26,16 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     </string-array>
 
 
-        <string-array name="planets_array">
-            <item>Mercury</item>
-            <item>Venus</item>
-            <item>Earth</item>
-            <item>Mars</item>
-            <item>Jupiter</item>
-            <item>Saturn</item>
-            <item>Uranus</item>
-            <item>Neptune</item>
-        </string-array>
-
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 
 
     <string name="drawer_open">Open navigation drawer</string>
@@ -46,21 +45,22 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
     <!-- time ago strings -->
     <string name="time_ago_prefix"></string>
-    <string name="time_ago_suffix">ago</string>
-    <string name="time_ago_seconds">less than a minute</string>
-    <string name="time_ago_minute">about a minute</string>
-    <string name="time_ago_minutes">%d minutes</string>
-    <string name="time_ago_hour">about an hour</string>
-    <string name="time_ago_hours">about %d hours</string>
-    <string name="time_ago_day">a day</string>
-    <string name="time_ago_days">%d days</string>
-    <string name="time_ago_month">about a month</string>
-    <string name="time_ago_months">%d months</string>
-    <string name="time_ago_year">about a year</string>
-    <string name="time_ago_years">%d years</string>
+    <string name="time_ago_suffix">ที่ผ่านมา</string>
+    <string name="time_ago_seconds">นาที</string>
+    <string name="time_ago_minute">เมื่อสักครู่</string>
+    <string name="time_ago_minutes">%d นาที</string>
+    <string name="time_ago_hour">ชั่วโมง</string>
+    <string name="time_ago_hours">ประมาณ %d ชั่วโมง</string>
+    <string name="time_ago_day">1 วัน</string>
+    <string name="time_ago_days">%d วัน</string>
+    <string name="time_ago_month">เดือน</string>
+    <string name="time_ago_months">%d เดือน</string>
+    <string name="time_ago_year">ปีที่แล้ว</string>
+    <string name="time_ago_years">%d ปี</string>
     <string name="WebServiceURL">http://marketbike.zoaish.com/api</string>
     <string name="exception_message">Server error, try later</string>
     <string name="internal_exception_message">Internal error occurred</string>
     <string name="security_exception_message">Security error occurred</string>
     <string name="CanceledMessage">Canceled</string>
+    <string name="app_signator">Market Bike V 1.2.3</string>
 </resources>

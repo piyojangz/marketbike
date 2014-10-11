@@ -1,4 +1,4 @@
-package com.marketbike.app;
+package com.marketbike.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.marketbike.app.R;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.TimeAgo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -100,78 +102,87 @@ public class UserReqAdapter extends BaseAdapter implements Transformation {
         final String friendid = smart.get(ListItem.KEY_ID).toString();
 
         if (mHighlightedPositions[position]) {
-            btn_request_friend.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
+            btn_request_friend.setBackgroundResource(R.drawable.btn_friend_defult);
+            btn_request_friend.setText("Accept");
+            btn_request_friend.setTextColor(activity.getResources().getColor(R.color.accepted));
         } else {
             if (status.equals("1")) {
-                btn_request_friend.setBackgroundResource(R.drawable.ic_rq_friend_2);
+                btn_request_friend.setBackgroundResource(R.drawable.btn_accept);
+                btn_request_friend.setText("Accept");
+                btn_request_friend.setTextColor(activity.getResources().getColor(R.color.accept));
+
+                btn_request_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+
+
+                        new AsyncTask<Void, Void, Void>() {
+
+                            @Override
+                            protected void onPreExecute() {
+                                super.onPreExecute();
+                            }
+
+
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, activity.MODE_PRIVATE);
+                                String userid = settings.getString("fbid", "");
+                                String url = "http://marketbike.zoaish.com/api/accept_friend/";
+                                HttpClient httpclient = new DefaultHttpClient();
+                                HttpPost httppost = new HttpPost(url);
+                                try {
+                                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                                    nameValuePairs.add(new BasicNameValuePair("userid", userid));
+                                    nameValuePairs.add(new BasicNameValuePair("friendid", friendid));
+
+                                    UrlEncodedFormEntity formEntity = null;
+                                    try {
+                                        formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+                                    } catch (UnsupportedEncodingException e2) {
+                                        e2.printStackTrace();
+                                    }
+                                    if (formEntity != null)
+                                        httppost.setEntity(formEntity);
+                                    HttpResponse response = httpclient.execute(httppost);
+                                    //Log.v("debug","response = " + response);
+                                } catch (ClientProtocolException e) {
+                                    // TODO Auto-generated catch block
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                }
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void result) {
+                                int position = Integer.valueOf(pos);
+                                // Toggle background resource
+                                RelativeLayout layout = (RelativeLayout) v.getParent();
+                                Button button = (Button) layout.getChildAt(3);
+                                if (mHighlightedPositions[position]) {
+                                    button.setBackgroundResource(R.drawable.btn_friend_defult);
+                                    button.setText("Accept");
+                                    button.setTextColor(activity.getResources().getColor(R.color.accepted));
+                                    mHighlightedPositions[position] = false;
+                                } else {
+                                    button.setBackgroundResource(R.drawable.btn_friend_defult);
+                                    button.setText("Accept");
+                                    button.setTextColor(activity.getResources().getColor(R.color.accepted));
+                                    mHighlightedPositions[position] = true;
+                                }
+                            }
+                        }.execute();
+
+
+                    }
+                });
             } else {
-                btn_request_friend.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
+                btn_request_friend.setBackgroundResource(R.drawable.btn_friend_defult);
+                btn_request_friend.setText("Accepted");
+                btn_request_friend.setTextColor(activity.getResources().getColor(R.color.accepted));
             }
         }
-
-
-        btn_request_friend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-
-
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                    }
-
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, activity.MODE_PRIVATE);
-                        String userid = settings.getString("fbid", "");
-                        String url = "http://marketbike.zoaish.com/api/accept_friend/";
-                        HttpClient httpclient = new DefaultHttpClient();
-                        HttpPost httppost = new HttpPost(url);
-                        try {
-                            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                            nameValuePairs.add(new BasicNameValuePair("userid", userid));
-                            nameValuePairs.add(new BasicNameValuePair("friendid", friendid));
-
-                            UrlEncodedFormEntity formEntity = null;
-                            try {
-                                formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-                            } catch (UnsupportedEncodingException e2) {
-                                e2.printStackTrace();
-                            }
-                            if (formEntity != null)
-                                httppost.setEntity(formEntity);
-                            HttpResponse response = httpclient.execute(httppost);
-                            //Log.v("debug","response = " + response);
-                        } catch (ClientProtocolException e) {
-                            // TODO Auto-generated catch block
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        int position = Integer.valueOf(pos);
-                        // Toggle background resource
-                        RelativeLayout layout = (RelativeLayout) v.getParent();
-                        Button button = (Button) layout.getChildAt(3);
-                        if (mHighlightedPositions[position]) {
-                            button.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
-                            mHighlightedPositions[position] = false;
-                        } else {
-                            button.setBackgroundResource(R.drawable.ic_rq_friend_2_0);
-                            mHighlightedPositions[position] = true;
-                        }
-                    }
-                }.execute();
-
-
-            }
-        });
 
 
         TimeAgo tm = new TimeAgo(context);

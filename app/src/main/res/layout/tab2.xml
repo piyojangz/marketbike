@@ -13,9 +13,7 @@
     <com.marketbike.app.RefreshableListView
         android:id="@+id/prod_listView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:footerDividersEnabled="false">
-    </com.marketbike.app.RefreshableListView>
+        android:layout_height="fill_parent"></com.marketbike.app.RefreshableListView>
 
 
     <RelativeLayout

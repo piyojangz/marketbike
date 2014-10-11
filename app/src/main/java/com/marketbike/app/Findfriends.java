@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.marketbike.app.adapter.UserAdapter;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
@@ -36,6 +39,7 @@ public class Findfriends extends Fragment {
     private String userid;
     private static final int LIMIT = 100;
     private int OFFSET = 0;
+    private TextView notification_label;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class Findfriends extends Fragment {
 
         SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, getActivity().MODE_PRIVATE);
         this.userid = settings.getString("fbid", "");
-
+        this.notification_label = (TextView) rootView.findViewById(R.id.notification_label);
         this.lv = (ListView) rootView.findViewById(R.id.tab3_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
@@ -69,8 +73,17 @@ public class Findfriends extends Fragment {
     }
 
     private void bindList() {
-        this.userAdpt = new UserAdapter(this.getActivity(), this.sList);
-        this.lv.setAdapter(this.userAdpt);
+        if (this.sList.size() > 0) {
+            this.lv.setVisibility(View.VISIBLE);
+            this.notification_label.setVisibility(View.GONE);
+            this.userAdpt = new UserAdapter(this.getActivity(), this.sList);
+            this.lv.setAdapter(this.userAdpt);
+        } else {
+            this.lv.setVisibility(View.GONE);
+            this.notification_label.setVisibility(View.VISIBLE);
+            this.notification_label.setText("No Contact");
+        }
+
     }
 
     private void createList() {

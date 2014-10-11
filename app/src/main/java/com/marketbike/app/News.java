@@ -2,13 +2,10 @@ package com.marketbike.app;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,17 +17,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
+import com.marketbike.app.RefreshableListView.onListRefreshListener;
+import com.marketbike.app.adapter.ListAdapter;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.custom.setAppFont;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
-import com.marketbike.app.RefreshableListView.onListRefreshListener;
 
 
 /**
@@ -49,6 +46,7 @@ public class News extends Activity implements onListRefreshListener, onListLoadM
     private static final int LIMIT = 20;
     private int OFFSET = 0;
     private boolean FLAG_END;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

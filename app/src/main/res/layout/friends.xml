@@ -17,5 +17,16 @@
         android:layout_margin="0dp"
         android:contentDescription="friends" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal"
+        android:textSize="20dp"
+        android:textColor="#ff999999"
+        android:text=""
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:id="@+id/notification_label" />
+
 
 </RelativeLayout>

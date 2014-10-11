@@ -5,12 +5,12 @@
         <shape
             android:shape="rectangle"
             android:dither="true">
-            <solid android:color="#c33b2d" />
+            <solid android:color="#f7f7f7" />
 
         </shape>
     </item>
 
-    <item android:bottom="2dp">
+    <item android:bottom="1dp">
         <shape
             android:shape="rectangle"
             android:dither="true">

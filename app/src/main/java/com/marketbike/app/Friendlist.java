@@ -1,18 +1,18 @@
 package com.marketbike.app;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.marketbike.app.adapter.FriendsAdapter;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
@@ -36,6 +36,7 @@ public class Friendlist extends Fragment {
     private String userid;
     private static final int LIMIT = 100;
     private int OFFSET = 0;
+    private TextView notification_label;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class Friendlist extends Fragment {
 
         SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, getActivity().MODE_PRIVATE);
         this.userid = settings.getString("fbid", "");
-
+        this.notification_label = (TextView) rootView.findViewById(R.id.notification_label);
         this.lv = (ListView) rootView.findViewById(R.id.tab3_listView);
         this.sList = new ArrayList<HashMap<String, String>>();
 
@@ -52,7 +53,7 @@ public class Friendlist extends Fragment {
         this.createList();
 
 
-        this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.i("mylog", "onItemClick:");
@@ -63,14 +64,23 @@ public class Friendlist extends Fragment {
                 newActivity.putExtra(ListItem.KEY_MENU_TITLE, TITLE);
                 startActivity(newActivity);
             }
-        });
+        });*/
 
         return rootView;
     }
 
     private void bindList() {
-        this.userAdpt = new FriendsAdapter(this.getActivity(), this.sList);
-        this.lv.setAdapter(this.userAdpt);
+        if (this.sList.size() > 0) {
+            this.lv.setVisibility(View.VISIBLE);
+            this.notification_label.setVisibility(View.GONE);
+            this.userAdpt = new FriendsAdapter(this.getActivity(), this.sList);
+            this.lv.setAdapter(this.userAdpt);
+        } else {
+            this.lv.setVisibility(View.GONE);
+            this.notification_label.setVisibility(View.VISIBLE);
+            this.notification_label.setText("No data");
+        }
+
     }
 
     private void createList() {

@@ -14,7 +14,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.marketbike.app.ListItem;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.MainActivity;
 import com.marketbike.app.R;
 
@@ -62,9 +62,7 @@ public class GcmMessagerHandler extends IntentService {
             case 0:
                 notice(type, "New massage from " + "Marketbike", title, id, obj1, obj2, this);
                 break;
-            case 1:
-                notice(type, title, msg, id, obj1, obj2, this);
-            case 2:
+            default:
                 notice(type, title, msg, id, obj1, obj2, this);
                 break;
         }

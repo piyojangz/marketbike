@@ -1,4 +1,4 @@
-package com.marketbike.app;
+package com.marketbike.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.marketbike.app.custom.ListItem;
+import com.marketbike.app.R;
+import com.marketbike.app.custom.setAppFont;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -27,12 +30,14 @@ import java.util.HashMap;
  */
 
 
-public class TripAdapter extends BaseAdapter implements Transformation {
+public class MenuAdapter extends BaseAdapter implements Transformation {
     private Activity activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater inflater = null;
+    private static final String TAG = "MyActivity";
+    private Typeface typeFace;
 
-    public TripAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+    public MenuAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
         this.activity = a;
         this.data = d;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -56,7 +61,10 @@ public class TripAdapter extends BaseAdapter implements Transformation {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        convertView = inflater.inflate(R.layout.trip_list, parent, false);
+        convertView = inflater.inflate(R.layout.menu_list, parent, false);
+        Typeface typeFace = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Roboto-Regular.ttf");
+        final ViewGroup mContainer = (ViewGroup) convertView.getRootView();
+        setAppFont.setAppFont(mContainer, typeFace);
         TextView txt_title = (TextView) convertView.findViewById(R.id.title);
         ImageView imglogo = (ImageView) convertView.findViewById(R.id.imglogo);
         HashMap<String, String> smart = new HashMap<String, String>();

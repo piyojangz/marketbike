@@ -7,7 +7,7 @@
     <FrameLayout
         android:id="@+id/myfeed_list"
         android:layout_width="match_parent"
-        android:background="#22313F"
+        android:background="#fff"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
@@ -48,14 +48,12 @@
             </LinearLayout>
 
 
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:text="@string/lorem"
-                android:textColor="#fff"
+                android:textColor="#000"
                 android:id="@+id/txt_title"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -70,7 +68,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:id="@+id/imageView2"
-                android:background="@drawable/ic_timer"
+                android:background="@drawable/ic_timer_grey"
                 android:layout_below="@+id/txt_title" />
 
             <TextView
@@ -80,7 +78,7 @@
                 android:text="Small Text"
                 android:paddingLeft="5dp"
                 android:paddingRight="10dp"
-                android:textColor="#ddd"
+                android:textColor="#000"
                 android:id="@+id/txt_createdate"
                 android:layout_alignTop="@+id/imageView2"
                 android:layout_toRightOf="@+id/imageView2"

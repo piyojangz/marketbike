@@ -12,11 +12,15 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.Session;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.marketbike.app.adapter.SettingAdapter;
+import com.marketbike.app.custom.ListItem;
 import com.marketbike.app.helper.JsonHelper;
 
 import org.json.JSONArray;
@@ -28,7 +32,7 @@ import java.util.HashMap;
 
 public class SettingActivity extends Activity {
     private static String[] menuItems;
-    private SettingAdapter SettingAdapter;
+    private com.marketbike.app.adapter.SettingAdapter SettingAdapter;
     private HashMap<String, String> map;
     private ArrayList<HashMap<String, String>> sList;
     ViewPager mViewPager;
@@ -46,19 +50,24 @@ public class SettingActivity extends Activity {
     public static final String PREFS_NAME = "MyData_Settings";
     private String fbid;
     private ListView list_menu;
-
+    private Activity _activity;
     private String _is_notification;
     private String is_notification;
+    private Button btn_logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        setTitle("ย้อนกลับ");
+        setTitle("Back");
+        getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        this._activity = this;
+        this.btn_logout = (Button) this.findViewById(R.id.btn_logout);
         list_menu = (ListView) this.findViewById(R.id.list_menu);
+        session = Session.getActiveSession();
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
@@ -80,7 +89,7 @@ public class SettingActivity extends Activity {
             protected void onPostExecute(Void result) {
 
                 if (sList != null) {
-                    SettingAdapter = new SettingAdapter(this, sList);
+                    SettingAdapter = new SettingAdapter(_activity, sList);
                     list_menu.setAdapter(SettingAdapter);
                 }
             }
@@ -88,13 +97,23 @@ public class SettingActivity extends Activity {
         };
         task.execute((Void[]) null);
 
+
+        this.btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (session != null) {
+                    session.close();
+                    session.closeAndClearTokenInformation();
+                    Intent resultIntent = new Intent(_activity, LoginActivity.class);
+                    startActivity(resultIntent);
+                }
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.findfriends, menu);
-        this.menu = menu;
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#e74c3c")));
         return super.onCreateOptionsMenu(menu);
     }
@@ -103,12 +122,7 @@ public class SettingActivity extends Activity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
 
         int itemId = item.getItemId();
-
-
         switch (itemId) {
-            case R.id.action_findfriend:
-                startActivity(new Intent(SettingActivity.this, Tab3.class));
-                break;
             case android.R.id.home:
                 finish();
                 break;

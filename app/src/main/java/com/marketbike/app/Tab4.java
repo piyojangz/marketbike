@@ -1,23 +1,21 @@
 package com.marketbike.app;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -25,68 +23,179 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
+import com.marketbike.app.RefreshableListView.onListLoadMoreListener;
+import com.marketbike.app.RefreshableListView.onListRefreshListener;
+import com.marketbike.app.adapter.UserPrifileAdapter;
+import com.marketbike.app.custom.ListItem;
+import com.marketbike.app.helper.JsonHelper;
 
-public class Tab4 extends Fragment {
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class Tab4 extends Fragment implements onListRefreshListener, onListLoadMoreListener {
 
     /**
      * Called when the activity is first created.
      */
-
-
+    private Menu optionsMenu;
+    AsyncTask<Void, Void, Void> task;
     private boolean IS_LOGIN;
     private String get_id, get_name, get_gender, get_email, get_birthday;
     private String imageURL;
-    private ImageView image_profile;
-    private TextView txtFullName;
-    private ImageView imageBgProfile;
     private Session session;
-    private RelativeLayout profileConsole;
-    private LinearLayout tab4;
+    private boolean FLAG_END;
+    private UserPrifileAdapter listAdpt;
+    protected ArrayList<HashMap<String, String>> sList;
     private View rootView;
     GoogleCloudMessaging gcm;
+    private HashMap map;
+    private static final int LIMIT = 10;
+    private int OFFSET = 0;
+    public static final String PREFS_NAME = "MyData_Settings";
     String regid;
     String PROJECT_NUMBER = "416625437190";
-    private Button btn_editprofile;
+
+    private String userid;
+    private RefreshableListView lv;
+    private boolean isfirst = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(false);
         this.rootView = inflater.inflate(R.layout.tab4, container, false);
-        image_profile = (ImageView) rootView.findViewById(R.id.image_profile);
-        imageBgProfile = (ImageView) rootView.findViewById(R.id.imageBgProfile);
-        profileConsole = (RelativeLayout) rootView.findViewById(R.id.profileConsole);
-        btn_editprofile = (Button) rootView.findViewById(R.id.btn_editprofile);
-        txtFullName = (TextView) rootView.findViewById(R.id.txtFullName);
-        tab4 = (LinearLayout) rootView.findViewById(R.id.tab4);
+
+        this.lv = (RefreshableListView) rootView.findViewById(R.id.userprofile_listView);
+        setHasOptionsMenu(true);
+        this.lv.setOnListRefreshListener(this);//---------------------------------------------------------------Important
+        this.lv.setOnListLoadMoreListener(this);
+        this.lv.setDistanceFromBottom(2);
+        this.lv.getListView().setFooterDividersEnabled(true);
+        this.lv.getListView().setDivider(null);
+        this.lv.getListView().setDividerHeight(0);
+        this.lv.getListView().setClipToPadding(false);
+        this.lv.getListView().setSelector(new ColorDrawable(Color.TRANSPARENT));
+        this.sList = new ArrayList<HashMap<String, String>>();
+
         session = Session.getActiveSession();
         if (session != null && (session.isOpened() || session.isClosed())) {
             onSessionStateChange(session, session.getState(), null);
         } else if (session == null || session.isClosed()) {
-            profileConsole.setVisibility(View.GONE);
-            tab4.setPadding(0, 20, 0, 0);
+            //profileConsole.setVisibility(View.GONE);
+            //tab4.setPadding(0, 20, 0, 0);
         }
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, getActivity().MODE_PRIVATE);
+        this.userid = settings.getString("fbid", "");
 
 
-        btn_editprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //session.close();
-                //session.closeAndClearTokenInformation();
-                Intent resultIntent = new Intent(getActivity(), SettingActivity.class);
-                startActivity(resultIntent);
-            }
-        });
-
+        this.firstload();
         return rootView;
     }
 
+    private void firstload() {
+        this.task = new AsyncTask<Void, Void, Void>() {
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                setRefreshActionButtonState(true);
+            }
+
+            @Override
+            protected Void doInBackground(Void... arg0) {
+                try {
+                    OFFSET = 0;
+                    loadItemList(0);
+                } catch (Throwable e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                bindList();
+                setRefreshActionButtonState(false);
+            }
+
+        };
+        this.task.execute((Void[]) null);
+    }
+
+
+    private void loadItemList(float size) {
+
+
+        try {
+            String url = "http://marketbike.zoaish.com/api/get_all_feed_by_user/" + this.userid + "/" + OFFSET + "/" + LIMIT;
+            JSONArray data = JsonHelper.getJson(url).getJSONArray("result");
+
+            if (data.length() == 0) {
+                FLAG_END = true;
+            } else {
+                FLAG_END = false;
+            }
+
+            if (isfirst) {
+                map = new HashMap<String, String>();
+                map.put(ListItem.KEY_MENU_ID, "0");
+                map.put(ListItem.KEY_TITLE, "header");
+                map.put(ListItem.KEY_CREATEDATE, "");
+                map.put(ListItem.KEY_FIRSTNAME, get_name);
+                map.put(ListItem.KEY_LASTNME, "");
+                map.put(ListItem.KEY_IMAGE, imageURL);
+                map.put(ListItem.KEY_URL, "");
+                map.put(ListItem.KEY_FBID, "");
+
+                sList.add(map);
+                OFFSET++;
+                isfirst = false;
+            }
+
+            for (int i = 0; i < data.length(); i++) {
+
+                String id = data.getJSONObject(i).getString("ID");
+                String title = data.getJSONObject(i).getString("Short_Description");
+                String create_date = data.getJSONObject(i).getString("Create_Date");
+                String fname = data.getJSONObject(i).getString("firstname");
+                String lname = data.getJSONObject(i).getString("lastname");
+                String thumbnail = data.getJSONObject(i).getString("Thumbnail_Image");
+                String fbid = data.getJSONObject(i).getString("fbid");
+
+                map = new HashMap<String, String>();
+                map.put(ListItem.KEY_MENU_ID, id);
+                map.put(ListItem.KEY_TITLE, title);
+                map.put(ListItem.KEY_CREATEDATE, create_date);
+                map.put(ListItem.KEY_FIRSTNAME, fname);
+                map.put(ListItem.KEY_LASTNME, lname);
+                map.put(ListItem.KEY_IMAGE, thumbnail);
+                map.put(ListItem.KEY_URL, thumbnail);
+                map.put(ListItem.KEY_FBID, fbid);
+
+                sList.add(map);
+                OFFSET++;
+            }
+
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void bindList() {
+        Log.d("debug", "this.sList= " + this.sList);
+        this.listAdpt = new UserPrifileAdapter(getActivity(), this.sList);
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.abc_fade_in);
+        this.lv.startAnimation(animation);
+        this.lv.setAdapter(this.listAdpt);
+    }
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            //Log.i("fb", "Logged in...");
             Request.executeMeRequestAsync(session,
                     new Request.GraphUserCallback() {
                         @Override
@@ -100,51 +209,6 @@ public class Tab4 extends Fragment {
                                     get_email = (String) user.getProperty("email");
                                     get_birthday = user.getBirthday();
                                     imageURL = "https://graph.facebook.com/" + get_id + "/picture?type=large";
-                                    Transformation tm = new Transformation() {
-                                        @Override
-                                        public Bitmap transform(Bitmap bitmap) {
-                                            Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-                                                    .getHeight(), Bitmap.Config.ARGB_8888);
-                                            Canvas canvas = new Canvas(output);
-
-
-                                            final int color = 0xff424242;
-                                            final Paint paint = new Paint();
-                                            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-
-                                            paint.setAntiAlias(true);
-                                            canvas.drawARGB(0, 0, 0, 0);
-                                            paint.setColor(color);
-
-                                            canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                                                    bitmap.getWidth() / 2, paint);
-                                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-                                            canvas.drawBitmap(bitmap, rect, rect, paint);
-
-
-                                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-
-                                            if (output != bitmap) {
-                                                bitmap.recycle();
-                                            }
-
-
-                                            return output;
-                                        }
-
-                                        @Override
-                                        public String key() {
-                                            return "circle()";
-                                        }
-                                    };
-
-                                    Picasso.with(Tab4.this.getActivity()).load(imageURL).into(image_profile);
-                                    String imgBg = "http://marketbike.zoaish.com/public/images/default_bg.jpg";
-                                    Picasso.with(Tab4.this.getActivity()).load(imgBg).transform(tm).into(imageBgProfile);
-                                    txtFullName.setText(get_name);
-
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -154,11 +218,122 @@ public class Tab4 extends Fragment {
                     });
         } else if (state.isClosed()) {
             Log.i("fb", "Logged out...");
-            profileConsole.setVisibility(View.GONE);
-            tab4.setPadding(0, 20, 0, 0);
+            //profileConsole.setVisibility(View.GONE);
+            //tab4.setPadding(0, 20, 0, 0);
         }
 
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.refresh, menu);
+        this.optionsMenu = menu;
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem Item) {
+        switch (Item.getItemId()) {
+            case R.id.action_refresh:
+                this.Refresh(this.lv);
+                return true;
+        }
+        return super.onOptionsItemSelected(Item);
+    }
+
+
+    @Override
+    public void LoadMore(RefreshableListView list) {
+        if (FLAG_END != true) {
+            this.setRefreshActionButtonState(true);
+            ////This just asyncly waits 3 seconds then does the finishRefresh()
+            new AsyncTask<RefreshableListView, Object, RefreshableListView>() {
+                protected RefreshableListView doInBackground(RefreshableListView... params) {
+                    try {
+                        loadItemList(0);
+                    } catch (Exception e) {
+                    }
+                    return params[0];
+
+                }
+
+                @Override
+                protected void onPostExecute(RefreshableListView list) {
+                    //I just finish both here to not have to write two example mocks
+                    lv.finishLoadingMore();//---------------------------------------------------------------------Important
+                    onLoad();
+                    listAdpt.notifyDataSetChanged();
+                    super.onPostExecute(list);
+                }
+            }.execute(list);
+        }
+    }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
+    }
+
+
+    private void onLoad() {
+
+
+        this.setRefreshActionButtonState(false);
+
+    }
+
+    @Override
+    public void Refresh(RefreshableListView list) {
+        this.setRefreshActionButtonState(true);
+        OFFSET = 0;
+        isfirst = true;
+        FLAG_END = false;
+        sList.clear();
+
+        lv.getListView().setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        new AsyncTask<RefreshableListView, Object, RefreshableListView>() {
+            protected RefreshableListView doInBackground(RefreshableListView... params) {
+                try {
+                    loadItemList(0);
+                } catch (Exception e) {
+                }
+                return params[0];
+
+            }
+
+            @Override
+            protected void onPostExecute(RefreshableListView list) {
+                lv.finishRefresh();//-------------------------------------------------------------------------Important
+                Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.abc_fade_in);
+                lv.startAnimation(animation);
+                onLoad();
+                listAdpt.notifyDataSetChanged();
+                lv.getListView().setOnTouchListener(new View.OnTouchListener() {
+
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return false;
+                    }
+                });
+
+                super.onPostExecute(list);
+            }
+        }.execute(list);
+
+
+    }
 }

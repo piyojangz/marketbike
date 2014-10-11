@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,22 +27,22 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.marketbike.app.helper.JsonHelper;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -46,7 +52,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,12 +69,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Product_add extends Activity {
+public class Feed_add extends Activity implements Transformation {
 
     private Menu menu;
     private ArrayList tCate;
     private AsyncTask<ArrayList, Void, ArrayList> task;
-    private Spinner sp;
     private Bitmap bm;
     final String uploadFilePath = "/mnt/sdcard/";
     final String uploadFileName = "service_lifecycle.png";
@@ -87,59 +91,47 @@ public class Product_add extends Activity {
     private SharedPreferences.Editor editor;
     private HashMap<String, String> imagespath = new HashMap<String, String>();
     private int cntImgs = 0;
+    private ImageView user_img;
+    private TextView txt_username;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_add);
-        setTitle("ย้อนกลับ");
+        setTitle("Back");
         getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         getActionBar().setDisplayHomeAsUpEnabled(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        this.sp = (Spinner) findViewById(R.id.cate_spinner);
         this.buttonLoadPicture = (Button) findViewById(R.id.buttonLoadPicture);
-        this.get_category();
         this.ad = new AlertDialog.Builder(this);
         this.myGallery = (LinearLayout) findViewById(R.id.mygallery);
-        this.txt_title = (EditText) findViewById(R.id.txt_title);
-        this.txt_price = (EditText) findViewById(R.id.txt_price);
         this.txt_description = (EditText) findViewById(R.id.txt_description);
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         this.fbid = settings.getString("fbid", "");
-        this.txt_title.setOnKeyListener(new View.OnKeyListener() {
+        String strimg = "https://graph.facebook.com/" + fbid + "/picture?type=large";
+       /* this.txt_description.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && imagespath.size() > 0) {
+                if (txt_description.getText().toString() != "") {
                     setEnableMenu(true);
                 } else {
                     setEnableMenu(false);
                 }
                 return false;
             }
-        });
+        });*/
 
-        this.txt_price.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (txt_title.getText().toString() != "" && txt_price.getText().toString() != "" && imagespath.size() > 0) {
-                    setEnableMenu(true);
-                } else {
-                    setEnableMenu(false);
-                }
-                return false;
-            }
-        });
-
-
+        user_img = (ImageView) findViewById(R.id.user_img);
+        Picasso.with(this).load(strimg).transform(this).into(user_img);
         buttonLoadPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated stub
 
                 Intent intent = new Intent();
-                intent.setType("image/*");
+                intent.setType("image/jpeg");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICKER_SELECT);
             }
@@ -154,7 +146,7 @@ public class Product_add extends Activity {
         File imgFile = new File(path);
 
         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        Log.d("fb", "myBitmap = " + myBitmap);
+        //Log.d("fb", "myBitmap = " + myBitmap);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
         params.setMargins(10, 0, 0, 0);
@@ -232,54 +224,12 @@ public class Product_add extends Activity {
     }
 
 
-    private void get_category() {
-        task = new AsyncTask<ArrayList, Void, ArrayList>() {
-            @Override
-            protected void onPreExecute() {
-                tCate = new ArrayList();
-                super.onPreExecute();
-            }
-
-            @Override
-            protected ArrayList doInBackground(ArrayList... params) {
-
-                try {
-                    String url = "http://marketbike.zoaish.com/api/get_category";
-                    JSONArray data = JsonHelper.getJson(url).getJSONArray("result");
-                    //Log.v("fb", "data " + data);
-                    for (int i = 0; i < data.length(); i++) {
-                        String title = data.getJSONObject(i).getString("Headline");
-                        tCate.add(title);
-                    }
-
-
-                } catch (Throwable e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return params[0];
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList result) {
-                // Log.v("fb", "tCate " + tCate);
-
-                ArrayAdapter<String> adp = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, tCate);
-                adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                sp.setAdapter(adp);
-            }
-
-        };
-        this.task.execute((ArrayList) null);
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.save, menu);
         this.menu = menu;
-        this.setEnableMenu(false);
+        this.setEnableMenu(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -322,71 +272,90 @@ public class Product_add extends Activity {
 
         switch (itemId) {
             case R.id.action_save:
+                if (this.txt_description.getText().length() > 0) {
+                    new AsyncTask<Void, Void, Void>() {
 
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        dialog = ProgressDialog.show(Product_add.this, "", "Saving ...", true);
-                        super.onPreExecute();
-                    }
-
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-
-
-                        Addimage();
-
-                        String category = (String) sp.getSelectedItem();
-                        HttpClient httpclient = new DefaultHttpClient();
-                        HttpPost httppost = new HttpPost("http://marketbike.zoaish.com/api/set_product");
-                        try {
-                            // Add your data
-
-                            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                            nameValuePairs.add(new BasicNameValuePair("fbid", fbid));
-                            nameValuePairs.add(new BasicNameValuePair("txt_title", txt_title.getText().toString()));
-                            nameValuePairs.add(new BasicNameValuePair("inputFiles", inputFiles));
-                            nameValuePairs.add(new BasicNameValuePair("category", category));
-                            nameValuePairs.add(new BasicNameValuePair("txt_price", txt_price.getText().toString()));
-                            nameValuePairs.add(new BasicNameValuePair("txt_description", txt_description.getText().toString()));
-
-
-                            UrlEncodedFormEntity formEntity = null;
-                            try {
-                                formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-                            } catch (UnsupportedEncodingException e2) {
-                                e2.printStackTrace();
-                            }
-                            if (formEntity != null)
-                                httppost.setEntity(formEntity);
-                            HttpResponse response = httpclient.execute(httppost);
-
-                        } catch (ClientProtocolException e) {
-                            // TODO Auto-generated catch block
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
+                        @Override
+                        protected void onPreExecute() {
+                            dialog = ProgressDialog.show(Feed_add.this, "", "Saving ...", true);
+                            super.onPreExecute();
                         }
 
 
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        dialog.dismiss();
-                        Intent resultData = new Intent();
-                        resultData.putExtra("Additem", "OK");
-                        setResult(Activity.RESULT_OK, resultData);
+                        @Override
+                        protected Void doInBackground(Void... params) {
 
 
-                        finish();
-                    }
-                }.execute();
+                            Addimage();
+
+                            HttpClient httpclient = new DefaultHttpClient();
+                            HttpPost httppost = new HttpPost("http://marketbike.zoaish.com/api/set_product");
+                            try {
+                                // Add your data
+
+                                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                                nameValuePairs.add(new BasicNameValuePair("fbid", fbid));
+                                nameValuePairs.add(new BasicNameValuePair("inputFiles", inputFiles));
+                                nameValuePairs.add(new BasicNameValuePair("txt_description", txt_description.getText().toString()));
 
 
-                return true;
+                                UrlEncodedFormEntity formEntity = null;
+                                try {
+                                    formEntity = new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
+                                } catch (UnsupportedEncodingException e2) {
+                                    e2.printStackTrace();
+                                }
+                                if (formEntity != null)
+                                    httppost.setEntity(formEntity);
+                                HttpResponse response = httpclient.execute(httppost);
+
+                            } catch (ClientProtocolException e) {
+                                // TODO Auto-generated catch block
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                            }
+
+
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void result) {
+                            dialog.dismiss();
+                            Intent resultData = new Intent();
+                            resultData.putExtra("Additem", "OK");
+                            setResult(Activity.RESULT_OK, resultData);
+
+
+                            finish();
+                        }
+                    }.execute();
+                    return true;
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Alert Dialog");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Please post something...");
+
+                    // Setting Icon to Dialog
+                    //alertDialog.setIcon(R.drawable.tick);
+
+                    // Setting OK Button
+                    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+                            Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
+
+                    return false;
+                }
             case android.R.id.home:
                 finish();
                 break;
@@ -534,5 +503,45 @@ public class Product_add extends Activity {
         }
     }
 
+    @Override
+    public Bitmap transform(Bitmap bitmap) {
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+
+        if (output != bitmap) {
+            bitmap.recycle();
+        }
+
+
+        return output;
+
+
+    }
+
+    @Override
+    public String key() {
+        return "circle()";
+    }
 
 }

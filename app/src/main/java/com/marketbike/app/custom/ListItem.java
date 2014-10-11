@@ -1,7 +1,9 @@
-package com.marketbike.app;
+package com.marketbike.app.custom;
 
 
 public class ListItem {
+    public static String KEY_FIRSTNAME = "KEY_FIRSTNAME";
+    public static String KEY_LASTNME = "KEY_LASTNME";
     public static String TAG = "MyActivity";
     public static String USERID;
     public static String KEY_ID = "KEY_ID";

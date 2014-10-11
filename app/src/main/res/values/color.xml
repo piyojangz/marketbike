@@ -2,7 +2,7 @@
 <resources>
 
     <color name="actionbar_text">#ffffff</color>
-    <color name="actionbar_bg">#CC000000</color>
+    <color name="actionbar_bg">#c33b2d</color>
     <color name="flat_concret">#95a5a6</color>
     <color name="slidemenu_bg">#343333</color>
     <color name="c10pertransparent">#1A000000</color>
@@ -22,6 +22,8 @@
     <color name="drop_end">#00000000</color>
     <color name="floor_gray">#dcdcdc</color>
     <color name="white">#ffffff</color>
-
-
+    <color name="accepted">#6C7A89</color>
+    <color name="accept">#26A65B</color>
+    <color name="requested">#ffa5bad1</color>
+    <color name="request">#26A65B</color>
 </resources>

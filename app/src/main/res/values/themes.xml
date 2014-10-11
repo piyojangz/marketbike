@@ -46,7 +46,8 @@
         <item name="android:textColor">@color/my_color_selector</item>
     </style>
 
-    <style name="Divider" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar">
+    <!-- <style name="Divider" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar">-->
+    <style name="Divider">
         <item name="android:background">@drawable/tab_bg_selector</item>
     </style>
 
